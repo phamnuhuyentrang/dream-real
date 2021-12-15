@@ -1,16 +1,17 @@
 import React from 'react';
-import { SafeAreaView, StyleSheet, StatusBar } from 'react-native';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { StyleSheet, View } from 'react-native';
 import Header from './components/header';
 import CustomBar from './components/statusbar';
+
 const App = () => {
 	return (
-		<SafeAreaProvider>
-			<SafeAreaView style={styles.container}>
-				<Header />
-				<CustomBar />
-			</SafeAreaView>
-		</SafeAreaProvider>
+		<View style={styles.container}>
+			<CustomBar backgroundColor="#3d3d4e" barStyle="light-content" />
+			<Header />
+			<View style={{ flex: 1, backgroundColor: "#3d3d4e" }}>
+				{/* Display your content */}
+			</View>
+		</View>
 	);
 }
 

@@ -1,16 +1,20 @@
 import React from 'react';
-import { View, StatusBar, } from 'react-native';
-import { useSafeAreaInsets} from 'react-native-safe-area-context';
+import { View, StatusBar, StyleSheet, Platform } from 'react-native';
+
+const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 20 : StatusBar.currentHeight;
   
-const CustomBar = () => {
-    const insets = useSafeAreaInsets();
+const CustomBar = ({backgroundColor, ...props}) => {
     return (
-        <View style={{ height: insets.top, backgroundColor: "#3d3d4e" }}>
-            <StatusBar animated={true}
-                    backgroundColor={"#3d3d4e"}
-                    barStyle={"dark-content"} />
+        <View style={[styles.statusBar, { backgroundColor }]}>
+            <StatusBar animated translucent backgroundColor={backgroundColor} {...props} />
         </View>
     )
 };
-  
+
+const styles = StyleSheet.create({
+    statusBar: {
+      height: STATUSBAR_HEIGHT
+    }
+});
+
 export default CustomBar;
