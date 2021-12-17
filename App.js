@@ -8,7 +8,7 @@ const App = () => {
 		<View style={styles.container}>
 			<CustomBar backgroundColor="#3d3d4e" barStyle="light-content" />
 			<Header />
-			<View style={{ flex: 1, backgroundColor: "#3d3d4e" }}>
+			<View style={{ flex: 1, backgroundColor: "#252a38" }}>
 				{/* Display your content */}
 			</View>
 		</View>
