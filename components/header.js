@@ -26,7 +26,6 @@ const Header = () => {
                 <View style={styles.content}>
                     <Image source={avatar} style={styles.avatar}></Image> 
                     <Image source={logo} style={styles.logo}></Image>
-
                     <Button title="click" style={styles.button}></Button>
                     <Button title="check" style={styles.button}></Button>
                 </View>
