@@ -1,7 +1,9 @@
 import React from 'react';
-import { View, Image, StyleSheet, Dimensions, Button } from 'react-native';
+import { View, Image, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import avatar from '../static/img/raiden_shogun.png';
 import logo from '../static/img/dream-real-logo-nav.png'
+import notifIcons from '../static/img/icon/notif-icon.png'
+import searchIcons from '../static/img/icon/search-icon.png'
 
 const screen = Dimensions.get("screen");
 const figma_screen_w = 428;
@@ -13,8 +15,14 @@ const Header = () => {
             <View style={styles.content}>
                 <Image source={avatar} style={styles.avatar}></Image> 
                 <Image source={logo} style={styles.logo}></Image>
-                <Button title="click" style={styles.button}></Button>
-                <Button title="check" style={styles.button}></Button>
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity>
+                        <Image source={searchIcons} style={styles.button}></Image>
+                    </TouchableOpacity>
+                    <TouchableOpacity>
+                        <Image source={notifIcons} style={styles.button}></Image>
+                    </TouchableOpacity>    
+                </View>
             </View>
         </View>
     )
@@ -46,12 +54,21 @@ const styles = StyleSheet.create({
     logo: {
         width: 136 * screen.width / figma_screen_w,
         height: 36 * screen.height / figma_screen_h,
-        marginTop: 15,
+        marginTop: 20,
+    },
+
+    buttonContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        alignContent: 'space-around',
     },
 
     button: {
-        width: 15 * screen.width / figma_screen_w,
-        height: 15 * screen.width / figma_screen_w,
+        marginLeft: 10,
+        marginTop: 10,
+        marginRight: 10,
+        width: 20 * screen.width / figma_screen_w,
+        height: 20 * screen.width / figma_screen_w,
     }
 })
 
