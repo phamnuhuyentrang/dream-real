@@ -1,32 +1,46 @@
 import React from 'react';
-import { View, Image, StyleSheet, Dimensions, Button } from 'react-native';
+import { View, Image, StyleSheet, Dimensions, Button, TouchableOpacity } from 'react-native';
 import avatar from '../static/img/raiden_shogun.png';
 import logo from '../static/img/dream-real-logo-nav.png'
+import { Svg, Circle } from 'react-native-svg'
 
 const screen = Dimensions.get("screen");
+const window = Dimensions.get("window")
 const figma_screen_w = 428;
 const figma_screen_h = 926;
+
+const APPBAR_HEIGHT = 118 * screen.height / figma_screen_h;
 
 const Header = () => {
     return (
         <View style={styles.container}>
-            <View style={styles.content}>
-                <Image source={avatar} style={styles.avatar}></Image> 
-                <Image source={logo} style={styles.logo}></Image>
-                <Button title="click" style={styles.button}></Button>
-                <Button title="check" style={styles.button}></Button>
-            </View>
+            <Svg height={APPBAR_HEIGHT} width={screen.width} overflow="hidden">
+                <Circle
+                    cx={screen.width / 2}
+                    cy={`-${898 - APPBAR_HEIGHT + 2}`}
+                    r="898.5"
+                    fill="#3D3D4E"
+                    stroke="#3D3D4E"
+                    strokeWidth="2"
+                />
+                <View style={styles.content}>
+                    <Image source={avatar} style={styles.avatar}></Image> 
+                    <Image source={logo} style={styles.logo}></Image>
+
+                    <Button title="click" style={styles.button}></Button>
+                    <Button title="check" style={styles.button}></Button>
+                </View>
+            </Svg>
         </View>
     )
 }
-
-const APPBAR_HEIGHT = 118 * screen.height / figma_screen_h;
 
 const styles = StyleSheet.create({
     container: {
         width: screen.width,
         height: APPBAR_HEIGHT,
-        backgroundColor: "#3D3D4E",
+        backgroundColor: "#252a38",
+        overflow: "hidden"
     },
     
     content: {
