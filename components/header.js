@@ -4,7 +4,6 @@ import avatar from '../static/img/raiden_shogun.png';
 import logo from '../static/img/dream-real-logo-nav.png'
 import { Svg, Ellipse } from 'react-native-svg'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
-import star from '../static/img/star.png'
 
 const screen = Dimensions.get("screen");
 const window = Dimensions.get("window")
