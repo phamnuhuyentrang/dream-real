@@ -4,7 +4,6 @@ import avatar from '../static/img/raiden_shogun.png';
 import logo from '../static/img/dream-real-logo-nav.png'
 import { Svg, Ellipse } from 'react-native-svg'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
-import star from '../static/img/star.png'
 
 const screen = Dimensions.get("screen");
 const window = Dimensions.get("window")
@@ -14,7 +13,7 @@ const figma_screen_h = 926;
 const APPBAR_HEIGHT = 200 * screen.height / figma_screen_h;
 const Header = () => {
     const [showLogo, toogleShowLogo] = React.useState(true);
-    const [value, onChangeText] = React.useState('Search');
+    const [value, onChangeText] = React.useState('');
     const startSearch = () => toogleShowLogo(displayLogo => !displayLogo);
     return (
         <View style={styles.container}>
@@ -84,6 +83,28 @@ const Header = () => {
                     strokeWidth="2"
                 />
             </Svg>
+            <FontAwesome5Icon color='white' name="star" solid size={10} style={{position: "absolute", left: 0.1 * screen.width,
+                top: 0.5 * APPBAR_HEIGHT}}/>
+            <FontAwesome5Icon color='white' name="star" solid size={10} style={{position: "absolute", left: 0.3 * screen.width,
+                top: 0.92 * APPBAR_HEIGHT}}/>
+            <FontAwesome5Icon color='white' name="star" solid size={10} style={{position: "absolute", left: 0.9 * screen.width,
+                top: 0.63 * APPBAR_HEIGHT}}/>
+            <FontAwesome5Icon color='white' name="star" solid size={10} style={{position: "absolute", left: 0.6 * screen.width,
+                top: 0.85 * APPBAR_HEIGHT}}/>
+            <FontAwesome5Icon color='white' name="star" solid size={10} style={{position: "absolute", left: 0.6 * screen.width,
+                top: 0.85 * APPBAR_HEIGHT}}/>
+            <FontAwesome5Icon color='white' name="star" solid size={10} style={{position: "absolute", left: 0.7 * screen.width,
+                top: 0.45 * APPBAR_HEIGHT}}/>
+            <FontAwesome5Icon color='white' name="star" solid size={10} style={{position: "absolute", left: 0.25 * screen.width,
+                top: 0.45 * APPBAR_HEIGHT}}/>
+            <FontAwesome5Icon color='white' name="star" solid size={10} style={{position: "absolute", left: 0.4 * screen.width,
+                top: 0.72 * APPBAR_HEIGHT}}/>
+            <FontAwesome5Icon color='white' name="star" solid size={10} style={{position: "absolute", left: 0.97 * screen.width,
+                top: 0.45 * APPBAR_HEIGHT}}/>
+            <FontAwesome5Icon color='white' name="star" solid size={10} style={{position: "absolute", left: 0.05 * screen.width,
+                top: 0.85 * APPBAR_HEIGHT}}/>
+            <FontAwesome5Icon color='white' name="star" solid size={10} style={{position: "absolute", left: 0.8 * screen.width,
+                top: 0.9 * APPBAR_HEIGHT}}/>   
         </View>
     )
 }
@@ -148,12 +169,14 @@ const styles = StyleSheet.create({
         zIndex: -3,
     },
     search_textbox: {
+        marginTop: 10,
+        marginLeft: "auto", 
+        marginRight: "auto",
         backgroundColor: "#c4c4c4",
-        fontFamily: "Roboto",
-        fontSize: 12,
+        fontSize: 15,
         borderColor: "white",
         borderRadius: 40,
-        width: 200 * screen.width / figma_screen_w,
+        width: 250 * screen.width / figma_screen_w,
         paddingHorizontal: 10
     },
     star: {
