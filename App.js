@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import Header from './components/header';
 import CustomBar from './components/statusbar';
-
+import MenuBar from './components/menubar';
 const App = () => {
 	return (
 		<View style={styles.container}>
@@ -10,6 +10,7 @@ const App = () => {
 			<Header />
 			<View style={{ flex: 1, backgroundColor: "#252a38" }}>
 				{/* Display your content */}
+				<MenuBar></MenuBar>
 			</View>
 		</View>
 	);
