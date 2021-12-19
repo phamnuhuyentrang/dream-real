@@ -22,26 +22,26 @@ const Header = () => {
             </View>
             <Svg height={APPBAR_HEIGHT} width={screen.width} overflow="hidden" style={styles.svg1}>
                 <Ellipse
-                    cx={screen.width / 2}
-                    cy={APPBAR_HEIGHT / 5}
-                    rx="180"
-                    ry="80"
+                    cx={screen.width/2}
+                    cy={0}
+                    rx={`${140 * figma_screen_w / screen.width}`}
+                    ry={`${12 * figma_screen_h / APPBAR_HEIGHT}`}
                     fill="#252A38"
                     stroke="#252A38"
                     strokeWidth="2"
                 />
             </Svg>
-            <Svg height={APPBAR_HEIGHT * 2.5} width={screen.width} overflow="hidden" style={styles.svg2}>
+            <Svg height={APPBAR_HEIGHT * 1.75} width={screen.width} overflow="hidden" style={styles.svg2}>
                 <Ellipse
                     cx={screen.width / 2}
-                    cy={APPBAR_HEIGHT * 2.5/ 3}
-                    rx="180"
-                    ry="120"
+                    cy={0}
+                    rx={`${160 * figma_screen_w / screen.width}`}
+                    ry={`${28 * figma_screen_h / APPBAR_HEIGHT}`}
                     fill="#3D3D4E"
                     stroke="#3D3D4E"
                     strokeWidth="2"
                 />
-                <Image source={star}></Image>
+                {/* <Image source={star} style={styles.star}></Image> */}
             </Svg>
         </View>
     )
@@ -84,11 +84,13 @@ const styles = StyleSheet.create({
 
     svg1: {
         position: "absolute",
-        zIndex: 0
+        zIndex: 0,
     },
     svg2: {
         position: "absolute",
-        zIndex: -1
+        zIndex: -1,
+    },
+    star: {
     }
 })
 
