@@ -21,36 +21,68 @@ const Header = () => {
             <View style={styles.content}>
                     <Image source={avatar} style={styles.avatar}></Image> 
                     {showLogo? <Image source={logo} style={styles.logo} />: <TextInput style={styles.search_textbox} onChangeText={text => onChangeText(text)}
-        value={value} maxLength={40} blurOnSubmit onSubmitEditing={(event) => alert(event.nativeEvent.text)}/> } 
+        value={value} maxLength={40} placeholder='Search' blurOnSubmit onSubmitEditing={(event) => alert(event.nativeEvent.text)}/> } 
                     <TouchableOpacity style={styles.button} onPress={startSearch}>
                         <FontAwesome5Icon color='white' name="search" size={20}/>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{ ...styles.button, marginRight: 20 }}>
+                    <TouchableOpacity style={styles.button}>
                         <FontAwesome5Icon color='white' name="bell" solid size={20}/>
                     </TouchableOpacity>
             </View>
-            <Svg height={APPBAR_HEIGHT} width={screen.width} overflow="hidden" style={styles.svg1}>
+            <Svg height={APPBAR_HEIGHT * 0.6} width={screen.width} overflow="hidden" style={styles.svg1}>
                 <Ellipse
                     cx={screen.width/2}
                     cy={0}
-                    rx={`${140 * figma_screen_w / screen.width}`}
-                    ry={`${12 * figma_screen_h / APPBAR_HEIGHT}`}
-                    fill="#252A38"
-                    stroke="#252A38"
-                    strokeWidth="2"
-                />
-            </Svg>
-            <Svg height={APPBAR_HEIGHT * 1.75} width={screen.width} overflow="hidden" style={styles.svg2}>
-                <Ellipse
-                    cx={screen.width / 2}
-                    cy={0}
-                    rx={`${160 * figma_screen_w / screen.width}`}
-                    ry={`${28 * figma_screen_h / APPBAR_HEIGHT}`}
+                    rx={`${0.6 * screen.width}`}
+                    ry={`${0.5 * APPBAR_HEIGHT}`}
                     fill="#3D3D4E"
                     stroke="#3D3D4E"
                     strokeWidth="2"
                 />
-                {/* <Image source={star} style={styles.star}></Image> */}
+            </Svg>
+            <Svg height={APPBAR_HEIGHT} width={screen.width} overflow="hidden" style={styles.svg2}>
+                <Ellipse
+                    cx={screen.width / 2}
+                    cy={0}
+                    rx={`${0.9 * screen.width}`}
+                    ry={`${APPBAR_HEIGHT}`}
+                    fill="#2E2F41"
+                    stroke="#2E2F41"
+                    strokeWidth="2"
+                />
+            </Svg>
+            <Svg height={APPBAR_HEIGHT * 0.7} width={screen.width} overflow="hidden" style={styles.line1}>
+                <Ellipse
+                    cx={screen.width / 2}
+                    cy={0}
+                    rx={`${0.7 * screen.width}`}
+                    ry={`${0.65 * APPBAR_HEIGHT}`}
+                    fill="transparent"
+                    stroke="#262A3B"
+                    strokeWidth="2"
+                />
+            </Svg>
+            <Svg height={APPBAR_HEIGHT * 0.8} width={screen.width} overflow="hidden" style={styles.line2}>
+                <Ellipse
+                    cx={screen.width / 2}
+                    cy={0}
+                    rx={`${0.8 * screen.width}`}
+                    ry={`${0.77 * APPBAR_HEIGHT}`}
+                    fill="transparent"
+                    stroke="#262A3B"
+                    strokeWidth="2"
+                />
+            </Svg>
+            <Svg height={APPBAR_HEIGHT * 0.9} width={screen.width} overflow="hidden" style={styles.line3}>
+                <Ellipse
+                    cx={screen.width / 2}
+                    cy={0}
+                    rx={`${0.9 * screen.width}`}
+                    ry={`${0.89 * APPBAR_HEIGHT}`}
+                    fill="transparent"
+                    stroke="#262A3B"
+                    strokeWidth="2"
+                />
             </Svg>
         </View>
     )
@@ -59,7 +91,7 @@ const Header = () => {
 const styles = StyleSheet.create({
     container: {
         width: screen.width,
-        height: APPBAR_HEIGHT * 2.5,
+        height: APPBAR_HEIGHT,
         backgroundColor: "#252a38",
         overflow: "hidden"
     },
@@ -84,12 +116,15 @@ const styles = StyleSheet.create({
         width: 136 * screen.width / figma_screen_w,
         height: 36 * screen.height / figma_screen_h,
         marginTop: 15,
+        marginLeft: "auto", 
+        marginRight: "auto"
     },
 
     button: {
         width: 30 * screen.width / figma_screen_w,
         height: 30 * screen.width / figma_screen_w,
-        marginTop: 15
+        marginTop: 15,
+        marginRight: 10
     },
 
     svg1: {
@@ -98,7 +133,28 @@ const styles = StyleSheet.create({
     },
     svg2: {
         position: "absolute",
+        zIndex: -4,
+    },
+    line1: {
+        position: "absolute",
         zIndex: -1,
+    },
+    line2: {
+        position: "absolute",
+        zIndex: -2,
+    },
+    line3: {
+        position: "absolute",
+        zIndex: -3,
+    },
+    search_textbox: {
+        backgroundColor: "#c4c4c4",
+        fontFamily: "Roboto",
+        fontSize: 12,
+        borderColor: "white",
+        borderRadius: 40,
+        width: 200 * screen.width / figma_screen_w,
+        paddingHorizontal: 10
     },
     star: {
     }
