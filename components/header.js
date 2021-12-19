@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, Image, StyleSheet, Dimensions, Button, TouchableOpacity } from 'react-native';
+import { View, Image, StyleSheet, Dimensions, Button, TouchableOpacity, TextInput } from 'react-native';
 import avatar from '../static/img/raiden_shogun.png';
 import logo from '../static/img/dream-real-logo-nav.png'
 import { Svg, Ellipse } from 'react-native-svg'
+import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
 import star from '../static/img/star.png'
 
 const screen = Dimensions.get("screen");
@@ -12,13 +13,21 @@ const figma_screen_h = 926;
 
 const APPBAR_HEIGHT = 200 * screen.height / figma_screen_h;
 const Header = () => {
+    const [showLogo, toogleShowLogo] = React.useState(true);
+    const [value, onChangeText] = React.useState('Search');
+    const startSearch = () => toogleShowLogo(displayLogo => !displayLogo);
     return (
         <View style={styles.container}>
             <View style={styles.content}>
                     <Image source={avatar} style={styles.avatar}></Image> 
-                    <Image source={logo} style={styles.logo}></Image>
-                    <Button title="click" style={styles.button}></Button>
-                    <Button title="check" style={styles.button}></Button>
+                    {showLogo? <Image source={logo} style={styles.logo} />: <TextInput style={styles.search_textbox} onChangeText={text => onChangeText(text)}
+        value={value} maxLength={40} blurOnSubmit onSubmitEditing={(event) => alert(event.nativeEvent.text)}/> } 
+                    <TouchableOpacity style={styles.button} onPress={startSearch}>
+                        <FontAwesome5Icon color='white' name="search" size={20}/>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{ ...styles.button, marginRight: 20 }}>
+                        <FontAwesome5Icon color='white' name="bell" solid size={20}/>
+                    </TouchableOpacity>
             </View>
             <Svg height={APPBAR_HEIGHT} width={screen.width} overflow="hidden" style={styles.svg1}>
                 <Ellipse
@@ -78,8 +87,9 @@ const styles = StyleSheet.create({
     },
 
     button: {
-        width: 15 * screen.width / figma_screen_w,
-        height: 15 * screen.width / figma_screen_w,
+        width: 30 * screen.width / figma_screen_w,
+        height: 30 * screen.width / figma_screen_w,
+        marginTop: 15
     },
 
     svg1: {
