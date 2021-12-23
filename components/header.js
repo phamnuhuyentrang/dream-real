@@ -130,7 +130,6 @@ const styles = StyleSheet.create({
         width: 45 * screen.width / figma_screen_w,
         height: 45 * screen.width / figma_screen_w,
         borderRadius: 50,
-        alignSelf: "flex-start"
     },
 
     logo: {

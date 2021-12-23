@@ -1,6 +1,9 @@
 import React from 'react';
-import { View, Image, StyleSheet, Dimensions, TouchableOpacity, Text } from 'react-native';
-
+import { View, Image, StyleSheet, Dimensions, TouchableOpacity, Text, ScrollView } from 'react-native';
+import Trending from './trending';
+import Destinations from './destinations';
+import Messages from './messages';
+import Connect from './connect';
 
 const screen = Dimensions.get("screen");
 const window = Dimensions.get("window");
@@ -9,6 +12,19 @@ const MenuBar = () => {
 
     const [click, toogleClick] = React.useState(0);
     
+    const loadContent = (click) => {
+        switch(click) {
+            case 0:
+                return <Trending />
+            case 1:
+                return <Destinations />
+            case 2:
+                return <Messages />
+            default:
+                return <Connect />
+        }
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.content}>
@@ -29,6 +45,9 @@ const MenuBar = () => {
                     <View style={click === 3 ? {...styles.underline, backgroundColor: "#B456F1"} : {...styles.underline}}></View>
                 </TouchableOpacity>
             </View>
+            <ScrollView style={styles.second_content}>
+                {loadContent(click)}
+            </ScrollView>
         </View>
     )
 }
@@ -53,6 +72,10 @@ const styles = StyleSheet.create({
     },
     underline: {
         height: 3, 
+    },
+    second_content: {
+        borderTopColor: "#3D3D4E",
+        borderTopWidth: 3
     }
 })
 
