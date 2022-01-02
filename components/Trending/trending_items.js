@@ -1,5 +1,12 @@
 import React from 'react';
 import { View, Image, StyleSheet, Dimensions, TouchableOpacity, Text } from 'react-native';
+import like from "../../static/img/emoji/like.png";
+import love from "../../static/img/emoji/love.png";
+import sad from "../../static/img/emoji/sad.png";
+import angry from "../../static/img/emoji/angry.png";
+import wow from "../../static/img/emoji/wow.png";
+import haha from "../../static/img/emoji/haha.png";
+
 
 const screen = Dimensions.get("screen");
 const window = Dimensions.get("window");
@@ -26,25 +33,28 @@ const TrendingItems = (props) => {
                 <TouchableOpacity>
                     <Text style={styles.item5}>{data.number_react} reacts</Text>
                 </TouchableOpacity>
-                <View style={styles.content6}>
+                <View>
                     <View style={styles.content7}>
                         <TouchableOpacity>
-                            <Text style={styles.item7}>&#128077;</Text>
+                            <Image source={like} style={styles.item7}></Image>
                         </TouchableOpacity>
                         <TouchableOpacity>
-                            <Text style={styles.item7}>&#10084;</Text>
+                            <Image source={love} style={styles.item7}></Image>
                         </TouchableOpacity>
                         <TouchableOpacity>
-                            <Text style={styles.item7}>&#128518;</Text>
+                            <Image source={haha} style={styles.item7}></Image>
                         </TouchableOpacity>
                         <TouchableOpacity>
-                            <Text style={styles.item7}>&#128559;</Text>
+                            <Image source={sad} style={styles.item7}></Image>
                         </TouchableOpacity>
                         <TouchableOpacity>
-                            <Text style={styles.item7}>&#128545;</Text>
+                            <Image source={wow} style={styles.item7}></Image>
                         </TouchableOpacity>
                         <TouchableOpacity>
-                            <Text style={styles.item7}>&#128172; 
+                            <Image source={angry} style={styles.item7}></Image>
+                        </TouchableOpacity>
+                        <TouchableOpacity>
+                            <Text style={styles.commenticon}>&#128172; 
                                 <Text style={styles.item8}> {data.number_comment} comments</Text>
                             </Text>
                         </TouchableOpacity>
@@ -117,9 +127,10 @@ const styles = StyleSheet.create({
     },
     item5: {
         marginTop: 0.02 * screen.height,
+        marginBottom: 0.005 * screen.height,
         fontStyle: "normal",
         fontWeight: "normal",
-        fontSize: 9,
+        fontSize: 12,
         color: "#FFF"
     },
     content7: {
@@ -127,6 +138,12 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     item7: {
+        marginRight: 0.01 * screen.width,
+        marginTop: 0.015 * screen.height,
+        width: 15 * screen.width / figma_screen_w,
+        height: 15 * screen.width / figma_screen_w,
+    },
+    commenticon: {
         marginRight: 0.01 * screen.width,
         marginTop: 0.015 * screen.height,
         fontStyle: "normal",

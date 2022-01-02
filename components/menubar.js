@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, Image, StyleSheet, Dimensions, TouchableOpacity, Text, ScrollView } from 'react-native';
-import Trending from './trending';
-import Destinations from './destinations';
-import Messages from './messages';
-import Connect from './connect';
+import Trending from './Trending/trending';
+import Destinations from './Destinations/destinations';
+import Messages from './Messages/messages';
+import Connect from './Connect/connect';
 
 const screen = Dimensions.get("screen");
 const window = Dimensions.get("window");

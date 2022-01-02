@@ -1,12 +1,12 @@
 import React from 'react';
-import { View, Image, StyleSheet, Dimensions, TouchableOpacity, Text } from 'react-native';
-import sara from "../static/img/trending/sara.png";
-import kazuha from "../static/img/trending/kazuha.png";
-import itto from "../static/img/trending/itto.png";
+import { View, StyleSheet, Dimensions } from 'react-native';
+import sara from "../../static/img/trending/sara.png";
+import kazuha from "../../static/img/trending/kazuha.png";
+import itto from "../../static/img/trending/itto.png";
 
-import liyue from "../static/img/trending/liyue.png";
-import apple from "../static/img/trending/golden_apple_island.png";
-import inazuma from "../static/img/trending/inazuma.png";
+import liyue from "../../static/img/trending/liyue.png";
+import apple from "../../static/img/trending/golden_apple_island.png";
+import inazuma from "../../static/img/trending/inazuma.png";
 
 import TrendingItems from './trending_items';
 const screen = Dimensions.get("screen");
@@ -50,9 +50,9 @@ const data = [
 const Trending = () => {
     return (
         <View style={styles.container}> 
-            {data.map((person) => {
+            {data.map((person, index) => {
                 return (
-                    <TrendingItems data={person} />
+                    <TrendingItems data={person} key={index}/>
                 )
             })}
         </View> 
