@@ -4,6 +4,7 @@ import avatar from '../static/img/raiden_shogun.png';
 import logo from '../static/img/dream-real-logo-nav.png'
 import { Svg, Ellipse } from 'react-native-svg'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
+import Stories from './Stories/stories'
 
 const screen = Dimensions.get("screen");
 const window = Dimensions.get("window")
@@ -28,6 +29,7 @@ const Header = () => {
                         <FontAwesome5Icon color='white' name="bell" solid size={20}/>
                     </TouchableOpacity>
             </View>
+            <Stories />
             <Svg height={APPBAR_HEIGHT * 0.6} width={screen.width} overflow="hidden" style={styles.svg1}>
                 <Ellipse
                     cx={screen.width/2}

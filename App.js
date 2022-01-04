@@ -3,15 +3,17 @@ import { StyleSheet, View } from 'react-native';
 import Header from './components/header';
 import CustomBar from './components/statusbar';
 import MenuBar from './components/menubar';
+import Stories from './components/Stories/stories';
+
 const App = () => {
 	return (
 		<View style={styles.container}>
-			<CustomBar backgroundColor="#3d3d4e" barStyle="light-content" />
+			{/* <CustomBar backgroundColor="#3d3d4e" barStyle="light-content" />
 			<Header />
 			<View style={{ flex: 1, backgroundColor: "#252a38" }}>
-				{/* Display your content */}
 				<MenuBar></MenuBar>
-			</View>
+			</View> */}
+			<Stories />
 		</View>
 	);
 }
