@@ -26,7 +26,7 @@ const data = [
         place: liyue
     },
     {
-        name: "Kaedehara Kazuha",
+        name: "Kazuha",
         emotion: "is mining at Golden Apple Island",
         place_detail: "Island, Monstadt",
         number_react: 200,

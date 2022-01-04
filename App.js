@@ -1,20 +1,21 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import Header from './components/header';
-import CustomBar from './components/statusbar';
-import MenuBar from './components/menubar';
-import Stories from './components/Stories/stories';
+import { StyleSheet } from 'react-native';
+import Home from "./screens/home"
+import DestinationDetails from './components/Destinations/destination_details';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { navigationRef } from './navigation-root';
+
+const Stack = createNativeStackNavigator();
 
 const App = () => {
 	return (
-		<View style={styles.container}>
-			{/* <CustomBar backgroundColor="#3d3d4e" barStyle="light-content" />
-			<Header />
-			<View style={{ flex: 1, backgroundColor: "#252a38" }}>
-				<MenuBar></MenuBar>
-			</View> */}
-			<Stories />
-		</View>
+		<NavigationContainer ref={navigationRef}>
+			<Stack.Navigator screenOptions={{headerShown: false}}>
+				<Stack.Screen name="Home" component={Home} />
+				<Stack.Screen name="DestinationDetails" component={DestinationDetails} />
+			</Stack.Navigator>
+		</NavigationContainer>
 	);
 }
 

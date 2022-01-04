@@ -6,6 +6,7 @@ import sad from "../../static/img/emoji/sad.png";
 import angry from "../../static/img/emoji/angry.png";
 import wow from "../../static/img/emoji/wow.png";
 import haha from "../../static/img/emoji/haha.png";
+import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
 
 
 const screen = Dimensions.get("screen");
@@ -19,14 +20,16 @@ const TrendingItems = (props) => {
     return (
         <View style={styles.content}>
             <View style={styles.content2}>
-                <View style={styles.content3}>
+                <View>
                     <View style={styles.content4}>
                         <Image source={data.avatar} style={styles.avatar}></Image>
                         <Text style={styles.item4}>{data.name}</Text>
                     </View>
                     <Text style={styles.item3}>{data.emotion}</Text>
                 </View>
-                <Text style={styles.item2}>&#128204; {data.place_detail}</Text>
+                <FontAwesome5Icon color='red' name="map-marker-alt" regular size={10} style={styles.item2}>
+                    <Text style={[styles.item2, {color:'#FFF'}]}> {data.place_detail}</Text>
+                </FontAwesome5Icon>
             </View>
             <Image source={data.place} style={styles.place}></Image>
             <View style={styles.content5}>
@@ -54,9 +57,9 @@ const TrendingItems = (props) => {
                             <Image source={angry} style={styles.item7}></Image>
                         </TouchableOpacity>
                         <TouchableOpacity>
-                            <Text style={styles.commenticon}>&#128172; 
+                            <FontAwesome5Icon color='white' name="comment-alt" regular size={10} style={styles.commenticon}>
                                 <Text style={styles.item8}> {data.number_comment} comments</Text>
-                            </Text>
+                            </FontAwesome5Icon>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -96,8 +99,7 @@ const styles = StyleSheet.create({
         fontWeight: "400",
         fontSize: 10,
         marginRight: 0.05 * screen.width,
-        marginTop: 0.01 * screen.height,
-        color: "#FFF"
+        marginTop: 0.01 * screen.height
     },
     item3: {
         fontStyle: "normal",
