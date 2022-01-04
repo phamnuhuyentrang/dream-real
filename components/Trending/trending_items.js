@@ -16,6 +16,7 @@ const figma_screen_h = 926;
 
 const TrendingItems = (props) => {
     const data = props.data;
+    const parentCallBack = props.parentCallBack;
     return (
         <View style={styles.content}>
             <View style={styles.content2}>
@@ -53,7 +54,7 @@ const TrendingItems = (props) => {
                         <TouchableOpacity>
                             <Image source={angry} style={styles.item7}></Image>
                         </TouchableOpacity>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={parentCallBack}>
                             <Text style={styles.commenticon}>&#128172; 
                                 <Text style={styles.item8}> {data.number_comment} comments</Text>
                             </Text>

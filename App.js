@@ -8,19 +8,20 @@ import Stories from './components/Stories/stories';
 const App = () => {
 	return (
 		<View style={styles.container}>
-			{/* <CustomBar backgroundColor="#3d3d4e" barStyle="light-content" />
+			<CustomBar backgroundColor="#3d3d4e" barStyle="light-content" />
 			<Header />
 			<View style={{ flex: 1, backgroundColor: "#252a38" }}>
 				<MenuBar></MenuBar>
-			</View> */}
-			<Stories />
+			</View>
+			{/* <Stories /> */}
 		</View>
 	);
 }
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1
+		flex: 1,
+		// backgroundColor: "red"
 	},
 	text: {
 		fontSize: 25,
