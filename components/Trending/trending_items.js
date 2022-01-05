@@ -1,5 +1,7 @@
 import React from 'react';
 import { View, Image, StyleSheet, Dimensions, TouchableOpacity, Text } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+
 import like from "../../static/img/emoji/like.png";
 import love from "../../static/img/emoji/love.png";
 import sad from "../../static/img/emoji/sad.png";
@@ -17,7 +19,10 @@ const figma_screen_h = 926;
 
 const TrendingItems = (props) => {
     const data = props.data;
-    const parentCallBack = props.parentCallBack;
+    const navigation = useNavigation()
+    const showComments = () => {
+        navigation.navigate('Comment', {comment: data.comment})
+    }
     return (
         <View style={styles.content}>
             <View style={styles.content2}>
@@ -57,7 +62,7 @@ const TrendingItems = (props) => {
                         <TouchableOpacity>
                             <Image source={angry} style={styles.item7}></Image>
                         </TouchableOpacity>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={showComments}>
                             <FontAwesome5Icon color='white' name="comment-alt" regular size={10} style={styles.commenticon}>
                                 <Text style={styles.item8}> {data.number_comment} comments</Text>
                             </FontAwesome5Icon>

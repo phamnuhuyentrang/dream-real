@@ -23,7 +23,43 @@ const data = [
         number_react: 9,
         number_comment: 8,
         avatar: sara,
-        place: liyue
+        place: liyue,
+        comment: [
+            {
+                avatar: kazuha,
+                name: "Kazuha",
+                time: "1 week ago",
+                content: "Nice place !"
+            },
+            {
+                avatar: itto,
+                name: "Arataki Itto",
+                time: "2 days ago",
+                content: "Beautiful !"
+            },{
+                avatar: kazuha,
+                name: "Kazuha",
+                time: "1 week ago",
+                content: "Nice place !"
+            },
+            {
+                avatar: itto,
+                name: "Arataki Itto",
+                time: "2 days ago",
+                content: "Beautiful !"
+            },{
+                avatar: kazuha,
+                name: "Kazuha",
+                time: "1 week ago",
+                content: "Nice place !"
+            },
+            {
+                avatar: itto,
+                name: "Arataki Itto",
+                time: "2 days ago",
+                content: "Beautiful !"
+            }
+        ]
     },
     {
         name: "Kazuha",
@@ -32,7 +68,21 @@ const data = [
         number_react: 200,
         number_comment: 171,
         avatar: kazuha,
-        place: apple
+        place: apple,
+        comment: [
+            {
+                avatar: kazuha,
+                name: "Sara Kujou",
+                time: "3 weeks ago",
+                content: "Nice !"
+            },
+            {
+                avatar: itto,
+                name: "Arataki Itto",
+                time: "3 days ago",
+                content: "So cool !"
+            }
+        ]
     },
     {
         name: "Arataki Itto",
@@ -41,7 +91,21 @@ const data = [
         number_react: "1k6",
         number_comment: 501,
         avatar: itto,
-        place: inazuma
+        place: inazuma,
+        comment: [
+            {
+                avatar: kazuha,
+                name: "Kazuha",
+                time: "1 hour ago",
+                content: "Fighting !"
+            },
+            {
+                avatar: itto,
+                name: "Arataki Itto",
+                time: "1 hour ago",
+                content: "Thanks !"
+            }
+        ]
     },
 ];
 

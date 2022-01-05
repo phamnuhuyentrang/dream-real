@@ -1,11 +1,10 @@
 import React from 'react';
-import { Animated, View, Text, StyleSheet, TouchableOpacity, Dimensions, TextInput, KeyboardAvoidingView } from 'react-native';
-import { ScrollView, PanGestureHandler, State } from 'react-native-gesture-handler';
-import { useNavigation } from '@react-navigation/native';
-import Comment from '../comment';
-
+import { View, Text, Image, StyleSheet, TouchableOpacity, Dimensions, TextInput, KeyboardAvoidingView } from 'react-native';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const screen = Dimensions.get("screen");
+const figma_screen_w = 428;
+const figma_screen_h = 926;
 
 const CommentLayout = (props) => {
     const comment = props.comment;
@@ -13,14 +12,14 @@ const CommentLayout = (props) => {
         <View style={styles.content}>
             <View style={styles.content2}>
                 <View style={styles.content4}>
-                    <Image source={data.avatar} style={styles.avatar}></Image>
+                    <Image source={comment.avatar} style={styles.avatar}></Image>
                     <Text style={styles.item4}>{comment.name}</Text>
                 </View>
-                <View style={{backgroundColor:"#B456F1", borderRadius: 0.05 * screen.width,  marginBottom: 0.01 * screen.height}}>
+                <View style={{backgroundColor:"#B456F1", borderRadius: 0.05 * screen.width,  marginBottom: 0.01 * screen.height, height: hp(5), marginRight: 0.025 * screen.width}}>
                     <Text style={styles.item3}>{comment.content}</Text>
                 </View>
                 <View>
-                    <Text style={styles.item3}>{comment.time}</Text>
+                    <Text style={styles.comment_time}>{comment.time}</Text>
                 </View>
             </View>
         </View>
@@ -56,9 +55,10 @@ const styles = StyleSheet.create({
     item3: {
         fontStyle: "normal",
         fontWeight: "400",
-        fontSize: 12,
+        fontSize: 13,
         color: "white",
-        textAlign: "center"
+        textAlign: "left",
+        margin: 0.02 * screen.width
     },
     item4: {
         marginLeft: 0.03 * screen.width, 
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
         fontWeight: "400",
         fontSize: 10,
         color: "#FFF",
-        textAlign: "center"
+        textAlign: "left"
     }
 })
 

@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
 import { View, Image, StyleSheet, Dimensions, TouchableOpacity, Text, TouchableHighlight, Linking, Alert } from 'react-native';
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import rocket from "../../static/img/rocket.png"
 import facebook from "../../static/img/facebook.png"
@@ -98,8 +99,8 @@ const ConnectItems = (props) => {
 const styles = StyleSheet.create({
     content: {
         backgroundColor: "#3D3D4E",
-        width: screen.width / 2 - 0.08 * screen.width,
-        height: screen.height / 3 + 0.03 * screen.height,
+        width: wp(40),
+        height: wp(60),
         borderRadius: 0.05 * screen.width,
         marginBottom: 0.03 * screen.height,
         margin: 0.02 * screen.height
