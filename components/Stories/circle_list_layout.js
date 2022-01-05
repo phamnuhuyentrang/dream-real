@@ -34,7 +34,7 @@ export const CircleListLayout = ({
                                 {
                                     transform: [{ translateX }, { translateY }, { scale }],
                                 },
-                                {marginTop: screen.height / 13}
+                                {marginTop: screen.height * screen.height / (13 * 829 )}
                             ]}
                         >
                             {renderItem({ item: itemToRender, index: item._dataIndex })}

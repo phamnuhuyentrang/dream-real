@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import { View, Image, StyleSheet, Dimensions, Animated, Pressable } from 'react-native';
+import { View, Image, StyleSheet, Dimensions, Animated, Pressable, TouchableOpacity } from 'react-native';
 import CircleList from "./circle_list";
 import sara from "../../static/img/trending/sara.png";
 import kazuha from "../../static/img/trending/kazuha.png";
@@ -11,6 +11,8 @@ import apple from "../../static/img/trending/golden_apple_island.png";
 import inazuma from "../../static/img/trending/inazuma.png";
 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { useNavigation } from '@react-navigation/native';
+
 const ITEM_SIZE = wp(50);
 const SPACE_ITEM_SIZE = (hp(38) - ITEM_SIZE) / 2;
 
@@ -167,9 +169,14 @@ const data = [
 ];
 
 const Stories = () => {
+    const navigation = useNavigation();
     const ref = React.useState();
+    const showPost = (item) => {
+        console.log(item)
+        // navigation.navigate('StoryContent', {post: item})
+    }
     const keyExtractor = (item, index) => index;
-    const renderItem = ({ item }) => <Image style={styles.avatar} source={item.avatar} />
+    const renderItem = ({ item }) => <TouchableOpacity onPress={showPost(item)}><Image style={styles.avatar} source={item.avatar} /></TouchableOpacity>
     const displayData = data;
     if (displayData.length < 16) {
         for (var i = 0; i < 16 - displayData.length; i++) {
@@ -178,7 +185,6 @@ const Stories = () => {
             )
         }
     }
-
     return (
         <CircleList 
             elementCount={16}
@@ -201,7 +207,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignSelf: 'stretch',
         overflow: 'hidden',
-        // marginTop: screen.height / 2,
     },
 });
 
