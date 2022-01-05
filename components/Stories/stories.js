@@ -1,5 +1,6 @@
 import React, {PureComponent} from 'react';
-import { View, Image, StyleSheet, Dimensions, Animated, Pressable } from 'react-native';
+import { View, Image, StyleSheet, Dimensions, Animated, Pressable, TouchableOpacity } from 'react-native';
+import CircleList from "./circle_list";
 import sara from "../../static/img/trending/sara.png";
 import kazuha from "../../static/img/trending/kazuha.png";
 import itto from "../../static/img/trending/itto.png";
@@ -10,6 +11,8 @@ import apple from "../../static/img/trending/golden_apple_island.png";
 import inazuma from "../../static/img/trending/inazuma.png";
 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { useNavigation } from '@react-navigation/native';
+
 const ITEM_SIZE = wp(50);
 const SPACE_ITEM_SIZE = (hp(38) - ITEM_SIZE) / 2;
 
@@ -96,97 +99,29 @@ const data = [
 ];
 
 const Stories = () => {
-    const scrollX = React.useRef(new Animated.Value(0)).current;
-    const keyExtractor = item => item.id;
-    const renderItem = ({ item, index }) => {
-        const radius = 0.7 * screen.width;
-        // const inputRange2 = [
-        //     (index - 3) * ITEM_SIZE,
-        //     (index - 2) * ITEM_SIZE,
-        //     (index - 1) * ITEM_SIZE,
-        //     index * ITEM_SIZE,
-        //     (index + 1) * ITEM_SIZE,
-        //     (index + 2) * ITEM_SIZE,
-        //     (index + 3) * ITEM_SIZE
-        // ]
-        const inputRange = [
-            (index - 4) * ITEM_SIZE,
-            (index - 3) * ITEM_SIZE,
-            (index - 2) * ITEM_SIZE,
-            (index - 1) * ITEM_SIZE,
-            index * ITEM_SIZE,
-            (index + 1) * ITEM_SIZE,
-            (index + 2) * ITEM_SIZE
-        ]
-
-        // outputRange_translateY = [];
-        // outputRange_translateX = [];
-
-        // for (var i = 0; i < 7; i++) {
-        //     var move_x = Math.sin(inputRange[i] * Math.PI * 2) * radius;
-        //     var move_y = -Math.cos(inputRange[i] * Math.PI * 2) * radius;
-        //     outputRange_translateX.push(move_x);
-        //     outputRange_translateY.push(move_y);
-        // }
-        const translateX = scrollX.interpolate({
-            inputRange,
-            outputRange: ['-35deg','-25deg','-10deg','0deg','10deg','25deg','35deg']
-        })
-        const translateY = scrollX.interpolate({
-            inputRange,
-            outputRange: [0.1 * APPBAR_HEIGHT, 0.2 * APPBAR_HEIGHT, 0.5 * APPBAR_HEIGHT ,0.75 * APPBAR_HEIGHT, 0.5 * APPBAR_HEIGHT, 0.2 * APPBAR_HEIGHT, 0.1 * APPBAR_HEIGHT]
-        })
-        const scale = scrollX.interpolate({
-            inputRange,
-            outputRange: [0.6, 0.8, 1, 1.3, 1, 0.8, 0.6]
-        })
-        if (!item.name) {
-            return (
-            <View style={{ height: SPACE_ITEM_SIZE }} />
+    const navigation = useNavigation();
+    const ref = React.useState();
+    const showPost = (item) => {
+        console.log(item)
+        // navigation.navigate('StoryContent', {post: item})
+    }
+    const keyExtractor = (item, index) => index;
+    const renderItem = ({ item }) => <TouchableOpacity onPress={showPost(item)}><Image style={styles.avatar} source={item.avatar} /></TouchableOpacity>
+    const displayData = data;
+    if (displayData.length < 16) {
+        for (var i = 0; i < 16 - displayData.length; i++) {
+            displayData.push(
+                displayData[i % displayData.length]
             )
-        } else {
-            return (
-            <Animated.View
-                key={item.name}
-                style={[styles.container, {
-                    width: wp("30%"),
-                    height: ITEM_SIZE,
-                    transform: [{ translateX }, { scale }, { translateY }],
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    borderRadius: wp("17%")            
-                }]}>
-                <Image style={styles.avatar} source={item.avatar}/>
-                {/* <Pressable
-                    onPress={() => console.log("Pressed")}
-                    style={{
-                        width: wp("50%"),
-                        height: ITEM_SIZE,
-                        borderWidth: 0,
-                        borderRadius: wp("17%"),
-                        width: wp("49.8%"), height: wp("49%"),
-                        justifyContent: 'center', alignItems: 'center'
-                    }}>
-                </Pressable> */}
-            </Animated.View>
-        )}};
+        }
+    }
     return (
-        <Animated.FlatList
-            horizontal
-            showsVerticalScrollIndicator={false}  
-            showsHorizontalScrollIndicator={false} 
-            data={data}
+        <CircleList 
+            elementCount={16}
+            data={displayData}
             keyExtractor={keyExtractor}
             renderItem={renderItem}
-            contentContainerStyle={{ alignItems: 'center' }}
-            snapToInterval={ITEM_SIZE}
-            decelerationRate={0.4}
-            onScroll={Animated.event(
-                [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-                { useNativeDriver: true } 
-            )}
-            scrollEventThrottle={16}
-        />
+        />        
     )
 }
 
@@ -201,8 +136,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignSelf: 'stretch',
-        overflow: 'hidden'
-    }
+        overflow: 'hidden',
+    },
 });
 
 export default Stories;

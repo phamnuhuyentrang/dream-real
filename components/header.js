@@ -29,7 +29,7 @@ const Header = () => {
                         <FontAwesome5Icon color='white' name="bell" solid size={20}/>
                     </TouchableOpacity>
             </View>
-            {/* <Stories /> */}
+            <Stories />
             <Svg height={APPBAR_HEIGHT * 0.6} width={screen.width} overflow="hidden" style={styles.svg1}>
                 <Ellipse
                     cx={screen.width/2}
