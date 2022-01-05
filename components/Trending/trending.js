@@ -1,5 +1,5 @@
-import React, { useRef } from 'react';
-import { View, StyleSheet, Dimensions, Text, ScrollView } from 'react-native';
+import React from 'react';
+import { View, StyleSheet, Dimensions } from 'react-native';
 import sara from "../../static/img/trending/sara.png";
 import kazuha from "../../static/img/trending/kazuha.png";
 import itto from "../../static/img/trending/itto.png";
@@ -23,24 +23,7 @@ const data = [
         number_react: 9,
         number_comment: 8,
         avatar: sara,
-        place: liyue,
-        comments: [
-            {
-                name: "Kaedehara Kazuha",
-                avatar: kazuha,
-                text: "Nice Place"
-            },
-            {
-                name: "Sara Kujou",
-                avatar: sara,
-                text: "Thanks"
-            },
-            {
-                name: "Arataki Itto",
-                avatar: itto,
-                text: "Have a nice trip"
-            }
-        ]
+        place: liyue
     },
     {
         name: "Kazuha",
@@ -49,24 +32,7 @@ const data = [
         number_react: 200,
         number_comment: 171,
         avatar: kazuha,
-        place: apple,
-        comments: [
-            {
-                name: "Sara Kujou",
-                avatar: sara,
-                text: "What do you mine?"
-            },
-            {
-                name: "Kaedehara Kazuha",
-                avatar: kazuha,
-                text: "Mora and primogems"
-            },
-            {
-                name: "Kaedehara Kazuha",
-                avatar: kazuha,
-                text: "Do you when some?"
-            }
-        ]
+        place: apple
     },
     {
         name: "Arataki Itto",
@@ -75,54 +41,20 @@ const data = [
         number_react: "1k6",
         number_comment: 501,
         avatar: itto,
-        place: inazuma,
-        comments: [
-            {
-                name: "Sara Kujou",
-                avatar: sara,
-                text: "Cool"
-            },
-            {
-                name: "Arataki Itto",
-                avatar: itto,
-                text: "Thanks babe"
-            },
-            {
-                name: "Sara Kujou",
-                avatar: sara,
-                text: "I love you"
-            }
-        ]
+        place: inazuma
     },
 ];
 
 
 
 const Trending = () => {
-    const scrollViewRef = useRef(null);
-    const onPressHandleTrendingItems = () => {
-        scrollViewRef.scrollTo({
-            x: screen.width * 2,
-            y: 0,
-            animated: true
-        })
-    }
     return (
         <View style={styles.container}> 
-            <ScrollView horizontal={true} pagingEnabled = {true} ref={scrollViewRef} directionalLockEnabled={true} scrollEnabled={false}>
-                <View style={styles.content}>
-                    {data.map((person, key) => {
-                        return (
-                            <TrendingItems key={key} data={person} parentCallBack={onPressHandleTrendingItems} />
-                        )
-                    })}
-                </View>
-                <View style={styles.content}>
-                    <Text>Comment 1</Text>
-                    <Text>Comment 2</Text>
-                    <Text>Comment 3</Text>
-                </View>
-            </ScrollView>
+            {data.map((person, index) => {
+                return (
+                    <TrendingItems data={person} key={index}/>
+                )
+            })}
         </View> 
     )
 }
@@ -134,9 +66,6 @@ const styles = StyleSheet.create({
         marginLeft: 0.05 * screen.width,
         marginRight: 0.05 * screen.width,
         marginBottom: 0.02 * screen.height,
-    }, 
-    content: {
-        width: screen.width * 0.9
     }
 });
 

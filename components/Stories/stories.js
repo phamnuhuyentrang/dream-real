@@ -29,154 +29,126 @@ const data = [
     {
         id: keyGenerator(),
         name: "Sara Kujou",
-        emotion: "is traveling to Liyue",
-        place_detail: "Mountain, Liyue",
-        number_react: 9,
-        number_comment: 8,
         avatar: sara,
-        place: liyue
+        post : [
+            {
+                emotion: "is traveling to Liyue",
+                place_detail: "Mountain, Liyue",
+                number_react: 9,
+                number_comment: 8,
+                place: liyue
+            },
+            {
+                emotion: "is traveling to Inazuma",
+                place_detail: "Island, Inazuma",
+                number_react: 19,
+                number_comment: 80,
+                place: inazuma
+            },
+            {
+                emotion: "is traveling to Liyue",
+                place_detail: "Mountain, Liyue",
+                number_react: 9,
+                number_comment: 8,
+                place: liyue
+            },
+        ]
     },
     {
         id: keyGenerator(),
         name: "Kaedehara Kazuha",
-        emotion: "is mining at Golden Apple Island",
-        place_detail: "Island, Monstadt",
-        number_react: 200,
-        number_comment: 171,
         avatar: kazuha,
-        place: apple
+        post: [
+            {
+                emotion: "is mining at Golden Apple Island",
+                place_detail: "Island, Monstadt",
+                number_react: 200,
+                number_comment: 171,
+                place: apple
+            }
+        ]
     },
     {
         id: keyGenerator(),
         name: "Arataki Itto",
-        emotion: "is combatting at Inazuma",
-        place_detail: "Tower, Inazuma",
-        number_react: "1k6",
-        number_comment: 501,
         avatar: itto,
-        place: inazuma
-    },
-    {
-        id: keyGenerator(),
-        name: "Ayato",
-        emotion: "is combatting at Inazuma",
-        place_detail: "Tower, Inazuma",
-        number_react: "1k6",
-        number_comment: 501,
-        avatar: itto,
-        place: inazuma
+        post: [
+            {
+                emotion: "is combatting at Inazuma",
+                place_detail: "Tower, Inazuma",
+                number_react: "1k6",
+                number_comment: 501,
+                place: inazuma
+            }
+        ]
     },
     {
         id: keyGenerator(),
         name: "Ayaka",
-        emotion: "is combatting at Inazuma",
-        place_detail: "Tower, Inazuma",
-        number_react: "1k6",
-        number_comment: 501,
         avatar: itto,
-        place: inazuma
-    },
-    {
-        id: keyGenerator(),
-        name: "Baal",
-        emotion: "is combatting at Inazuma",
-        place_detail: "Tower, Inazuma",
-        number_react: "1k6",
-        number_comment: 501,
-        avatar: itto,
-        place: inazuma
+        post: [
+            {
+                emotion: "is combatting at Inazuma",
+                place_detail: "Tower, Inazuma",
+                number_react: "1k6",
+                number_comment: 501,
+                place: inazuma
+            }
+        ]
     },
     {
         id: keyGenerator(),
         name: "Venti",
-        emotion: "is combatting at Inazuma",
-        place_detail: "Tower, Inazuma",
-        number_react: "1k6",
-        number_comment: 501,
         avatar: itto,
-        place: inazuma
+        post: [
+            {
+                emotion: "is combatting at Inazuma",
+                place_detail: "Tower, Inazuma",
+                number_react: "1k6",
+                number_comment: 501,
+                place: inazuma
+            }
+        ]
     },
-    // {
-    //     id: keyGenerator(),
-    //     name: "Venti",
-    //     emotion: "is combatting at Inazuma",
-    //     place_detail: "Tower, Inazuma",
-    //     number_react: "1k6",
-    //     number_comment: 501,
-    //     avatar: NaN,
-    //     place: inazuma
-    // },
-    // {
-    //     id: keyGenerator(),
-    //     name: "Venti",
-    //     emotion: "is combatting at Inazuma",
-    //     place_detail: "Tower, Inazuma",
-    //     number_react: "1k6",
-    //     number_comment: 501,
-    //     avatar: NaN,
-    //     place: inazuma
-    // },
-    // {
-    //     id: keyGenerator(),
-    //     name: "Venti",
-    //     emotion: "is combatting at Inazuma",
-    //     place_detail: "Tower, Inazuma",
-    //     number_react: "1k6",
-    //     number_comment: 501,
-    //     avatar: NaN,
-    //     place: inazuma
-    // },
-    // {
-    //     id: keyGenerator(),
-    //     name: "Venti",
-    //     emotion: "is combatting at Inazuma",
-    //     place_detail: "Tower, Inazuma",
-    //     number_react: "1k6",
-    //     number_comment: 501,
-    //     avatar: NaN,
-    //     place: inazuma
-    // },
-    // {
-    //     id: keyGenerator(),
-    //     name: "Venti",
-    //     emotion: "is combatting at Inazuma",
-    //     place_detail: "Tower, Inazuma",
-    //     number_react: "1k6",
-    //     number_comment: 501,
-    //     avatar: NaN,
-    //     place: inazuma
-    // },
-    // {
-    //     id: keyGenerator(),
-    //     name: "Venti",
-    //     emotion: "is combatting at Inazuma",
-    //     place_detail: "Tower, Inazuma",
-    //     number_react: "1k6",
-    //     number_comment: 501,
-    //     avatar: NaN,
-    //     place: inazuma
-    // },
-    // {
-    //     id: keyGenerator(),
-    //     name: "Venti",
-    //     emotion: "is combatting at Inazuma",
-    //     place_detail: "Tower, Inazuma",
-    //     number_react: "1k6",
-    //     number_comment: 501,
-    //     avatar: NaN,
-    //     place: inazuma
-    // }
+    {
+        id: keyGenerator(),
+        name: "Jean",
+        avatar: itto,
+        post: [
+            {
+                emotion: "is combatting at Inazuma",
+                place_detail: "Tower, Inazuma",
+                number_react: "1k6",
+                number_comment: 501,
+                place: inazuma
+            }
+        ]
+    },
+    {
+        id: keyGenerator(),
+        name: "Yoimiya",
+        avatar: itto,
+        post: [
+            {
+                emotion: "is combatting at Inazuma",
+                place_detail: "Tower, Inazuma",
+                number_react: "1k6",
+                number_comment: 501,
+                place: inazuma
+            }
+        ]
+    }
 ];
 
 const Stories = () => {
     const navigation = useNavigation();
     const ref = React.useState();
     const showPost = (item) => {
-        console.log(item)
-        // navigation.navigate('StoryContent', {post: item})
+        // console.log(" Clicked item: " + item.name)
+        navigation.navigate('StoryContent', {post: item.post, name: item.name, avatar: item.avatar})
     }
     const keyExtractor = (item, index) => index;
-    const renderItem = ({ item }) => <TouchableOpacity onPress={showPost(item)}><Image style={styles.avatar} source={item.avatar} /></TouchableOpacity>
+    const renderItem = ({ item }) => <TouchableOpacity onPress={() => showPost(item)}><Image style={styles.avatar} source={item.avatar} /></TouchableOpacity>
     const displayData = data;
     if (displayData.length < 16) {
         for (var i = 0; i < 16 - displayData.length; i++) {
