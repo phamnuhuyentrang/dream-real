@@ -1,28 +1,20 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, Image, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const screen = Dimensions.get("screen");
 const figma_screen_w = 428;
 const figma_screen_h = 926;
 
-const CommentLayout = (props) => {
-    const comment = props.comment;
+const MessageItem = (props) => {
+    const message = props.message;
     return (
-        <View style={styles.content}>
+        <TouchableOpacity style={styles.content}>
+            <Image source={message.avatar} style={styles.avatar}></Image>
             <View style={styles.content2}>
-                <View style={styles.content4}>
-                    <Image source={comment.avatar} style={styles.avatar}></Image>
-                    <Text style={styles.item4}>{comment.name}</Text>
-                </View>
-                <View style={{backgroundColor:"#B456F1", borderRadius: 0.05 * screen.width,  marginBottom: 0.01 * screen.height, height: hp(5), marginRight: 0.025 * screen.width}}>
-                    <Text style={styles.item3}>{comment.content}</Text>
-                </View>
-                <View>
-                    <Text style={styles.comment_time}>{comment.time}</Text>
-                </View>
+                <Text>{message.name}</Text>
             </View>
-        </View>
+        </TouchableOpacity>
     )
 }
 
@@ -30,19 +22,19 @@ const CommentLayout = (props) => {
 const styles = StyleSheet.create({
     content: {
         backgroundColor: "#3D3D4E",
-        height: 0.15 * screen.height,
-        borderRadius: 0.05 * screen.width,
-        marginBottom: 0.03 * screen.height
+        height: 0.08 * screen.height,
+        marginBottom: 0.03 * screen.height,
+        flexDirection: "row"
     },
     avatar: {
-        width: 30 * screen.width / figma_screen_w,
-        height: 30 * screen.width / figma_screen_w,
+        width: 50 * screen.width / figma_screen_w,
+        height: 50 * screen.width / figma_screen_w,
         borderRadius: 50,
         alignSelf: "flex-start"
     },
     content2: {
         marginLeft: 0.02 * screen.width,
-        marginTop: 0.01 * screen.height,
+        marginTop: 0.005 * screen.height,
         flexDirection: 'column',
         alignItems: "stretch",
         justifyContent: 'space-between',
@@ -76,4 +68,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default CommentLayout;
+export default MessageItem;

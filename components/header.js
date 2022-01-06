@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Image, StyleSheet, Dimensions, Button, TouchableOpacity, TextInput } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, Image, StyleSheet, Dimensions, Button, TouchableOpacity, TextInput, Text } from 'react-native';
 import avatar from '../static/img/raiden_shogun.png';
 import logo from '../static/img/dream-real-logo-nav.png'
 import { Svg, Ellipse } from 'react-native-svg'
@@ -7,6 +7,7 @@ import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
 import Stories from './Stories/stories'
 import GestureRecognizer from 'react-native-swipe-gestures';
 import { useNavigation } from '@react-navigation/native';
+import LoginPage from './login_page';
 
 const screen = Dimensions.get("screen");
 const window = Dimensions.get("window")
@@ -18,6 +19,10 @@ const Header = () => {
     const navigation = useNavigation()
     const [showLogo, toogleShowLogo] = React.useState(true);
     const [value, onChangeText] = React.useState('');
+
+    const [login, setLogin] = React.useState(false);
+    const [loginned, setLoginned] = React.useState(false);
+
     const startSearch = () => toogleShowLogo(displayLogo => !displayLogo);
     const onSwipeDown = (gestureState) => {
         navigation.navigate("Maps");
@@ -26,18 +31,23 @@ const Header = () => {
         velocityThreshold: 0,
         directionalOffsetThreshold: 90
     };
+
+    console.log(login)
+
     return (
         <View style={styles.container}>
             <View style={styles.content}>
-                    <Image source={avatar} style={styles.avatar}></Image> 
-                    {showLogo? <Image source={logo} style={styles.logo} />: <TextInput style={styles.search_textbox} onChangeText={text => onChangeText(text)}
-        value={value} maxLength={40} placeholder='Search' blurOnSubmit onSubmitEditing={(event) => alert(event.nativeEvent.text)}/> } 
-                    <TouchableOpacity style={styles.button} onPress={startSearch}>
-                        <FontAwesome5Icon color='white' name="search" size={20}/>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.button}>
-                        <FontAwesome5Icon color='white' name="bell" solid size={20}/>
-                    </TouchableOpacity>
+                {loginned ? <TouchableOpacity><Image source={avatar} style={styles.avatar}></Image></TouchableOpacity> :
+                <TouchableOpacity  onPress={() => setLogin(!login)}><View style={styles.avatar} ><FontAwesome5Icon name="sign-in-alt" size={40 * screen.width / figma_screen_w}></FontAwesome5Icon></View></TouchableOpacity>}
+                
+                {showLogo? <Image source={logo} style={styles.logo} />: <TextInput style={styles.search_textbox} onChangeText={text => onChangeText(text)}
+    value={value} maxLength={40} placeholder='Search' blurOnSubmit onSubmitEditing={(event) => alert(event.nativeEvent.text)}/> } 
+                <TouchableOpacity style={styles.button} onPress={startSearch}>
+                    <FontAwesome5Icon color='white' name="search" size={20}/>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button}>
+                    <FontAwesome5Icon color='white' name="bell" solid size={20}/>
+                </TouchableOpacity>
             </View>
             <Stories />
             <Svg height={APPBAR_HEIGHT} width={screen.width} overflow="hidden" style={styles.svg2}>
@@ -123,6 +133,7 @@ const Header = () => {
                 top: 0.85 * APPBAR_HEIGHT}}/>
             <FontAwesome5Icon color='white' name="star" solid size={10} style={{position: "absolute", left: 0.8 * screen.width,
                 top: 0.9 * APPBAR_HEIGHT}}/>
+            <LoginPage login={login} setLogin={setLogin} loginned={loginned} setLoginned={setLoginned}></LoginPage>
         </View>
     )
 }
@@ -134,7 +145,6 @@ const styles = StyleSheet.create({
         backgroundColor: "#252a38",
         overflow: "hidden"
     },
-    
     content: {
         flexDirection: 'row',
         justifyContent: 'space-between',

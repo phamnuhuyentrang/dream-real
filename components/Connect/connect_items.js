@@ -16,6 +16,11 @@ const figma_screen_h = 926;
 const ConnectItems = (props) => {
     const data = props.data;
     const [follow, setFollow] = React.useState(data.is_followed);
+
+    const listReplace = data.name.substring(0, 13).split(" ")
+    const lastItem = listReplace[listReplace.length - 1]
+    const nameReplace = data.name.substring(0, 13 - lastItem.length) + lastItem.substring(0, 1)
+
     const handlePressFacebook = useCallback(async () => {
         // Checking if the link is supported for links with custom URL scheme.
         // const url = "fb://profile/" + data.facebook;
@@ -62,7 +67,7 @@ const ConnectItems = (props) => {
                 <View style={{flexDirection: "row", alignContent: "center", alignItems: "center"}}>
                     <View style={styles.content4}>
                         <Image source={data.avatar} style={styles.avatar}></Image>
-                        <Text style={styles.item4}>{data.name}</Text>
+                        <Text style={styles.item4}>{data.name.length <= 15 ? data.name : nameReplace}</Text>
                         <FontAwesome5Icon color='red' name="map-marker-alt" regular size={10} style={styles.item3}>
                             <Text style={[styles.item3, {color:'#FFF'}]}> {data.place_detail}</Text>
                         </FontAwesome5Icon>
