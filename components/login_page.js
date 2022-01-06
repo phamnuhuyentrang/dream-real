@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { Alert, Modal, StyleSheet, Text, Pressable, View, TextInput, Dimensions, TouchableOpacity } from "react-native";
+import { Svg, Line } from 'react-native-svg'
+import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 
 const screen = Dimensions.get("screen");
 
 const LoginPage = (props) => {
 
     const [username, setUsername] = React.useState("");
-    const [password, setPassword] = React.useState("")
+    const [password, setPassword] = React.useState("");
 
     const login = () => {
         props.setLogin(!props.login);
@@ -24,7 +26,11 @@ const LoginPage = (props) => {
                     console.log("Login Page: "+ login)
                 }}
             >
-                <View style={styles.centeredView}>
+                <TouchableOpacity 
+                    style={styles.centeredView} 
+                    activeOpacity={1} 
+                    onPressOut={() => {props.setLogin(false); props.setLoginned(false)}}
+                >
                     <View style={styles.modalView}>
                         <View style={styles.inputView}>
                             <TextInput
@@ -48,19 +54,56 @@ const LoginPage = (props) => {
                         <TouchableOpacity>
                             <Text style={styles.forgot_button}>Forgot Password?</Text>
                         </TouchableOpacity>
-                        <Pressable
-                            style={styles.loginBtn}
-                            onPress={login}
-                        >
-                            <Text style={styles.LoginText}>LOGIN</Text>
-                        </Pressable>
-                        <Pressable
-                            style={styles.loginBtn}
-                        >
-                            <Text style={styles.LoginText}>SIGN UP</Text>
-                        </Pressable>
+                        <View style={{flexDirection: "row", flexWrap: "wrap"}}>
+                            <Pressable
+                                style={[styles.loginBtn, {marginRight: 0.065 * screen.width}]}
+                                onPress={login}
+                            >
+                                <Text style={styles.LoginText}>LOGIN</Text>
+                            </Pressable>
+                            <Pressable
+                                style={styles.loginBtn}
+                            >
+                                <Text style={styles.LoginText}>SIGN UP</Text>
+                            </Pressable>
+                        </View>
+                        <Svg style={{overflow: "hidden"}}>
+                            <Line 
+                            x1={(0.05 * screen.width)}
+                            y1={(0.025 * screen.height)}
+                            x2={(0.25 * screen.width)}
+                            y2={(0.025 * screen.height)}
+                            stroke="#c4c4c4" 
+                            strokeWidth="2" />
+                            <Line 
+                            x1={(0.55 * screen.width)}
+                            y1={(0.025 * screen.height)}
+                            x2={(0.75 * screen.width)}
+                            y2={(0.025 * screen.height)}
+                            stroke="#c4c4c4" 
+                            strokeWidth="2" />
+                            <View>
+                                <Text style={{color: "white", textAlign: "center", marginTop: 0.005 * screen.height}}> or you can </Text>
+                            </View>
+                            <View style={{flexDirection: "column", width: "110%", marginLeft: 0.05 * screen.width}}>
+                                <Pressable
+                                    style={styles.loginOther}
+                                >
+                                    <FontAwesome5Icon color='white' name="facebook-f" style={styles.LoginText}>
+                                        <Text>  CONNECT WITH FACEBOOK</Text>
+                                    </FontAwesome5Icon>
+                                </Pressable>
+                                <Pressable
+                                    style={styles.loginOther}
+                                >
+                                    <FontAwesome5Icon color='white' name="instagram" style={styles.LoginText}>
+                                        <Text>  CONNECT WITH INSTAGRAM</Text>
+                                    </FontAwesome5Icon>
+                                </Pressable>
+                            </View>
+                        </Svg>
                     </View>
-                </View>
+                </TouchableOpacity>
             </Modal>
         </View>
     )
@@ -73,7 +116,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     modalView: {
-        marginTop: 0.02 * screen.height,
+        marginTop: 0.28 * screen.height,
         marginBottom: 0.02 * screen.height,
         marginRight: 0.05 * screen.width,
         marginLeft: 0.05 * screen.width,
@@ -92,10 +135,10 @@ const styles = StyleSheet.create({
         shadowRadius: 4,
         elevation: 5,
         width: "90%",
-        height: 0.45 * screen.height
+        height: 0.7 * screen.height
     },
     inputView: {
-        backgroundColor: "#B456F1",
+        backgroundColor: "#c4c4c4",
         borderRadius: 0.05 * screen.width,
         width: "90%",
         height: 0.06 *  screen.height,
@@ -104,7 +147,6 @@ const styles = StyleSheet.create({
     },
     
     TextInput: {
-        // height: 50,
         flex: 1,
         paddingLeft: 0.005 * screen.width,
         marginLeft: 0.05 * screen.width,
@@ -112,17 +154,31 @@ const styles = StyleSheet.create({
     forgot_button: {
         height: 0.05 * screen.width,
         marginBottom: 0.0 * screen.height,
+        color: "white"
     },
     
     loginBtn: {
+        width: "40%",
+        borderRadius: 25,
+        height: 50,
+        alignItems: "center",
+        justifyContent: "center",
+        marginTop: 0.05 * screen.width,
+        backgroundColor: "#B456F1",
+    },
+    LoginText: {
+        color: "white"
+    },
+
+    loginOther: {
         width: "80%",
         borderRadius: 25,
         height: 50,
         alignItems: "center",
         justifyContent: "center",
         marginTop: 0.05 * screen.width,
-        backgroundColor: "#AAA",
-    },
+        backgroundColor: "#B456F1",
+    }
 });
 
 export default LoginPage;

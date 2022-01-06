@@ -32,13 +32,11 @@ const Header = () => {
         directionalOffsetThreshold: 90
     };
 
-    console.log(login)
-
     return (
         <View style={styles.container}>
             <View style={styles.content}>
                 {loginned ? <TouchableOpacity><Image source={avatar} style={styles.avatar}></Image></TouchableOpacity> :
-                <TouchableOpacity  onPress={() => setLogin(!login)}><View style={styles.avatar} ><FontAwesome5Icon name="sign-in-alt" size={40 * screen.width / figma_screen_w}></FontAwesome5Icon></View></TouchableOpacity>}
+                <TouchableOpacity  onPress={() => setLogin(!login)}><View style={styles.avatar} ><FontAwesome5Icon name="user-circle" size={20} solid color='white'></FontAwesome5Icon></View></TouchableOpacity>}
                 
                 {showLogo? <Image source={logo} style={styles.logo} />: <TextInput style={styles.search_textbox} onChangeText={text => onChangeText(text)}
     value={value} maxLength={40} placeholder='Search' blurOnSubmit onSubmitEditing={(event) => alert(event.nativeEvent.text)}/> } 

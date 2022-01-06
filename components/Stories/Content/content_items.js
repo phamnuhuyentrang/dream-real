@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: 0.05 * window.width,
         borderTopRightRadius: 0.05 * window.width,
         width: ITEM_WIDTH,
-        height: 300,
+        height: 0.275 * (screen.height - STATUSBAR_HEIGHT),
     },
     item7: {
         width: 20 * screen.width / figma_screen_w,
