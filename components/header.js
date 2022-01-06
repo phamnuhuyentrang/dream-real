@@ -5,6 +5,8 @@ import logo from '../static/img/dream-real-logo-nav.png'
 import { Svg, Ellipse } from 'react-native-svg'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
 import Stories from './Stories/stories'
+import GestureRecognizer from 'react-native-swipe-gestures';
+import { useNavigation } from '@react-navigation/native';
 
 const screen = Dimensions.get("screen");
 const window = Dimensions.get("window")
@@ -13,9 +15,17 @@ const figma_screen_h = 926;
 
 const APPBAR_HEIGHT = 200 * screen.height / figma_screen_h;
 const Header = () => {
+    const navigation = useNavigation()
     const [showLogo, toogleShowLogo] = React.useState(true);
     const [value, onChangeText] = React.useState('');
     const startSearch = () => toogleShowLogo(displayLogo => !displayLogo);
+    const onSwipeDown = (gestureState) => {
+        navigation.navigate("Maps");
+    }
+    const config = {
+        velocityThreshold: 0,
+        directionalOffsetThreshold: 90
+    };
     return (
         <View style={styles.container}>
             <View style={styles.content}>
@@ -30,17 +40,6 @@ const Header = () => {
                     </TouchableOpacity>
             </View>
             <Stories />
-            <Svg height={APPBAR_HEIGHT * 0.6} width={screen.width} overflow="hidden" style={styles.svg1}>
-                <Ellipse
-                    cx={screen.width/2}
-                    cy={0}
-                    rx={`${0.6 * screen.width}`}
-                    ry={`${0.5 * APPBAR_HEIGHT}`}
-                    fill="#3D3D4E"
-                    stroke="#3D3D4E"
-                    strokeWidth="2"
-                />
-            </Svg>
             <Svg height={APPBAR_HEIGHT} width={screen.width} overflow="hidden" style={styles.svg2}>
                 <Ellipse
                     cx={screen.width / 2}
@@ -85,6 +84,23 @@ const Header = () => {
                     strokeWidth="2"
                 />
             </Svg>
+            <GestureRecognizer 
+                onSwipeDown={(state) => onSwipeDown(state)}
+                config={config}
+                style={styles.svg1}>
+                <Svg height={APPBAR_HEIGHT * 0.6} width={screen.width} overflow="hidden" >
+                    <Ellipse
+                        cx={screen.width/2}
+                        cy={0}
+                        rx={`${0.6 * screen.width}`}
+                        ry={`${0.5 * APPBAR_HEIGHT}`}
+                        fill="#3D3D4E"
+                        stroke="#3D3D4E"
+                        strokeWidth="2"
+                    />
+                </Svg>
+            </GestureRecognizer>
+            <FontAwesome5Icon color='white' name="arrow-circle-down" solid size={18} style={{position: "absolute", left: 0.5 * screen.width, top: 0.45 * APPBAR_HEIGHT}} />
             <FontAwesome5Icon color='white' name="star" solid size={10} style={{position: "absolute", left: 0.1 * screen.width,
                 top: 0.5 * APPBAR_HEIGHT}}/>
             <FontAwesome5Icon color='white' name="star" solid size={10} style={{position: "absolute", left: 0.3 * screen.width,

@@ -1,12 +1,21 @@
 import React from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
-import sara from "../../static/img/trending/sara.png";
-import kazuha from "../../static/img/trending/kazuha.png";
-import itto from "../../static/img/trending/itto.png";
 
-import liyue from "../../static/img/trending/liyue.png";
-import apple from "../../static/img/trending/golden_apple_island.png";
-import inazuma from "../../static/img/trending/inazuma.png";
+import selfie1 from "../../static/img/avatar/selfie1.jpg"
+import selfie2 from "../../static/img/avatar/selfie2.jpg"
+import selfie3 from "../../static/img/avatar/selfie3.jpg"
+import selfie4 from "../../static/img/avatar/selfie4.jpg"
+import selfie5 from "../../static/img/avatar/selfie5.jpg"
+import selfie6 from "../../static/img/avatar/selfie6.jpg"
+import selfie7 from "../../static/img/avatar/selfie7.jpg"
+
+import drink_beer from "../../static/img/trending/drink_beer.jpg"
+import eating_pizza from "../../static/img/trending/eating_pizza.jpg"
+import looking_for_job from "../../static/img/trending/looking_for_job.jpg"
+import skating from "../../static/img/trending/skating.jpg"
+import travel_to_vietnam from "../../static/img/trending/travel_to_vietnam.jpg"
+import travel from "../../static/img/trending/travel.jpg"
+
 
 import TrendingItems from './trending_items';
 const screen = Dimensions.get("screen");
@@ -17,99 +26,166 @@ const figma_screen_h = 926;
 
 const data = [
     {
-        name: "Sara Kujou",
-        emotion: "is traveling to Liyue",
-        place_detail: "Mountain, Liyue",
+        name: "Anna Scott",
+        emotion: "is drinking beer " +  '\u{1f37b}',
+        place_detail: "Lisbon, Portugal",
         number_react: 9,
-        number_comment: 8,
-        avatar: sara,
-        place: liyue,
+        number_comment: 6,
+        avatar: selfie1,
+        place: drink_beer,
         comment: [
             {
-                avatar: kazuha,
-                name: "Kazuha",
+                avatar: selfie7,
+                name: "Tina Zhou",
                 time: "1 week ago",
-                content: "Nice place !"
+                content: "Have fun !"
             },
             {
-                avatar: itto,
-                name: "Arataki Itto",
+                avatar: selfie2,
+                name: "Liwen Chan",
                 time: "2 days ago",
-                content: "Beautiful !"
+                content: "Wish to join youuu !"
             },{
-                avatar: kazuha,
-                name: "Kazuha",
+                avatar: selfie6,
+                name: "Michele Hyatt",
                 time: "1 week ago",
-                content: "Nice place !"
+                content: "1 2 3 Cheers !"
             },
             {
-                avatar: itto,
-                name: "Arataki Itto",
+                avatar: selfie3,
+                name: "Alexandre Analy",
                 time: "2 days ago",
-                content: "Beautiful !"
+                content: "Cool !"
             },{
-                avatar: kazuha,
-                name: "Kazuha",
-                time: "1 week ago",
-                content: "Nice place !"
+                avatar: selfie4,
+                name: "Alex Kurt",
+                time: "1 hour ago",
+                content: "Niceeeeee weekend !"
             },
             {
-                avatar: itto,
-                name: "Arataki Itto",
+                avatar: selfie5,
+                name: "Kelly Cat",
                 time: "2 days ago",
                 content: "Beautiful !"
             }
         ]
     },
     {
-        name: "Kazuha",
-        emotion: "is mining at Golden Apple Island",
-        place_detail: "Island, Monstadt",
+        name: "Liwen Chan",
+        emotion: "is eating pizza " + '\u{1f355}',
+        place_detail: "Kualar Lumpur, Malaysia",
         number_react: 200,
-        number_comment: 171,
-        avatar: kazuha,
-        place: apple,
+        number_comment: 2,
+        avatar: selfie2,
+        place: eating_pizza,
         comment: [
             {
-                avatar: kazuha,
-                name: "Sara Kujou",
+                avatar: selfie1,
+                name: "Anna Scott",
                 time: "3 weeks ago",
-                content: "Nice !"
+                content: "Delicious !"
             },
             {
-                avatar: itto,
-                name: "Arataki Itto",
+                avatar: selfie5,
+                name: "Kelly Cat",
                 time: "3 days ago",
-                content: "So cool !"
+                content: "I love it !"
             }
         ]
     },
     {
-        name: "Arataki Itto",
-        emotion: "is combatting at Inazuma",
-        place_detail: "Tower, Inazuma",
+        name: "Kelly Cat",
+        emotion: "is skating " + '\u{1f6f9}',
+        place_detail: "Nantes, France",
         number_react: "1k6",
-        number_comment: 501,
-        avatar: itto,
-        place: inazuma,
+        number_comment: 2,
+        avatar: selfie5,
+        place: skating,
         comment: [
             {
-                avatar: kazuha,
-                name: "Kazuha",
+                avatar: selfie2,
+                name: "Liwen Chan",
                 time: "1 hour ago",
-                content: "Fighting !"
+                content: "Cooooooool !"
             },
             {
-                avatar: itto,
-                name: "Arataki Itto",
+                avatar: selfie4,
+                name: "Alex Kurt",
                 time: "1 hour ago",
-                content: "Thanks !"
+                content: "Nice air !"
             }
         ]
     },
+    {
+        name: "Tina Zhou",
+        emotion: "is traveling to Vietnam " + '\u{1f1fb}',
+        place_detail: "Hanoi, Vietnam",
+        number_react: "1k",
+        number_comment: 2,
+        avatar: selfie5,
+        place: travel_to_vietnam,
+        comment: [
+            {
+                avatar: selfie2,
+                name: "Liwen Chan",
+                time: "1 hour ago",
+                content: "So beautiful this country !"
+            },
+            {
+                avatar: selfie4,
+                name: "Alex Kurt",
+                time: "1 hour ago",
+                content: "I really want to travel there !"
+            }
+        ]
+    },
+    {
+        name: "Alex Kurt",
+        emotion: "is looking for job " + '\u{1f468}',
+        place_detail: "New York, USA",
+        number_react: "10",
+        number_comment: 2,
+        avatar: selfie4,
+        place: looking_for_job,
+        comment: [
+            {
+                avatar: selfie3,
+                name: "Alexandre Analy",
+                time: "1 hour ago",
+                content: "You an send me your CV and cover letter to my email at aanaly@dream-real-group.co"
+            },
+            {
+                avatar: selfie6,
+                name: "Michele Hyatt",
+                time: "1 hour ago",
+                content: "You can reach me at PM for more details !"
+            }
+        ]
+    },
+    {
+        name: "Michele Hyatt",
+        emotion: "is traveling " + '\u{1f3d4}',
+        place_detail: "Titlis, Switzerland",
+        number_react: "100",
+        number_comment: 2,
+        avatar: selfie6,
+        place: travel,
+        comment: [
+            {
+                avatar: selfie3,
+                name: "Alexandre Analy",
+                time: "1 hour ago",
+                content: "Wow ! Too nice"
+            },
+            {
+                avatar: selfie7,
+                name: "Tina Zhou",
+                time: "1 hour ago",
+                content: "I really love this place !"
+            }
+        ]
+    }
 ];
-
-
 
 const Trending = () => {
     return (

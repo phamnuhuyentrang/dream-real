@@ -112,7 +112,8 @@ const styles = StyleSheet.create({
         fontWeight: "400",
         fontSize: 10,
         color: "#FFF",
-        textAlign: "center"
+        textAlign: "left",
+        marginLeft: 0.005 * screen.width
     },
     item4: {
         marginLeft: 0.03 * screen.width, 

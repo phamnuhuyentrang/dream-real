@@ -1,14 +1,23 @@
 import React, {PureComponent} from 'react';
 import { View, Image, StyleSheet, Dimensions, Animated, Pressable, TouchableOpacity } from 'react-native';
 import CircleList from "./circle_list";
-import sara from "../../static/img/trending/sara.png";
-import kazuha from "../../static/img/trending/kazuha.png";
-import itto from "../../static/img/trending/itto.png";
-import raiden from "../../static/img/raiden_shogun.png"
+import selfie1 from "../../static/img/avatar/selfie1.jpg"
+import selfie15 from "../../static/img/avatar/selfie15.jpg"
+import selfie14 from "../../static/img/avatar/selfie14.jpg"
+import selfie13 from "../../static/img/avatar/selfie13.jpg"
+import selfie12 from "../../static/img/avatar/selfie12.jpg"
+import selfie11 from "../../static/img/avatar/selfie11.jpg"
+import selfie10 from "../../static/img/avatar/selfie10.jpg"
 
-import liyue from "../../static/img/trending/liyue.png";
-import apple from "../../static/img/trending/golden_apple_island.png";
-import inazuma from "../../static/img/trending/inazuma.png";
+import drink_beer from "../../static/img/trending/drink_beer.jpg"
+import eating_pizza from "../../static/img/trending/eating_pizza.jpg"
+import looking_for_job from "../../static/img/trending/looking_for_job.jpg"
+import skating from "../../static/img/trending/skating.jpg"
+import travel_to_vietnam from "../../static/img/trending/travel_to_vietnam.jpg"
+import travel from "../../static/img/trending/travel.jpg"
+import listen_music from "../../static/img/trending/listen_music.jpeg"
+import play_video_game from "../../static/img/trending/play_video_game.jpeg"
+import karate from "../../static/img/trending/karate.jpeg"
 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useNavigation } from '@react-navigation/native';
@@ -28,113 +37,113 @@ const keyGenerator = () => '_' + Math.random().toString(36).substr(2, 9)
 const data = [
     {
         id: keyGenerator(),
-        name: "Sara Kujou",
-        avatar: sara,
+        name: "Anna Scott",
+        avatar: selfie1,
         post : [
             {
-                emotion: "is traveling to Liyue",
-                place_detail: "Mountain, Liyue",
+                emotion: "is traveling " + '\u{1f3d4}',
+                place_detail: "Titlis, Switzerland",
                 number_react: 9,
                 number_comment: 8,
-                place: liyue
+                place: travel
             },
             {
-                emotion: "is traveling to Inazuma",
-                place_detail: "Island, Inazuma",
+                emotion: "is traveling to Vietnam " + '\u{1f1fb}',
+                place_detail: "Hoi An, Vietnam",
                 number_react: 19,
                 number_comment: 80,
-                place: inazuma
+                place: travel_to_vietnam
             },
             {
-                emotion: "is traveling to Liyue",
-                place_detail: "Mountain, Liyue",
+                emotion: "is skating " + '\u{1f6f9}',
+                place_detail: "Nantes, France",
                 number_react: 9,
                 number_comment: 8,
-                place: liyue
+                place: skating
             },
         ]
     },
     {
         id: keyGenerator(),
-        name: "Kaedehara Kazuha",
-        avatar: kazuha,
+        name: "Allison Bernard",
+        avatar: selfie10,
         post: [
             {
-                emotion: "is mining at Golden Apple Island",
-                place_detail: "Island, Monstadt",
+                emotion: "is listening to music "  + '\u{1f3a7}',
+                place_detail: "Berlin, Germany",
                 number_react: 200,
                 number_comment: 171,
-                place: apple
+                place: listen_music
             }
         ]
     },
     {
         id: keyGenerator(),
-        name: "Arataki Itto",
-        avatar: itto,
+        name: "Jenny Pham",
+        avatar: selfie11,
         post: [
             {
-                emotion: "is combatting at Inazuma",
-                place_detail: "Tower, Inazuma",
+                emotion: "is drinking beer " +  '\u{1f37b}',
+                place_detail: "Nha Trang, Vietnam",
                 number_react: "1k6",
                 number_comment: 501,
-                place: inazuma
+                place: drink_beer
             }
         ]
     },
     {
         id: keyGenerator(),
-        name: "Ayaka",
-        avatar: itto,
+        name: "Victoria Rodriguez",
+        avatar: selfie12,
         post: [
             {
-                emotion: "is combatting at Inazuma",
-                place_detail: "Tower, Inazuma",
-                number_react: "1k6",
-                number_comment: 501,
-                place: inazuma
+                emotion: "is combatting LoL " + '\u{1f3ae}',
+                place_detail: "Ottawa, Canada",
+                number_react: "1k",
+                number_comment: 500,
+                place: play_video_game
             }
         ]
     },
     {
         id: keyGenerator(),
-        name: "Venti",
-        avatar: itto,
+        name: "Bella Tiptons",
+        avatar: selfie13,
         post: [
             {
-                emotion: "is combatting at Inazuma",
-                place_detail: "Tower, Inazuma",
-                number_react: "1k6",
-                number_comment: 501,
-                place: inazuma
+                emotion: "is eating pizza " + '\u{1f355}',
+                place_detail: "California, USA",
+                number_react: 100,
+                number_comment: 50,
+                place: eating_pizza
             }
         ]
     },
     {
         id: keyGenerator(),
-        name: "Jean",
-        avatar: itto,
+        name: "Jean Hathaway",
+        avatar: selfie14,
         post: [
             {
-                emotion: "is combatting at Inazuma",
-                place_detail: "Tower, Inazuma",
-                number_react: "1k6",
-                number_comment: 501,
-                place: inazuma
+                emotion: "is looking for job " + '\u{1f468}',
+                place_detail: "Oslo, Norway",
+                number_react: "15",
+                number_comment: 5,
+                place: looking_for_job
             }
         ]
     },
     {
         id: keyGenerator(),
-        name: "Yoimiya",
-        avatar: itto,
+        name: "Cindy Hilton",
+        avatar: selfie15,
         post: [
             {
-                emotion: "is combatting at Inazuma",
-                place_detail: "Tower, Inazuma",
+                emotion: "is praticing Karaté " + '\u{1f94b}',
+                place_detail: "Kyoto, Japan",
                 number_react: "1k6",
                 number_comment: 501,
-                place: inazuma
+                place: karate
             }
         ]
     }
@@ -144,7 +153,6 @@ const Stories = () => {
     const navigation = useNavigation();
     const ref = React.useState();
     const showPost = (item) => {
-        // console.log(" Clicked item: " + item.name)
         navigation.navigate('StoryContent', {post: item.post, name: item.name, avatar: item.avatar})
     }
     const keyExtractor = (item, index) => index;
