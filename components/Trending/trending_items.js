@@ -21,7 +21,7 @@ const TrendingItems = (props) => {
     const data = props.data;
     const navigation = useNavigation()
     const showComments = () => {
-        navigation.navigate('Comment', {comment: data.comment})
+        navigation.navigate('Comment', {comment: data})
     }
     return (
         <View style={styles.content}>
