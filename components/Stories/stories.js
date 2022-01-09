@@ -158,8 +158,8 @@ const Stories = () => {
     const keyExtractor = (item, index) => index;
     const renderItem = ({ item }) => <TouchableOpacity onPress={() => showPost(item)}><Image style={styles.avatar} source={item.avatar} /></TouchableOpacity>
     const displayData = data;
-    if (displayData.length < 16) {
-        for (var i = 0; i < 16 - displayData.length; i++) {
+    if (displayData.length <= 16) {
+        for (var i = 0; i <= 16 - displayData.length; i++) {
             displayData.push(
                 displayData[i % displayData.length]
             )

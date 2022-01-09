@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { Alert, Modal, StyleSheet, Text, Pressable, View, TextInput, Dimensions, TouchableOpacity } from "react-native";
 import { Svg, Line } from 'react-native-svg'
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
-
+import { useNavigation } from '@react-navigation/native';
 const screen = Dimensions.get("screen");
 
 const LoginPage = (props) => {
-
+    const navigation = useNavigation();
     const [username, setUsername] = React.useState("");
     const [password, setPassword] = React.useState("");
 
@@ -63,6 +63,7 @@ const LoginPage = (props) => {
                             </Pressable>
                             <Pressable
                                 style={styles.loginBtn}
+                                onPress={() => {navigation.navigate("SignUp")}}
                             >
                                 <Text style={styles.LoginText}>SIGN UP</Text>
                             </Pressable>

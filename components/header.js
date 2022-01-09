@@ -36,7 +36,7 @@ const Header = () => {
         <View style={styles.container}>
             <View style={styles.content}>
                 {loginned ? <TouchableOpacity><Image source={avatar} style={styles.avatar}></Image></TouchableOpacity> :
-                <TouchableOpacity  onPress={() => setLogin(!login)}><View style={styles.avatar} ><FontAwesome5Icon name="user-circle" size={20} solid color='white'></FontAwesome5Icon></View></TouchableOpacity>}
+                <TouchableOpacity  onPress={() => setLogin(!login)}><View style={styles.avatar} ><FontAwesome5Icon name="user-circle" size={30} solid color='white'></FontAwesome5Icon></View></TouchableOpacity>}
                 
                 {showLogo? <Image source={logo} style={styles.logo} />: <TextInput style={styles.search_textbox} onChangeText={text => onChangeText(text)}
     value={value} maxLength={40} placeholder='Search' blurOnSubmit onSubmitEditing={(event) => alert(event.nativeEvent.text)}/> } 
@@ -151,11 +151,13 @@ const styles = StyleSheet.create({
         zIndex: 1
     },
     avatar: {
-        marginLeft: 10,
-        marginTop: 10,
+        marginLeft: 0.02 * screen.width,
+        marginTop: 0.037 * screen.height,
         width: 45 * screen.width / figma_screen_w,
         height: 45 * screen.width / figma_screen_w,
         borderRadius: 50,
+        alignItems: "center",
+        justifyContent: "center"
     },
 
     logo: {
