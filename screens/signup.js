@@ -1,9 +1,8 @@
-import React, { useState } from "react";
-import { Alert, Modal, StyleSheet, Text, Pressable, View, TextInput, Dimensions, TouchableOpacity, Image } from "react-native";
+import React from "react";
+import { StyleSheet, Text, Pressable, View, TextInput, Dimensions, TouchableOpacity, Image } from "react-native";
 import background from "../static/img/signup/signup_background.jpg"
-import { Svg, Line } from 'react-native-svg'
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
-import ImagePicker from 'react-native-image-picker';
+import * as ImagePicker from 'expo-image-picker';
 
 
 const screen = Dimensions.get("screen");
@@ -13,6 +12,8 @@ const SignUp = (props) => {
 
     const [username, setUsername] = React.useState("");
     const [password, setPassword] = React.useState("");
+    const [avatar, setAvatar] = React.useState(null);
+    const [cover, setCover] = React.useState(null);
 
     const login = () => {
         props.setLogin(!props.login);
@@ -21,6 +22,33 @@ const SignUp = (props) => {
 
     const txt = '\u{1f5bc}' + " Upload your cover image " 
 
+    const pickAvatar = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
+        
+        if (!result.cancelled) {
+            console.log(result.base64)
+            setAvatar(result.base64);
+        }
+    };
+
+    const pickCover = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
+        
+        if (!result.cancelled) {
+            setCover(result.base64);
+        }
+    };
+
     return (
         <View style={styles.centeredView}>
             <Image source={background} resizeMode="cover" style={styles.background}>
@@ -28,7 +56,7 @@ const SignUp = (props) => {
             <View style={styles.content}>
                 <Text style={{color: "#fff", fontSize: 30, textAlign: "center", marginBottom: 0.02 * screen.height}}>Create your account!</Text>
                 <View style={styles.row}>
-                    <TouchableOpacity style={styles.addPhoto}>
+                    <TouchableOpacity style={styles.addPhoto} onPress={pickAvatar}>
                         <FontAwesome5Icon name="user-circle" size={45} solid color='white'></FontAwesome5Icon>
                         <View style={{width: "90%"}}>
                             <Text style={{textAlign: "center"}}>Add your photo</Text>
@@ -51,7 +79,7 @@ const SignUp = (props) => {
                         </View>
                     </View>
                 </View>
-                <TouchableOpacity style={styles.inputView}>
+                <TouchableOpacity style={styles.inputView} onPress={pickCover}>
                     <Text style={{...styles.TextInput, color: "#003f5c", marginTop: 0.017*screen.height}}>{txt}</Text>
                 </TouchableOpacity>
                 <View style={styles.inputView}>
