@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
     },
     button: {
         backgroundColor: '#B456F1',
-        borderRadius: 50,
+        borderRadius: 0.02 * screen.width,
         width: screen.width / 2 - 0.12 * screen.width,
         alignSelf: "center",
         marginTop: 0.015 * screen.width
