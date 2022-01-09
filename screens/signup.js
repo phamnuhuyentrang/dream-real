@@ -52,7 +52,7 @@ const SignUp = (props) => {
                     </View>
                 </View>
                 <TouchableOpacity style={styles.inputView}>
-                    <Text style={{...styles.TextInput, color: "#003f5c", textAlignVertical: "center"}}>{txt}</Text>
+                    <Text style={{...styles.TextInput, color: "#003f5c", marginTop: 0.017*screen.height}}>{txt}</Text>
                 </TouchableOpacity>
                 <View style={styles.inputView}>
                     <TextInput

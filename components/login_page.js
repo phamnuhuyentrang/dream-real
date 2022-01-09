@@ -63,7 +63,7 @@ const LoginPage = (props) => {
                             </Pressable>
                             <Pressable
                                 style={styles.loginBtn}
-                                onPress={() => {navigation.navigate("SignUp")}}
+                                onPress={() => {navigation.navigate("SignUp"); props.setLogin(!props.login);}}
                             >
                                 <Text style={styles.LoginText}>SIGN UP</Text>
                             </Pressable>
