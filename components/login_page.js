@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
         marginRight: 0.05 * screen.width,
         marginLeft: 0.05 * screen.width,
         backgroundColor: "#3D3D4E",
-        borderRadius: 0.05 * screen.width,
+        borderRadius: 0.02 * screen.width,
         paddingTop: 0.05 * screen.height,
         paddingLeft: 0.05 * screen.width,  
         paddingRight: 0.05 * screen.width,        
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     },
     inputView: {
         backgroundColor: "#c4c4c4",
-        borderRadius: 0.05 * screen.width,
+        borderRadius: 0.02 * screen.width,
         width: "90%",
         height: 0.06 *  screen.height,
         marginBottom: 0.03 * screen.height,
@@ -160,8 +160,8 @@ const styles = StyleSheet.create({
     
     loginBtn: {
         width: "40%",
-        borderRadius: 25,
-        height: 50,
+        borderRadius: 0.02 * screen.width,
+        height: 0.1 * screen.width,
         alignItems: "center",
         justifyContent: "center",
         marginTop: 0.05 * screen.width,
@@ -173,8 +173,8 @@ const styles = StyleSheet.create({
 
     loginOther: {
         width: "80%",
-        borderRadius: 25,
-        height: 50,
+        borderRadius: 0.02 * screen.width,
+        height: 0.1 * screen.width,
         alignItems: "center",
         justifyContent: "center",
         marginTop: 0.05 * screen.width,

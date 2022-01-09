@@ -67,7 +67,7 @@ const ContentItem = ({ item, index }) => {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#3D3D4E',
-        borderRadius: 0.05 * window.width,
+        borderRadius: 0.02 * window.width,
         width: ITEM_WIDTH,
         shadowColor: "#000",
         shadowOffset: {
@@ -82,8 +82,8 @@ const styles = StyleSheet.create({
         marginTop: 0.21 * (screen.height - STATUSBAR_HEIGHT) + STATUSBAR_HEIGHT
     },
     image: {
-        borderTopLeftRadius: 0.05 * window.width,
-        borderTopRightRadius: 0.05 * window.width,
+        borderTopLeftRadius: 0.02 * window.width,
+        borderTopRightRadius: 0.02 * window.width,
         width: ITEM_WIDTH,
         height: 0.275 * (screen.height - STATUSBAR_HEIGHT),
     },

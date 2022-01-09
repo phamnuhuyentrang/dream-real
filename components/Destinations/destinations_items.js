@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#3D3D4E",
         height: 0.4 * screen.height,
         width: 0.9 * screen.width,
-        borderRadius: 0.05 * screen.width,
+        borderRadius: 0.02 * screen.width,
         marginBottom: 0.03 * screen.height,
         alignSelf: "center",
         marginTop: 0.02 * screen.height

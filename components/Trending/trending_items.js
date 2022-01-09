@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     content: {
         backgroundColor: "#3D3D4E",
         height: 0.4 * screen.height,
-        borderRadius: 0.05 * screen.width,
+        borderRadius: 0.02 * screen.width,
         marginBottom: 0.03 * screen.height
     },
     avatar: {

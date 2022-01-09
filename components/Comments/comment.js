@@ -206,7 +206,7 @@ const styles = StyleSheet.create({
         marginRight: 0.05 * screen.width,
         backgroundColor: "#3D3D4E",
         height: 40,
-        borderRadius: 0.05 * screen.width,
+        borderRadius: 0.02 * screen.width,
         fontStyle: "normal",
         fontWeight: "900",
         fontSize: 15,
