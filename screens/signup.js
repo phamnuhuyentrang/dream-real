@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
         justifyContent: "center", 
         alignItems: "center", 
         marginRight: 0.02 * screen.width,
-        borderRadius: 0.05 * screen.width,
+        borderRadius: 0.02 * screen.width,
         width: 0.3 * screen.width
     },
     row: {
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
         marginRight: 0.05 * screen.width,
         marginLeft: 0.05 * screen.width,
         backgroundColor: "#3D3D4E",
-        borderRadius: 0.05 * screen.width,
+        borderRadius: 0.02 * screen.width,
         paddingTop: 0.05 * screen.height,
         paddingLeft: 0.05 * screen.width,  
         paddingRight: 0.05 * screen.width,        
@@ -154,8 +154,8 @@ const styles = StyleSheet.create({
     },
     inputViewCol1: {
         backgroundColor: "#c4c4c4",
-        borderTopLeftRadius: 0.05 * screen.width,
-        borderTopRightRadius: 0.05 * screen.width,
+        borderTopLeftRadius: 0.02 * screen.width,
+        borderTopRightRadius: 0.02 * screen.width,
         width: 0.58 * screen.width,
         borderBottomWidth: 0.1, 
         height: 0.08 *  screen.height,
@@ -164,15 +164,15 @@ const styles = StyleSheet.create({
     inputViewCol2: {
         backgroundColor: "#c4c4c4",
         borderTopWidth: 0.1, 
-        borderBottomLeftRadius: 0.05 * screen.width,
-        borderBottomRightRadius: 0.05 * screen.width,
+        borderBottomLeftRadius: 0.02 * screen.width,
+        borderBottomRightRadius: 0.02 * screen.width,
         width: 0.58 * screen.width,
         height: 0.08 *  screen.height,
         textAlign: "left"
     },
     inputView: {
         backgroundColor: "#c4c4c4",
-        borderRadius: 0.05 * screen.width,
+        borderRadius: 0.02 * screen.width,
         width: 0.9 *screen.width,
         height: 0.06 *  screen.height,
         marginBottom: 0.02 * screen.height,
@@ -192,8 +192,8 @@ const styles = StyleSheet.create({
     },
     
     loginBtn: {
-        borderRadius: 0.05 * screen.width,
-        width: 0.865 *screen.width,
+        borderRadius: 0.02 * screen.width,
+        width: 0.9 *screen.width,
         height: 0.06 *  screen.height,
         marginBottom: 0.02 * screen.height,
         marginLeft: 0.05 * screen.width,
@@ -203,16 +203,6 @@ const styles = StyleSheet.create({
     },
     LoginText: {
         color: "white"
-    },
-
-    loginOther: {
-        width: "80%",
-        borderRadius: 25,
-        height: 50,
-        alignItems: "center",
-        justifyContent: "center",
-        marginTop: 0.05 * screen.width,
-        backgroundColor: "#B456F1",
     }
 });
 
