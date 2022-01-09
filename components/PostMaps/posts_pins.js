@@ -62,22 +62,16 @@ const PostMaps = () => {
         directionalOffsetThreshold: 90
     };
     const navigation = useNavigation()
-    const onSwipeUp = (gestureState) => {
-        navigation.navigate("Home");
-    }
     const region = {
         latitude: 48.73201736668025, 
         longitude: 2.2646355681140853,
         latitudeDelta: 0.0922,
         longitudeDelta: 0.0421,
     }
-    const [showLogo, toogleShowLogo] = React.useState(true);
     const [initialRegion, setRegion] = React.useState(region)
     const onRegionChange = (r) => setRegion(r)
-    const startSearch = () => toogleShowLogo(displayLogo => !displayLogo);
     return (
         <View style={{flex: 1}}>
-            <CustomBar backgroundColor="#3d3d4e" barStyle="light-content" />
             <MapView
                 initialRegion={initialRegion}
                 onRegionChange={onRegionChange}
@@ -89,35 +83,25 @@ const PostMaps = () => {
                     />
                 ))}
             </MapView>
+            <CustomBar backgroundColor="#3d3d4e" barStyle="light-content" />
             <View style={styles.container}>
                 <View style={styles.content}>
-                    <Image source={avatar} style={styles.avatar}></Image> 
-                    {showLogo? <Image source={logo} style={styles.logo} />: <TextInput style={styles.search_textbox} onChangeText={text => onChangeText(text)}
-                                value={value} maxLength={40} placeholder='Search' blurOnSubmit onSubmitEditing={(event) => alert(event.nativeEvent.text)}/> } 
-                    <TouchableOpacity style={styles.button} onPress={startSearch}>
-                        <FontAwesome5Icon color='white' name="search" size={20}/>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.button}>
-                        <FontAwesome5Icon color='white' name="bell" solid size={20}/>
-                    </TouchableOpacity>
+                    <Image source={logo} style={styles.logo} />
                 </View>
-                <GestureRecognizer 
-                    onSwipeUp={(state) => onSwipeUp(state)}
-                    config={config}
-                    style={styles.svg1}>
-                    <Svg height={APPBAR_HEIGHT * 0.6} width={screen.width} overflow="hidden" >
-                        <Ellipse
-                            cx={screen.width/2}
-                            cy={0}
-                            rx={`${0.6 * screen.width}`}
-                            ry={`${0.5 * APPBAR_HEIGHT}`}
-                            fill="#3D3D4E"
-                            stroke="#3D3D4E"
-                            strokeWidth="2"
-                        />
-                    </Svg>
-                </GestureRecognizer>
-                <FontAwesome5Icon color='white' name="arrow-circle-up" solid size={18} style={{position: "absolute", left: 0.5 * screen.width, top: 0.45 * APPBAR_HEIGHT}} />
+                <TouchableOpacity onPress={() => {navigation.navigate("Home");}} style={{position: "absolute", left: 0.5 * screen.width, top: 0.4 * APPBAR_HEIGHT, zIndex: 0}}>
+                    <FontAwesome5Icon color='white' name="arrow-circle-up" solid size={18} />
+                </TouchableOpacity>
+                <Svg height={APPBAR_HEIGHT * 0.8} width={screen.width} overflow="hidden" style={styles.svg1} >
+                    <Ellipse
+                        cx={screen.width/2}
+                        cy={0}
+                        rx={`${0.6 * screen.width}`}
+                        ry={`${0.5 * APPBAR_HEIGHT}`}
+                        fill="#3D3D4E"
+                        stroke="#3D3D4E"
+                        strokeWidth="2"
+                    />
+                </Svg>
             </View>
         </View>
     )
@@ -172,7 +156,7 @@ const styles = StyleSheet.create({
     },
     svg1: {
         position: "absolute",
-        zIndex: 0,
+        zIndex: -1,
     },
     map: {
         ...StyleSheet.absoluteFillObject,

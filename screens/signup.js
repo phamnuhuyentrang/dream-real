@@ -117,14 +117,15 @@ const styles = StyleSheet.create({
         justifyContent: "center", 
         alignItems: "center", 
         marginRight: 0.02 * screen.width,
-        borderRadius: 0.05 * screen.width
+        borderRadius: 0.05 * screen.width,
+        width: 0.3 * screen.width
     },
     row: {
         flexDirection: "row",
-        width: 0.85 * screen.width,
         marginLeft: 0.05 * screen.width,
         marginRight: 0.05 * screen.width,
-        marginBottom: 0.02 * screen.height
+        marginBottom: 0.02 * screen.height,
+        height: 0.16 * screen.height
     },
     col: {
         flexDirection: "column"
@@ -155,9 +156,9 @@ const styles = StyleSheet.create({
         backgroundColor: "#c4c4c4",
         borderTopLeftRadius: 0.05 * screen.width,
         borderTopRightRadius: 0.05 * screen.width,
-        width: 0.6 * screen.width,
+        width: 0.58 * screen.width,
         borderBottomWidth: 0.1, 
-        height: 0.06 *  screen.height,
+        height: 0.08 *  screen.height,
         textAlign: "left"
     },
     inputViewCol2: {
@@ -165,14 +166,14 @@ const styles = StyleSheet.create({
         borderTopWidth: 0.1, 
         borderBottomLeftRadius: 0.05 * screen.width,
         borderBottomRightRadius: 0.05 * screen.width,
-        width: 0.6 * screen.width,
-        height: 0.06 *  screen.height,
+        width: 0.58 * screen.width,
+        height: 0.08 *  screen.height,
         textAlign: "left"
     },
     inputView: {
         backgroundColor: "#c4c4c4",
         borderRadius: 0.05 * screen.width,
-        width: 0.865 *screen.width,
+        width: 0.9 *screen.width,
         height: 0.06 *  screen.height,
         marginBottom: 0.02 * screen.height,
         textAlign: "left",
