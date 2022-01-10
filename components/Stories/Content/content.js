@@ -1,8 +1,11 @@
 import React, { PureComponent } from 'react'
 import { View, Dimensions } from "react-native"
 import Carousel from 'react-native-snap-carousel'
+
+
 import ContentItem from './content_items'
 
+const screen = Dimensions.get("screen");
 const SLIDER_WIDTH = Dimensions.get('window').width
 const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.9)
 
@@ -16,7 +19,7 @@ const StoryContent = (props) => {
     return o;
   })
   return (
-      <View>
+      <View style={{backgroundColor: "#252a38", height: screen.height}}>
           <Carousel
               layout="tinder"
               layoutCardOffset={9}

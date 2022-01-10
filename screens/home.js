@@ -8,7 +8,7 @@ class Home extends PureComponent  {
 	render() {
         return (
             <View style={styles.container}>
-                <CustomBar backgroundColor="#3d3d4e" barStyle="light-content" />
+                <CustomBar translucent backgroundColor="#3d3d4e" barStyle="light-content" />
                 <Header />
                 <View style={{ flex: 1, backgroundColor: "#252a38" }}>
                     <MenuBar></MenuBar>

@@ -29,6 +29,15 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "description": ""
+    "description": "",
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to upload your avatar and cover :)",
+          "cameraPermission": "The app let you take your own photos to upload your avatar and cover :)"
+        }
+      ]
+    ]
   }
 }

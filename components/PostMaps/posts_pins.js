@@ -83,7 +83,7 @@ const PostMaps = () => {
                     />
                 ))}
             </MapView>
-            <CustomBar backgroundColor="#3d3d4e" barStyle="light-content" />
+            <CustomBar translucent backgroundColor="#3d3d4e" barStyle="light-content" />
             <View style={styles.container}>
                 <View style={styles.content}>
                     <Image source={logo} style={styles.logo} />

@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import { Alert, Modal, StyleSheet, Text, Pressable, View, TextInput, Dimensions, TouchableOpacity, Image, Keyboard, Platform, KeyboardAvoidingView, TouchableWithoutFeedback } from "react-native";
+
 import background from "../static/img/signup/signup_background.jpg"
-import { Svg, Line } from 'react-native-svg'
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
-import ImagePicker from 'react-native-image-picker';
+import * as ImagePicker from 'expo-image-picker';
+import logo from '../static/img/dream-real-logo-nav.png'
+import CustomBar from '../components/statusbar';
 import { ScrollView } from "react-native-gesture-handler";
 
-
 const screen = Dimensions.get("screen");
-
+const figma_screen_w = 428;
+const figma_screen_h = 926;
 
 const SignUp = (props) => {
 
@@ -16,6 +18,8 @@ const SignUp = (props) => {
     const [password, setPassword] = React.useState("");
     const [keyboardOffset, setKeyboardOffset] = React.useState(0);
     const [currentY, setCurrentY] = React.useState(0);
+    const [avatar, setAvatar] = React.useState(null);
+    const [cover, setCover] = React.useState(null);
 
     const login = () => {
         props.setLogin(!props.login);
@@ -23,6 +27,34 @@ const SignUp = (props) => {
     }
 
     const txt = '\u{1f5bc}' + " Upload your cover image " 
+
+    const pickAvatar = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+            base64: true
+        });
+        
+        if (!result.cancelled) {
+            setAvatar(result.base64);
+        }
+    };
+
+    const pickCover = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+            base64: true
+        });
+        
+        if (!result.cancelled) {
+            setCover(result.base64);
+        }
+    };
 
     return (
         <KeyboardAvoidingView
@@ -99,14 +131,17 @@ const SignUp = (props) => {
                         >
                             <Text style={styles.LoginText}>SIGN UP</Text>
                         </Pressable>
-                    </View>
-                </View>
             </TouchableWithoutFeedback>
         </KeyboardAvoidingView>
     )
 }
 
 const styles = StyleSheet.create({
+    logo: {
+        width: 250 * screen.width / figma_screen_w,
+        height: 80 * screen.height / figma_screen_h,
+        marginBottom: 0.03 * screen.height
+    },
     centeredView: {
         flex: 1,
         justifyContent: "center",

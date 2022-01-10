@@ -87,16 +87,12 @@ const LoginPage = (props) => {
                                 <Text style={{color: "white", textAlign: "center", marginTop: 0.005 * screen.height}}> or you can </Text>
                             </View>
                             <View style={{flexDirection: "column", width: "110%", marginLeft: 0.05 * screen.width}}>
-                                <Pressable
-                                    style={styles.loginOther}
-                                >
+                                <Pressable style={styles.loginOther}>
                                     <FontAwesome5Icon color='white' name="facebook-f" style={styles.LoginText}>
                                         <Text>  CONNECT WITH FACEBOOK</Text>
                                     </FontAwesome5Icon>
                                 </Pressable>
-                                <Pressable
-                                    style={styles.loginOther}
-                                >
+                                <Pressable style={styles.loginOther}>
                                     <FontAwesome5Icon color='white' name="instagram" style={styles.LoginText}>
                                         <Text>  CONNECT WITH INSTAGRAM</Text>
                                     </FontAwesome5Icon>
