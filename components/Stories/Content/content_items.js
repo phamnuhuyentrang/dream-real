@@ -7,6 +7,7 @@ import angry from "../../../static/img/emoji/angry.png";
 import wow from "../../../static/img/emoji/wow.png";
 import haha from "../../../static/img/emoji/haha.png";
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
+import { useNavigation } from '@react-navigation/native';
 
 const screen = Dimensions.get("screen");
 const window = Dimensions.get("window");
@@ -18,8 +19,17 @@ const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.9)
 const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 20 : StatusBar.currentHeight;
 
 const ContentItem = ({ item, index }) => {
+    return <Item item={item} index={index} />
+}
+
+const Item  = ({ item, index }) => {
+    const navigation = useNavigation()
     return (
-        <View style={styles.container} key={index}>
+        <TouchableOpacity 
+            activeOpacity={1} 
+            onLongPress={() => {navigation.navigate("Home")}}
+        >
+            <View style={styles.container} key={index}>
             <Image
                 source={item.place}
                 style={styles.image}
@@ -62,6 +72,7 @@ const ContentItem = ({ item, index }) => {
                 </View>
             </View>
     </View>
+    </TouchableOpacity>
     )
 }
 const styles = StyleSheet.create({

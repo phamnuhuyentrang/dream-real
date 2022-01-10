@@ -1,12 +1,14 @@
 import React from "react";
-import { StyleSheet, Text, Pressable, View, TextInput, Dimensions, TouchableOpacity, Image } from "react-native";
+import { StyleSheet, Text, Pressable, View, TextInput, Dimensions, TouchableOpacity, Image, ImageBackground } from "react-native";
 import background from "../static/img/signup/signup_background.jpg"
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 import * as ImagePicker from 'expo-image-picker';
-
+import logo from '../static/img/dream-real-logo-nav.png'
+import CustomBar from '../components/statusbar';
 
 const screen = Dimensions.get("screen");
-
+const figma_screen_w = 428;
+const figma_screen_h = 926;
 
 const SignUp = (props) => {
 
@@ -28,10 +30,10 @@ const SignUp = (props) => {
             allowsEditing: true,
             aspect: [4, 3],
             quality: 1,
+            base64: true
         });
         
         if (!result.cancelled) {
-            console.log(result.base64)
             setAvatar(result.base64);
         }
     };
@@ -42,6 +44,7 @@ const SignUp = (props) => {
             allowsEditing: true,
             aspect: [4, 3],
             quality: 1,
+            base64: true
         });
         
         if (!result.cancelled) {
@@ -50,79 +53,88 @@ const SignUp = (props) => {
     };
 
     return (
-        <View style={styles.centeredView}>
-            <Image source={background} resizeMode="cover" style={styles.background}>
-            </Image>
-            <View style={styles.content}>
-                <Text style={{color: "#fff", fontSize: 30, textAlign: "center", marginBottom: 0.02 * screen.height}}>Create your account!</Text>
-                <View style={styles.row}>
-                    <TouchableOpacity style={styles.addPhoto} onPress={pickAvatar}>
-                        <FontAwesome5Icon name="user-circle" size={45} solid color='white'></FontAwesome5Icon>
-                        <View style={{width: "90%"}}>
-                            <Text style={{textAlign: "center"}}>Add your photo</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <View style={styles.col}>
-                        <View style={styles.inputViewCol1}>
-                            <TextInput
-                            style={styles.TextInput}
-                            placeholder="First Name"
-                            placeholderTextColor="#003f5c"
-                            />
-                        </View>
-                        <View style={styles.inputViewCol2}>
-                            <TextInput
-                            style={styles.TextInput}
-                            placeholder="Last Name"
-                            placeholderTextColor="#003f5c"
-                            />
+        <View style={{flex: 1}}>
+            <CustomBar backgroundColor="black" barStyle="light-content" translucent={false}/>
+            <View style={styles.centeredView}>
+                <Image source={background} resizeMode="cover" style={styles.background}>
+                </Image>
+                <Image source={logo} style={styles.logo} />
+                <View style={styles.content}>
+                    <Text style={{color: "#fff", fontSize: 30, textAlign: "center", marginBottom: 0.02 * screen.height}}>Create your account!</Text>
+                    <View style={styles.row}>
+                        <TouchableOpacity style={styles.addPhoto} onPress={pickAvatar}>
+                            <FontAwesome5Icon name="user-circle" size={45} solid color='white'></FontAwesome5Icon>
+                            <View style={{width: "90%"}}>
+                                <Text style={{textAlign: "center"}}>Add your photo</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <View style={styles.col}>
+                            <View style={styles.inputViewCol1}>
+                                <TextInput
+                                style={styles.TextInput}
+                                placeholder="First Name"
+                                placeholderTextColor="#003f5c"
+                                />
+                            </View>
+                            <View style={styles.inputViewCol2}>
+                                <TextInput
+                                style={styles.TextInput}
+                                placeholder="Last Name"
+                                placeholderTextColor="#003f5c"
+                                />
+                            </View>
                         </View>
                     </View>
+                    <TouchableOpacity style={styles.inputView} onPress={pickCover}>
+                        <Text style={{...styles.TextInput, color: "#003f5c", marginTop: 0.017*screen.height}}>{txt}</Text>
+                    </TouchableOpacity>
+                    <View style={styles.inputView}>
+                        <TextInput
+                            style={styles.TextInput}
+                            placeholder="Location"
+                            placeholderTextColor="#003f5c"
+                        />
+                    </View>
+                    <View style={styles.inputView}>
+                        <TextInput
+                            style={styles.TextInput}
+                            placeholder="Email"
+                            placeholderTextColor="#003f5c"
+                        />
+                    </View>
+                    <View style={styles.inputView}>
+                        <TextInput
+                            style={styles.TextInput}
+                            placeholder="Password"
+                            placeholderTextColor="#003f5c"
+                            secureTextEntry={true}
+                        />
+                    </View>
+                    <View style={styles.inputView}>
+                        <TextInput
+                            style={styles.TextInput}
+                            placeholder="Repeat password"
+                            placeholderTextColor="#003f5c"
+                            secureTextEntry={true}
+                        />
+                    </View>
+                    <Pressable
+                        style={styles.loginBtn}
+                    >
+                        <Text style={styles.LoginText}>SIGN UP</Text>
+                    </Pressable>
                 </View>
-                <TouchableOpacity style={styles.inputView} onPress={pickCover}>
-                    <Text style={{...styles.TextInput, color: "#003f5c", marginTop: 0.017*screen.height}}>{txt}</Text>
-                </TouchableOpacity>
-                <View style={styles.inputView}>
-                    <TextInput
-                        style={styles.TextInput}
-                        placeholder="Location"
-                        placeholderTextColor="#003f5c"
-                    />
-                </View>
-                <View style={styles.inputView}>
-                    <TextInput
-                        style={styles.TextInput}
-                        placeholder="Email"
-                        placeholderTextColor="#003f5c"
-                    />
-                </View>
-                <View style={styles.inputView}>
-                    <TextInput
-                        style={styles.TextInput}
-                        placeholder="Password"
-                        placeholderTextColor="#003f5c"
-                        secureTextEntry={true}
-                    />
-                </View>
-                <View style={styles.inputView}>
-                    <TextInput
-                        style={styles.TextInput}
-                        placeholder="Repeat password"
-                        placeholderTextColor="#003f5c"
-                        secureTextEntry={true}
-                    />
-                </View>
-                <Pressable
-                    style={styles.loginBtn}
-                >
-                    <Text style={styles.LoginText}>SIGN UP</Text>
-                </Pressable>
             </View>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
+    logo: {
+        width: 250 * screen.width / figma_screen_w,
+        height: 80 * screen.height / figma_screen_h,
+        marginBottom: 0.03 * screen.height
+    },
     centeredView: {
         flex: 1,
         justifyContent: "center",
