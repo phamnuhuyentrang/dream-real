@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Image, TouchableOpacity, Text, Dimensions, StyleSheet, ScrollView, TextInput } from 'react-native';
+import { View, Image, TouchableOpacity, Text, Dimensions, StyleSheet, ScrollView, TextInput, KeyboardAvoidingView, TouchableWithoutFeedback , Platform, Keyboard } from 'react-native';
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 import like from "../../static/img/emoji/like.png";
 import love from "../../static/img/emoji/love.png";
@@ -9,7 +9,7 @@ import wow from "../../static/img/emoji/wow.png";
 import haha from "../../static/img/emoji/haha.png";
 import sendIcon from "../../static/img/icon-button/send.png";
 import raiden from "../../static/img/raiden_shogun.png";
-
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import CommentLayout from './comment_layout';
 import Header from '../header';
 import CustomBar from '../statusbar';
@@ -39,9 +39,9 @@ const Comment = (props) => {
         }))
     }
     
-    return (
+    return ( 
         <View style={{flex: 1}}>
-            <ScrollView style={{backgroundColor: "#252a38", height: screen.height - 100}}>
+            <ScrollView style={{backgroundColor: "#252a38", height: screen.height - 100}} keyboardShouldPersistTaps='handled'>
                 <View style={{flex: 1}}>
                     <CustomBar backgroundColor="#3d3d4e" barStyle="light-content" />
                     <Header />
@@ -94,18 +94,24 @@ const Comment = (props) => {
                     </View>
                 </View>
             </ScrollView>
-            <View style={styles.comment_area}>
-                <TextInput
-                    style={textInit === "" ? styles.input : {...styles.input, width: 0.9 * screen.width - 32 - 0.02 * screen.width, marginRight: 0.02 * screen.width}}
-                    onChange={onChange}
-                    value={textInit}
-                    placeholder='add a comment ...'
-                />
-                {textInit != "" && <TouchableOpacity onPress={addComment}>
-                    <Image style={styles.send_button} source={sendIcon}></Image> 
-                </TouchableOpacity>}
-            </View>
-        </View>
+            <KeyboardAvoidingView
+                behavior={Platform.OS === "ios" ? "padding" : "height"}
+            >
+                <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                    <View style={styles.comment_area}> 
+                        <TextInput
+                            style={textInit === "" ? styles.input : {...styles.input, width: 0.9 * screen.width - 32 - 0.02 * screen.width, marginRight: 0.02 * screen.width}}
+                            onChange={onChange}
+                            value={textInit}
+                            placeholder='add a comment ...'
+                        />
+                        {textInit != "" && <TouchableOpacity onPress={addComment}>
+                            <Image style={styles.send_button} source={sendIcon}></Image> 
+                        </TouchableOpacity>}
+                    </View>
+                </TouchableWithoutFeedback>
+            </KeyboardAvoidingView>
+        </View>      
     )
 }
 
