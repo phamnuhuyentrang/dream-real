@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 import { View, Dimensions } from "react-native"
 import Carousel from 'react-native-snap-carousel'
 
-
+import CustomBar from '../../statusbar';
 import ContentItem from './content_items'
 
 const screen = Dimensions.get("screen");
@@ -19,6 +19,8 @@ const StoryContent = (props) => {
     return o;
   })
   return (
+    <View style={{flex: 1}}>
+      <CustomBar backgroundColor="#252a38" barStyle="light-content" />
       <View style={{backgroundColor: "#252a38", height: screen.height}}>
           <Carousel
               layout="tinder"
@@ -32,6 +34,7 @@ const StoryContent = (props) => {
               useScrollView={true}
           />
       </View>
+    </View>
   )
 }
 

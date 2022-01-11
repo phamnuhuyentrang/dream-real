@@ -3,6 +3,8 @@ import { Alert, Modal, StyleSheet, Text, Pressable, View, TextInput, Dimensions,
 import { Svg, Line } from 'react-native-svg'
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 import { useNavigation } from '@react-navigation/native';
+import * as SecureStore from 'expo-secure-store';
+
 const screen = Dimensions.get("screen");
 
 const LoginPage = (props) => {
@@ -10,9 +12,33 @@ const LoginPage = (props) => {
     const [username, setUsername] = React.useState("");
     const [password, setPassword] = React.useState("");
 
-    const login = () => {
-        props.setLogin(!props.login);
-        props.setLoginned(!props.loginned)
+    const login = async () => {
+        let response = await fetch('https://v3-beta.dreamreal.co/api/login/', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: username,
+                password: password
+            })
+        });
+        try {
+            let json = await response.json();
+            if (json.success) {
+                await SecureStore.setItemAsync("token", json.data.token);
+                Alert.alert("Dream Real Login Success", "Welcome back " + json.data.name+ " !")
+                props.setLogin(!props.login);
+                props.setLoginned(!props.loginned);
+            }
+            else {
+                Alert.alert("Dream Real Login Failed", json.message)
+            }
+        }
+        catch(e) {
+            Alert.alert("Dream Real Login Error", "Error occured when trying to log in: " + e)
+        }
     }
 
     return (
@@ -23,7 +49,6 @@ const LoginPage = (props) => {
                 visible={props.login}
                 onRequestClose={() => {
                     Alert.alert("Modal has been closed.");
-                    console.log("Login Page: "+ login)
                 }}
             >
                 <TouchableOpacity 

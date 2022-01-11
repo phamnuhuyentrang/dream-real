@@ -7,23 +7,60 @@ import * as ImagePicker from 'expo-image-picker';
 import logo from '../static/img/dream-real-logo-nav.png'
 import CustomBar from '../components/statusbar';
 import { ScrollView } from "react-native-gesture-handler";
+import * as SecureStore from 'expo-secure-store';
 
 const screen = Dimensions.get("screen");
 const figma_screen_w = 428;
 const figma_screen_h = 926;
 
 const SignUp = (props) => {
-
+    const [firstname, setFirstname] = React.useState("");
+    const [lastname, setLastname] = React.useState("");
+    const [location, setLocation] = React.useState("");
     const [username, setUsername] = React.useState("");
     const [password, setPassword] = React.useState("");
-    const [keyboardOffset, setKeyboardOffset] = React.useState(0);
-    const [currentY, setCurrentY] = React.useState(0);
+    const [cpassword, setCPassword] = React.useState("");
     const [avatar, setAvatar] = React.useState(null);
     const [cover, setCover] = React.useState(null);
 
-    const login = () => {
-        props.setLogin(!props.login);
-        props.setLoginned(!props.loginned)
+    const signup = async () => {
+        let body = {
+            first_name: firstname,
+            last_name: lastname,
+            info_lives: location,
+            location_hash: "ChIJzWXFYYuifDUR64Pq5LTtioU",
+            email: username,
+            password: password,
+            c_password: cpassword
+        }
+        if (avatar != null) {
+            body.avatar = avatar
+        }
+        if (cover != null) {
+            body.cover = cover
+        }
+        let response = await fetch('https://v3-beta.dreamreal.co/api/register/', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body)
+        });
+        try {
+            let json = await response.json();
+            if (json.success) {
+                await SecureStore.setItemAsync("token", json.data.token);
+                await SecureStore.setItemAsync("name", json.data.name);
+                Alert.alert("Dream Real Register Success", "Welcome " + json.data.name+ " to Dream Real !")
+            }
+            else {
+                Alert.alert("Dream Real Register Failed", json.message)
+            }
+        }
+        catch(e) {
+            Alert.alert("Dream Real Register Error", "Error occured when trying to sign up: " + e)
+        }
     }
 
     const txt = '\u{1f5bc}' + " Upload your cover image " 
@@ -61,15 +98,17 @@ const SignUp = (props) => {
             behavior={Platform.OS === "ios" ? "padding" : "height"}
             style={{flex: 1}}
         >
+            <CustomBar backgroundColor="black" barStyle="light-content" />
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <View style={styles.centeredView}>
                     <Image source={background} resizeMode="cover" style={styles.background}>
                     </Image>
+                    <Image source={logo} style={{width: 0.5 * screen.width, height: 0.05 * screen.height, marginBottom: 0.04 * screen.height}} />
                     <View style={styles.content}>
                         <Text style={{color: "#fff", fontSize: 30, textAlign: "center", marginBottom: 0.02 * screen.height}}>Create your account!</Text>
                         
                         <View style={styles.row}>
-                            <TouchableOpacity style={styles.addPhoto}>
+                            <TouchableOpacity style={styles.addPhoto} onPress={pickAvatar}>
                                 <FontAwesome5Icon name="user-circle" size={45} solid color='white'></FontAwesome5Icon>
                                 <View style={{width: "90%"}}>
                                     <Text style={{textAlign: "center"}}>Add your photo</Text>
@@ -81,7 +120,7 @@ const SignUp = (props) => {
                                         style={styles.TextInput}
                                         placeholder="First Name"
                                         placeholderTextColor="#003f5c"
-                                        onFocus={(event) => console.log(event.target)}
+                                        onChangeText={(firstname) => setFirstname(firstname)}
                                     />
                                 </View>
                                 <View style={styles.inputViewCol2}>
@@ -89,11 +128,12 @@ const SignUp = (props) => {
                                     style={styles.TextInput}
                                     placeholder="Last Name"
                                     placeholderTextColor="#003f5c"
+                                    onChangeText={(ln) => setLastname(ln)}
                                     />
                                 </View>
                             </View>
                         </View>
-                        <TouchableOpacity style={styles.inputView}>
+                        <TouchableOpacity style={styles.inputView} onPress={pickCover}>
                             <Text style={{...styles.TextInput, color: "#003f5c", marginTop: 0.017*screen.height}}>{txt}</Text>
                         </TouchableOpacity>
                         <View style={styles.inputView}>
@@ -101,6 +141,7 @@ const SignUp = (props) => {
                                 style={styles.TextInput}
                                 placeholder="Location"
                                 placeholderTextColor="#003f5c"
+                                onChangeText={(location) => setLocation(location)}
                             />
                         </View>
                         <View style={styles.inputView}>
@@ -108,6 +149,7 @@ const SignUp = (props) => {
                                 style={styles.TextInput}
                                 placeholder="Email"
                                 placeholderTextColor="#003f5c"
+                                onChangeText={(usr) => setUsername(usr)}
                             />
                         </View>
                         <View style={styles.inputView}>
@@ -116,6 +158,7 @@ const SignUp = (props) => {
                                 placeholder="Password"
                                 placeholderTextColor="#003f5c"
                                 secureTextEntry={true}
+                                onChangeText={(pwd) => setPassword(pwd)}
                             />
                         </View>
                         <View style={styles.inputView}>
@@ -124,13 +167,17 @@ const SignUp = (props) => {
                                 placeholder="Repeat password"
                                 placeholderTextColor="#003f5c"
                                 secureTextEntry={true}
+                                onChangeText={(cpwd) => setCPassword(cpwd)}
                             />
                         </View>
                         <Pressable
                             style={styles.loginBtn}
+                            onPress={signup}
                         >
                             <Text style={styles.LoginText}>SIGN UP</Text>
                         </Pressable>
+                    </View>
+                </View>
             </TouchableWithoutFeedback>
         </KeyboardAvoidingView>
     )

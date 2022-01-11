@@ -6,6 +6,7 @@ import StoryContent from "./components/Stories/Content/content"
 import Comment from './components/Comments/comment';
 import SignUp from './screens/signup';
 import PostMaps from './components/PostMaps/posts_pins';
+import Profile from './screens/profile';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { navigationRef } from './navigation-root';
@@ -22,6 +23,7 @@ const App = () => {
 				<Stack.Screen name="Comment" component={Comment} />
 				<Stack.Screen name="Maps" component={PostMaps} />
 				<Stack.Screen name="SignUp" component={SignUp} />
+				<Stack.Screen name="Profile" component={Profile} />
 			</Stack.Navigator>
 		</NavigationContainer>
 	);

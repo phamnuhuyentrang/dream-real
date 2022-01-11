@@ -35,7 +35,7 @@ const Header = () => {
     return (
         <View style={styles.container}>
             <View style={styles.content}>
-                {loginned ? <TouchableOpacity><Image source={avatar} style={styles.avatar}></Image></TouchableOpacity> :
+                {loginned ? <TouchableOpacity onPress={() => navigation.navigate("Profile")}><Image source={avatar} style={styles.avatar}></Image></TouchableOpacity> :
                 <TouchableOpacity  onPress={() => setLogin(!login)}><View style={styles.avatar} ><FontAwesome5Icon name="user-circle" size={25} solid color='white'></FontAwesome5Icon></View></TouchableOpacity>}
                 
                 {showLogo? <Image source={logo} style={styles.logo} />: <TextInput style={styles.search_textbox} onChangeText={text => onChangeText(text)}

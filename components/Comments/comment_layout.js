@@ -15,7 +15,7 @@ const CommentLayout = (props) => {
                     <Image source={comment.avatar} style={styles.avatar}></Image>
                     <Text style={styles.item4}>{comment.name}</Text>
                 </View>
-                <View style={{backgroundColor:"#B456F1", borderRadius: 0.02 * screen.width,  marginBottom: 0.01 * screen.height, height: hp(5), marginRight: 0.025 * screen.width}}>
+                <View style={{backgroundColor:"#363847", borderRadius: 0.02 * screen.width,  marginBottom: 0.01 * screen.height, height: hp(5), marginRight: 0.025 * screen.width}}>
                     <Text style={styles.item3}>{comment.content}</Text>
                 </View>
                 <View>
