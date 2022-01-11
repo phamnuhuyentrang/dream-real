@@ -224,17 +224,23 @@ const Profile = (props) => {
         
         if (!result.cancelled) {
             setAvatar(result.uri);
+            setData(changeValue => {
+                const list = changeValue.map((d) => {
+                    return {...d, avatar: avatar}
+                })
+                return list;
+            })
         }
     };
 
     React.useEffect(() => {
-        let changedData = initData
-        for (let i of changedData) {
-            i.avatar = avatar;
-        }
-        return () => {
-            setData(changedData);
-        }
+        setAvatar(avatar)
+        setData(changeValue => {
+            const list = changeValue.map((d) => {
+                return {...d, avatar: avatar}
+            })
+            return list;
+        })
     }, [avatar])
 
     const pickCover = async () => {
