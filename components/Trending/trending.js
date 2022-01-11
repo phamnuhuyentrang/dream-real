@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
+import { View, StyleSheet, Dimensions, Image } from 'react-native';
 
 import selfie1 from "../../static/img/avatar/selfie1.jpg"
 import selfie2 from "../../static/img/avatar/selfie2.jpg"
@@ -31,7 +31,7 @@ const data = [
         place_detail: "Lisbon, Portugal",
         number_react: 9,
         number_comment: 6,
-        avatar: selfie1,
+        avatar: Image.resolveAssetSource(selfie1).uri,
         place: drink_beer,
         comment: [
             {
@@ -76,7 +76,7 @@ const data = [
         place_detail: "Kualar Lumpur, Malaysia",
         number_react: 200,
         number_comment: 2,
-        avatar: selfie2,
+        avatar: Image.resolveAssetSource(selfie2).uri,
         place: eating_pizza,
         comment: [
             {
@@ -99,7 +99,7 @@ const data = [
         place_detail: "Nantes, France",
         number_react: "1k6",
         number_comment: 2,
-        avatar: selfie5,
+        avatar: Image.resolveAssetSource(selfie5).uri,
         place: skating,
         comment: [
             {
@@ -122,7 +122,7 @@ const data = [
         place_detail: "Hanoi, Vietnam",
         number_react: "1k",
         number_comment: 2,
-        avatar: selfie5,
+        avatar: Image.resolveAssetSource(selfie6).uri,
         place: travel_to_vietnam,
         comment: [
             {
@@ -145,7 +145,7 @@ const data = [
         place_detail: "New York, USA",
         number_react: "10",
         number_comment: 2,
-        avatar: selfie4,
+        avatar: Image.resolveAssetSource(selfie4).uri,
         place: looking_for_job,
         comment: [
             {
@@ -168,7 +168,7 @@ const data = [
         place_detail: "Titlis, Switzerland",
         number_react: "100",
         number_comment: 2,
-        avatar: selfie6,
+        avatar: Image.resolveAssetSource(selfie7).uri,
         place: travel,
         comment: [
             {
@@ -192,7 +192,7 @@ const Trending = () => {
         <View style={styles.container}> 
             {data.map((person, index) => {
                 return (
-                    <TrendingItems data={person} key={index}/>
+                    <TrendingItems data={person} key={index} ava={"N/A"}/>
                 )
             })}
         </View> 

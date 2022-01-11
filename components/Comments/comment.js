@@ -49,7 +49,7 @@ const Comment = (props) => {
                         <View style={styles.content2}>
                             <View>
                                 <View style={styles.content4}>
-                                    <Image source={data.avatar} style={styles.avatar}></Image>
+                                    <Image source={{uri: data.avatar}} style={styles.avatar}></Image>
                                     <Text style={styles.item4}>{data.name}</Text>
                                 </View>
                                 <Text style={styles.item3}>{data.emotion}</Text>

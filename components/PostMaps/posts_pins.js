@@ -1,14 +1,12 @@
 import React from 'react';
-import { View, Image, StyleSheet, Dimensions, Button, TouchableOpacity, TextInput } from 'react-native';
+import { View, Image, StyleSheet, Dimensions, TouchableOpacity, Alert, Modal } from 'react-native';
 import CustomBar from '../statusbar';
 import { Svg, Ellipse } from 'react-native-svg'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
-import GestureRecognizer from 'react-native-swipe-gestures';
 import MapView, { Marker } from 'react-native-maps';
 import { useNavigation } from '@react-navigation/native';
-
-import avatar from '../../static/img/raiden_shogun.png';
 import logo from '../../static/img/dream-real-logo-nav.png'
+import TrendingItems from '../Trending/trending_items';
 
 const postLocation = [
     {
@@ -56,7 +54,8 @@ const figma_screen_h = 926;
 
 const APPBAR_HEIGHT = 200 * screen.height / figma_screen_h;
 
-const PostMaps = () => {
+const PostMaps = (props) => {
+    const data = props.route.params.post;
     const config = {
         velocityThreshold: 0,
         directionalOffsetThreshold: 90
@@ -69,6 +68,8 @@ const PostMaps = () => {
         longitudeDelta: 0.0421,
     }
     const [initialRegion, setRegion] = React.useState(region)
+    const [modalVisible, setModalVisible] = React.useState(false)
+    const [ind, setIndex] = React.useState(0)
     const onRegionChange = (r) => setRegion(r)
     return (
         <View style={{flex: 1}}>
@@ -77,10 +78,13 @@ const PostMaps = () => {
                 onRegionChange={onRegionChange}
                 style={styles.map}>
                 {postLocation.map((marker, index) => (
-                    <Marker
-                        key={index}
-                        coordinate={marker.latLng}
-                    />
+                    // <TouchableOpacity onPress={}>
+                        <Marker
+                            key={index}
+                            coordinate={marker.latLng}
+                            onPress={() => {setModalVisible(true); setIndex(index)}}
+                        />
+                    // </TouchableOpacity>
                 ))}
             </MapView>
             <CustomBar translucent backgroundColor="#3d3d4e" barStyle="light-content" />
@@ -103,6 +107,22 @@ const PostMaps = () => {
                     />
                 </Svg>
             </View>
+            <Modal 
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                    Alert.alert("Modal has been closed.");
+                }}
+            >
+                <TouchableOpacity 
+                    style={styles.centeredView} 
+                    activeOpacity={1} 
+                    onPressOut={() => {setModalVisible(false)}}
+                >
+                    <TrendingItems data={data[ind]} key={ind} />
+                </TouchableOpacity>
+            </Modal>
         </View>
     )
 }
@@ -160,7 +180,18 @@ const styles = StyleSheet.create({
     },
     map: {
         ...StyleSheet.absoluteFillObject,
-    }
+    },
+    modalView: {
+        backgroundColor: "#3D3D4E",
+        height: 0.4 * screen.height,
+        borderRadius: 0.02 * screen.width,
+        marginBottom: 0.03 * screen.height,
+    },
+    centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+    },
 })
 
 export default PostMaps;

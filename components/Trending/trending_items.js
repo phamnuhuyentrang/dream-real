@@ -19,6 +19,7 @@ const figma_screen_h = 926;
 
 const TrendingItems = (props) => {
     const data = props.data;
+
     const navigation = useNavigation()
     const showComments = () => {
         navigation.navigate('Comment', {comment: data})
@@ -28,7 +29,7 @@ const TrendingItems = (props) => {
             <View style={styles.content2}>
                 <View>
                     <View style={styles.content4}>
-                        <Image source={data.avatar} style={styles.avatar}></Image>
+                        <Image source={{uri: data.avatar}} style={styles.avatar}></Image>
                         <Text style={styles.item4}>{data.name}</Text>
                     </View>
                     <Text style={styles.item3}>{data.emotion}</Text>

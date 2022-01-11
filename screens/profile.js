@@ -1,16 +1,16 @@
 import React, { useState } from "react";
-import { StatusBar, Alert, Modal, StyleSheet, Text, Pressable, View, TextInput, Dimensions, TouchableOpacity, Image, Keyboard, Platform, KeyboardAvoidingView, TouchableWithoutFeedback } from "react-native";
+import { StatusBar, Modal, StyleSheet, Text, View, Dimensions, TouchableOpacity, Image, Platform } from "react-native";
 import { ScrollView } from "react-native";
 import background from "../static/img/signup/signup_background.jpg"
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 import * as ImagePicker from 'expo-image-picker';
 import logo from '../static/img/dream-real-logo-nav.png'
-import cover from '../static/img/destinations/hanoi.jpg'
+import coverRaiden from '../static/img/destinations/hanoi.jpg'
 import CustomBar from '../components/statusbar';
 import * as SecureStore from 'expo-secure-store';
 import { Svg, Ellipse } from 'react-native-svg'
 import { useNavigation } from '@react-navigation/native';
-import avatar from '../static/img/raiden_shogun.png';
+import avatarRaiden from '../static/img/raiden_shogun.png';
  
 import selfie1 from "../static/img/avatar/selfie1.jpg"
 import selfie2 from "../static/img/avatar/selfie2.jpg"
@@ -40,15 +40,16 @@ const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.9)
 const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 20 : StatusBar.currentHeight;
 
 const friends = [selfie1, selfie2, selfie3, selfie4, selfie5, selfie6, selfie7];
+const avatarDefaultUri = Image.resolveAssetSource(avatarRaiden).uri
 
-const data = [
+const initData = [
     {
-        name: "Raiden Shougen",
+        name: "Raiden Shogun",
         emotion: "is drinking beer " +  '\u{1f37b}',
         place_detail: "Lisbon, Portugal",
         number_react: 9,
         number_comment: 6,
-        avatar: avatar,
+        avatar: avatarDefaultUri,
         place: drink_beer,
         comment: [
             {
@@ -88,12 +89,12 @@ const data = [
         ]
     },
     {
-        name: "Raiden Shougen",
+        name: "Raiden Shogun",
         emotion: "is eating pizza " + '\u{1f355}',
         place_detail: "Kualar Lumpur, Malaysia",
         number_react: 200,
         number_comment: 2,
-        avatar: avatar,
+        avatar: avatarDefaultUri,
         place: eating_pizza,
         comment: [
             {
@@ -111,12 +112,12 @@ const data = [
         ]
     },
     {
-        name: "Raiden Shougen",
+        name: "Raiden Shogun",
         emotion: "is skating " + '\u{1f6f9}',
         place_detail: "Nantes, France",
         number_react: "1k6",
         number_comment: 2,
-        avatar: avatar,
+        avatar: avatarDefaultUri,
         place: skating,
         comment: [
             {
@@ -134,12 +135,12 @@ const data = [
         ]
     },
     {
-        name: "Raiden Shougen",
+        name: "Raiden Shogun",
         emotion: "is traveling to Vietnam " + '\u{1f1fb}',
         place_detail: "Hanoi, Vietnam",
         number_react: "1k",
         number_comment: 2,
-        avatar: avatar,
+        avatar: avatarDefaultUri,
         place: travel_to_vietnam,
         comment: [
             {
@@ -157,12 +158,12 @@ const data = [
         ]
     },
     {
-        name: "Raiden Shougen",
+        name: "Raiden Shogun",
         emotion: "is looking for job " + '\u{1f468}',
         place_detail: "New York, USA",
         number_react: "10",
         number_comment: 2,
-        avatar: avatar,
+        avatar: avatarDefaultUri,
         place: looking_for_job,
         comment: [
             {
@@ -180,12 +181,12 @@ const data = [
         ]
     },
     {
-        name: "Raiden Shougen",
+        name: "Raiden Shogun",
         emotion: "is traveling " + '\u{1f3d4}',
         place_detail: "Titlis, Switzerland",
         number_react: "100",
         number_comment: 2,
-        avatar: avatar,
+        avatar: avatarDefaultUri,
         place: travel,
         comment: [
             {
@@ -204,10 +205,55 @@ const data = [
     }
 ];
 
+const coverDefaultUri = Image.resolveAssetSource(coverRaiden).uri
 
 const Profile = (props) => {
     const navigation = useNavigation()
+    const [avatar, setAvatar] = React.useState(avatarDefaultUri);
+    const [cover, setCover] = React.useState(coverDefaultUri);
+    const [data, setData] = React.useState(initData);
+
+    const pickAvatar = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+            base64: true
+        });
+        
+        if (!result.cancelled) {
+            setAvatar(result.uri);
+        }
+    };
+
+    React.useEffect(() => {
+        let changedData = initData
+        for (let i of changedData) {
+            i.avatar = avatar;
+        }
+        return () => {
+            setData(changedData);
+        }
+    }, [avatar])
+
+    const pickCover = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+            base64: true
+        });
+        
+        if (!result.cancelled) {
+            setCover(result.uri);
+        }
+    };
+
     return (
+        <View>
+        <CustomBar backgroundColor="#3d3d4e" barStyle="light-content" />
         <ScrollView style={styles.container}>  
             <View style={styles.content}>
                 <TouchableOpacity onPress={() => navigation.navigate("Home")}>
@@ -217,8 +263,8 @@ const Profile = (props) => {
                 </TouchableOpacity>
                 <Image source={logo} style={styles.logo} />
             </View>
-            <TouchableOpacity style={{position: "absolute", left: 0.425 * screen.width, top: 0.375 * APPBAR_HEIGHT, zIndex: 0}}>
-                <Image source={avatar} style={styles.avatar}/>
+            <TouchableOpacity onPress={pickAvatar} style={{position: "absolute", left: 0.425 * screen.width, top: 0.375 * APPBAR_HEIGHT, zIndex: 0}}>
+                <Image source={{uri: avatar}} style={styles.avatar}/>
             </TouchableOpacity>
             <Svg height={APPBAR_HEIGHT * 0.8} width={screen.width} overflow="hidden" style={styles.svg1} >
                 <Ellipse
@@ -231,15 +277,23 @@ const Profile = (props) => {
                     strokeWidth="2"
                 />
             </Svg>
-            <TouchableOpacity style={styles.cover}>
-                <Image source={cover} style={styles.coverImage}/>
+            <TouchableOpacity onPress={pickCover} style={styles.cover}>
+                <Image source={{uri: cover}} style={styles.coverImage}/>
             </TouchableOpacity>
             <View style={{backgroundColor: "#252A38"}}>
                 <View style={styles.row}>
                     <View style={styles.col1}>
                         <View style={{flexDirection: "row", alignItems: "center", justifyContent: "space-around", marginTop: 0.015 * screen.height}}>
-                            <View style={{width: 0.075*screen.width, height: 0.015*screen.height, backgroundColor:"#B456F1", marginLeft: 0.05 * screen.width, borderRadius: 0.01 * screen.width}}></View>
-                            <View style={{width: 0.075*screen.width, height: 0.015*screen.height, backgroundColor:"#B456F1", marginRight: 0.05 * screen.width, borderRadius: 0.01 * screen.width}}></View>
+                            <TouchableOpacity onPress={() => navigation.navigate("Maps", {post: data})}>
+                                <View style={{width: 0.1*screen.width, height: 0.02*screen.height, backgroundColor:"#B456F1", marginLeft: 0.05 * screen.width, borderRadius: 0.01 * screen.width}}>
+                                    <FontAwesome5Icon name="map-marked-alt" size={10} solid color='white'></FontAwesome5Icon>
+                                </View>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => navigation.navigate("Maps", {post: data})}>
+                                <View style={{width: 0.1*screen.width, height: 0.02*screen.height, backgroundColor:"#B456F1", marginRight: 0.05 * screen.width, borderRadius: 0.01 * screen.width}}>
+                                    <FontAwesome5Icon name="bookmark" size={10} solid color='white'></FontAwesome5Icon>
+                                </View>
+                            </TouchableOpacity>
                         </View>
                         <View style={{flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: 0.01 * screen.height}}>
                             <Text style={{color: "#fff", textAlign: "left", marginLeft: 0.02 * screen.width}}>My score</Text>
@@ -266,19 +320,19 @@ const Profile = (props) => {
                 <View style={styles.containerPost}> 
                     {data.map((person, index) => {
                         return (
-                            <TrendingItems data={person} key={index}/>
+                            <TrendingItems data={person} key={index} />
                         )
                     })}
                 </View> 
             </View>
         </ScrollView>
+        </View>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#3D3D4E',
-        // borderRadius: 0.02 * window.width,
         width: "100%",
         shadowColor: "#000",
         shadowOffset: {
@@ -289,7 +343,6 @@ const styles = StyleSheet.create({
         shadowRadius: 4.65,
         elevation: 7,
         alignSelf: "center",
-        marginTop: STATUSBAR_HEIGHT
     },
     avatar: {
         width: 50 * screen.width / figma_screen_w,
@@ -345,12 +398,10 @@ const styles = StyleSheet.create({
     cover: {
         height: 0.2 * screen.height, 
         zIndex: -2,
-        backgroundColor: "green"
     },
     coverImage: {
         width: screen.width,
         height: 0.2 * screen.height,
-        backgroundColor: "red",
     },
     row: {
         flexDirection: "row",
@@ -361,8 +412,8 @@ const styles = StyleSheet.create({
     },
     col1: {
         flexDirection: "column",
-        width: 0.3 * screen.width,
-        height: 0.1 * screen.height,
+        width: 0.35 * screen.width,
+        height: 0.13 * screen.height,
         backgroundColor: '#3D3D4E',
         borderRadius: 0.02 * screen.width,
         marginRight: 0.05 * screen.width
@@ -370,8 +421,8 @@ const styles = StyleSheet.create({
 
     col2: {
         flexDirection: "column",
-        width: 0.55 * screen.width,
-        height: 0.1 * screen.height,
+        width: 0.5 * screen.width,
+        height: 0.13 * screen.height,
         backgroundColor: '#3D3D4E',
         marginRight: 0.05 * screen.width,
         borderRadius: 0.02 * screen.width,
