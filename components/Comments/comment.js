@@ -8,7 +8,7 @@ import angry from "../../static/img/emoji/angry.png";
 import wow from "../../static/img/emoji/wow.png";
 import haha from "../../static/img/emoji/haha.png";
 import sendIcon from "../../static/img/icon-button/send.png";
-import raiden from "../../static/img/raiden_shogun.png";
+import raiden from "../../static/img/my_ava.jpeg";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import CommentLayout from './comment_layout';
 import Header from '../header';
@@ -35,7 +35,7 @@ const Comment = (props) => {
     const addComment = () => {
         setData(prevData => ({
             ...prevData,
-            comment: [...prevData.comment, {avatar: raiden, name: "Raiden Shogun", time: "1s ago", content: textInit}]
+            comment: [...prevData.comment, {avatar: raiden, name: "Trang Pham", time: "1s ago", content: textInit}]
         }))
     }
     

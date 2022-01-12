@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { View, Image, StyleSheet, Dimensions, Button, TouchableOpacity, TextInput, TouchableHighlight } from 'react-native';
-import avatar from '../static/img/raiden_shogun.png';
+import avatar from '../static/img/my_ava.jpeg';
 import logo from '../static/img/dream-real-logo-nav.png'
 import { Svg, Ellipse } from 'react-native-svg'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
