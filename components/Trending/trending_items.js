@@ -38,7 +38,8 @@ const TrendingItems = (props) => {
                     <Text style={[styles.item2, {color:'#FFF'}]}> {data.place_detail}</Text>
                 </FontAwesome5Icon>
             </View>
-            <Image source={data.place} style={styles.place}></Image>
+            {typeof(data.place) == "number" && <Image source={data.place} style={styles.place} />}
+            {typeof(data.place) == "string" && <Image source={{uri: data.place}} style={styles.place} />}
             <View style={styles.content5}>
                 <TouchableOpacity>
                     <Text style={styles.item5}>{data.number_react} reacts</Text>

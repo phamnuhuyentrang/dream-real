@@ -227,9 +227,10 @@ const Profile = (props) => {
     const [postPhoto, setPostPhoto] = React.useState(null);
     const [postFeeling, setPostFeeling] = React.useState(null);
     const [postLocation, setPostLocation] = React.useState(null);
+    const [postText, setPostText] = React.useState("");
     // const [postTag, setPostTag] = React.useState(null);
     const [showPostModal, setPostModal] = React.useState(false);
-    const [blurIntensity, setBlurIntensity] = React.useState(0);
+    const [blurIntensity, setBlurIntensity] = React.useState(1);
 
     const pickAvatar = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -284,8 +285,8 @@ const Profile = (props) => {
 
     return (
         <View>
-        <CustomBar backgroundColor="#3d3d4e" barStyle="light-content" />
-            <ScrollView style={styles.container}>  
+            <CustomBar backgroundColor="#3d3d4e" barStyle="light-content" />
+            <ScrollView style={{...styles.container, opacity: blurIntensity}}>  
                 <View style={styles.content}>
                     <TouchableOpacity onPress={() => navigation.navigate("Home")}>
                         <View style={styles.backButton} >
@@ -319,13 +320,13 @@ const Profile = (props) => {
                         <View style={styles.col1}>
                             <View style={{flexDirection: "row", alignItems: "center", justifyContent: "space-around", marginTop: 0.015 * screen.height}}>
                                 <TouchableOpacity onPress={() => navigation.navigate("Maps", {post: data})}>
-                                    <View style={{width: 0.1*screen.width, height: 0.02*screen.height, backgroundColor:"#B456F1", marginLeft: 0.05 * screen.width, borderRadius: 0.01 * screen.width, alignItems: "center"}}>
-                                        <FontAwesome5Icon name="map-marked-alt" size={10} solid color='white'></FontAwesome5Icon>
+                                    <View style={{width: 0.1*screen.width, height: 0.02*screen.height, backgroundColor:"#B456F1", marginLeft: 0.05 * screen.width, borderRadius: 0.01 * screen.width, alignItems: "center", justifyContent: "center"}}>
+                                        <FontAwesome5Icon name="map-marked-alt" size={10} solid color='white' style={{alignSelf: "center"}}></FontAwesome5Icon>
                                     </View>
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={() => navigation.navigate("Maps", {post: data})}>
-                                    <View style={{width: 0.1*screen.width, height: 0.02*screen.height, backgroundColor:"#B456F1", marginRight: 0.05 * screen.width, borderRadius: 0.01 * screen.width, alignItems: "center"}}>
-                                        <FontAwesome5Icon name="bookmark" size={10} solid color='white'></FontAwesome5Icon>
+                                    <View style={{width: 0.1*screen.width, height: 0.02*screen.height, backgroundColor:"#B456F1", marginRight: 0.05 * screen.width, borderRadius: 0.01 * screen.width, alignItems: "center", justifyContent: "center"}}>
+                                        <FontAwesome5Icon name="bookmark" size={10} solid color='white' style={{alignSelf: "center"}}></FontAwesome5Icon>
                                     </View>
                                 </TouchableOpacity>
                             </View>
@@ -398,15 +399,18 @@ const Profile = (props) => {
                         </View>
                     </View>
                     <View style={{flexDirection: 'column', backgroundColor: "#3D3D4E", marginTop: 0.02 * screen.height, height: 0.175 * screen.height, width: 0.9 * screen.width, borderRadius: 0.02 * screen.width, alignSelf: "center"}}>
-                        <TouchableOpacity style={{flexDirection: "row"}} onPress={() => setPostModal(true)}>
+                        <TouchableOpacity style={{flexDirection: "row"}} onPress={() => {setPostModal(true); setBlurIntensity(0.5)}}>
                             <Image source={{uri: avatar}} style={{width: 50 * screen.width / figma_screen_w, height: 50 * screen.width / figma_screen_w, borderRadius: 0.1 * screen.width, margin: 0.015 * screen.height}}/>
-                            <TextInput 
-                                placeholder="Share your experiences..." 
-                                placeholderTextColor="#c4c4c4" 
-                                style={{width: 0.9 * screen.width - (50 * screen.width / figma_screen_w), 
-                                height: 50 * screen.width / figma_screen_w}}
+                            <Text
+                                style={{
+                                    width: 0.9 * screen.width - (50 * screen.width / figma_screen_w), 
+                                    height: 50 * screen.width / figma_screen_w,
+                                    alignSelf: "center",
+                                    color: "#c4c4c4" 
+                                }}
                             >
-                            </TextInput>
+                                Share your experiences...
+                            </Text>
                         </TouchableOpacity>
                         <View
                             style={{
@@ -415,21 +419,21 @@ const Profile = (props) => {
                             }}
                         />
                         <View style={{flexDirection: "row", justifyContent: "space-between", marginTop: 0.01 * screen.height, marginLeft: 0.02 * screen.height, marginRight: 0.02 * screen.height}}>
-                            <TouchableOpacity style={{justifyContent: "center", alignItems: "center"}} onPress={pickPhoto}>
+                            {postPhoto == null && <TouchableOpacity style={{justifyContent: "center", alignItems: "center"}} onPress={pickPhoto}>
                                 <FontAwesome5Icon name="image" size={16} solid color='#89ff69' style={{marginBottom: 0.005 * screen.height}}></FontAwesome5Icon> 
                                 <Text style={{color: "white", fontSize: 14}}>Photo</Text>
-                            </TouchableOpacity>
-                            <View style={{borderRightColor: "#c4c4c4", borderRightWidth: 0.5}} />
+                            </TouchableOpacity>}
+                            {postPhoto == null && <View style={{borderRightColor: "#c4c4c4", borderRightWidth: 1}} />}
                             <TouchableOpacity style={{justifyContent: "center", alignItems: "center"}} onPress={() => setPostFeeling("grin-tongue-wink")}>
                                 <FontAwesome5Icon name="smile-wink" size={16} regular color='#ffff69' style={{marginBottom: 0.005 * screen.height}}></FontAwesome5Icon> 
                                 <Text style={{color: "white", fontSize: 14}}>Feeling/Activity</Text>
                             </TouchableOpacity>
-                            <View style={{borderRightColor: "#c4c4c4", borderRightWidth: 0.5}} />
-                            <TouchableOpacity style={{justifyContent: "center", alignItems: "center"}} onPress={() => setPostLocation("Paris, France")}>
+                            <View style={{borderRightColor: "#c4c4c4", borderRightWidth: 1}} />
+                            {postLocation == null && <TouchableOpacity style={{justifyContent: "center", alignItems: "center"}} onPress={() => setPostLocation("Paris, France")}>
                                 <FontAwesome5Icon name="map-marker-alt" size={16} solid color='#80b0ff' style={{marginBottom: 0.005 * screen.height}}></FontAwesome5Icon> 
                                 <Text style={{color: "white", fontSize: 14}}>Location</Text>
-                            </TouchableOpacity>
-                            <View style={{borderRightColor: "#c4c4c4", borderRightWidth: 0.5}} />
+                            </TouchableOpacity>}
+                            {postLocation == null && <View style={{borderRightColor: "#c4c4c4", borderRightWidth: 1}} />}
                             <TouchableOpacity style={{justifyContent: "center", alignItems: "center"}}>
                                 <FontAwesome5Icon name="tag" size={16} solid color='#ff5c5c' style={{marginBottom: 0.005 * screen.height}}></FontAwesome5Icon> 
                                 <Text style={{color: "white", fontSize: 14}}>Tag</Text>
@@ -445,58 +449,125 @@ const Profile = (props) => {
                     </View> 
                 </View>
             </ScrollView>
-        <Modal 
-            animationType="fade"
-            transparent={true}
-            visible={showPostModal}
-            onRequestClose={() => {
-                Alert.alert("Modal has been closed.");
-            }}
-        >
-            <TouchableOpacity 
-                style={styles.centeredView} 
-                activeOpacity={1} 
-                onPressOut={() => {setPostModal(false)}}
+            <Modal 
+                animationType="fade"
+                transparent={true}
+                visible={showPostModal}
+                onRequestClose={() => {
+                    Alert.alert("Modal has been closed.");
+                    
+                }}
             >
-                <View style={{width: 0.9 * screen.width, height: 0.438 * screen.height, flexDirection: "column", backgroundColor: "#3D3D4E", borderRadius: 0.02 * screen.width}}>
-                    <View style={{flexDirection: "row", height: 0.08 * screen.height}}>
-                        <Image source={{uri: avatar}} style={{margin: 0.02 * screen.height, width: 40 * screen.width / figma_screen_w, height: 40 * screen.width / figma_screen_w, borderRadius: 0.1 * screen.width, 
-                            margin: 0.015 * screen.width}}/>
-                        <Text style={{color: "white", fontSize: 12, fontWeight: "bold", textAlignVertical: "center", marginTop: 0.015 * screen.width + 10 * screen.width / figma_screen_w}}>Trang Pham </Text>
-                        {postFeeling != null && 
-                            <View style={{flexDirection: "row", marginTop: 0.015 * screen.width + 10 * screen.width / figma_screen_w}}>
-                                <Text style={{color: "white", fontSize: 12, fontWeight: "normal", textAlignVertical: "center"}}>is feeling </Text>
-                                <FontAwesome5Icon name={postFeeling} size={12} solid color='#ffff69'></FontAwesome5Icon>  
-                                <Text style={{color: "white", fontSize: 12, fontWeight: "normal", textAlignVertical: "center"}}> funny</Text>
-                            </View>
-                        }
-                        {postFeeling == null && 
-                            <TouchableOpacity onPress={() => setPostFeeling("grin-tongue-wink")} style={{flexDirection: "row", marginTop: 0.015 * screen.width + 10 * screen.width / figma_screen_w}}>
-                                <Text style={{color: "white", fontSize: 12, fontWeight: "normal", textAlignVertical: "center"}}>is adding </Text>
-                                <FontAwesome5Icon name="smile-wink" size={12} regular color='#ffff69'></FontAwesome5Icon>  
-                                <Text style={{color: "white", fontSize: 12, fontWeight: "normal", textAlignVertical: "center"}}> a Feeling/Activity</Text>
+                <TouchableOpacity 
+                    style={styles.centeredView} 
+                    activeOpacity={1} 
+                    onPressOut={() => {setPostModal(false); setBlurIntensity(1)}}
+                >
+                    <View style={{height: 0.45 * screen.height}}>
+                        <View style={{width: 0.9 * screen.width, flexDirection: "row", backgroundColor: "#3D3D4E", borderTopLeftRadius: 0.02 * screen.width, borderTopRightRadius: 0.02 * screen.width, height: 0.05 * screen.height, justifyContent: "space-between"}}>
+                            <TouchableOpacity onPress={() => {setPostModal(false); setBlurIntensity(1)}} style={{alignItems: "center", justifyContent: "center"}}>
+                                <FontAwesome5Icon name="times" size={20} regular color='#fff' style={{marginLeft: 0.02 * screen.width, alignSelf: "center"}}></FontAwesome5Icon> 
                             </TouchableOpacity>
-                        }
+                            <View style={{alignItems: "center", justifyContent: "center"}}>
+                                <Text style={{color: "#fff", fontSize: 18, textAlign: "center"}}>Create Post</Text>
+                            </View>
+                            <View style={{alignItems: "center", justifyContent: "center", marginRight: 0.04 * screen.width}}>
+                                <TouchableOpacity 
+                                    disabled={postText == "" || postFeeling == null || postLocation == null || postPhoto == null ? true: false} 
+                                    style={{
+                                        backgroundColor: postText == "" || postFeeling == null || postLocation == null || postPhoto == null ? "#c4c4c4": "#29b6f6", 
+                                        width: "125%", height: "75%", 
+                                        marginRight: 0.02 * screen.width, 
+                                        alignItems: "center", 
+                                        justifyContent: "center",
+                                        borderRadius: 0.02 * screen.width}}
+                                    onPress={() => {
+                                        setData(addData => [{
+                                            name: "Trang Pham",
+                                            emotion: "is feeling happy " +  '\u{1f61c}',
+                                            place_detail: postLocation,
+                                            number_react: 0,
+                                            number_comment: 0,
+                                            avatar: avatar,
+                                            place: postPhoto,
+                                            comment: []
+                                        }, ...addData])
+                                        setBlurIntensity(1);
+                                        setPostFeeling(null);
+                                        setPostPhoto(null);
+                                        setPostText("")
+                                        setPostModal(false);
+                                    }}>
+                                    <Text style={{color: "#fff", fontSize: 18, textAlign: "center", opacity: postText == "" ? 0.5: 1}}>Post</Text>    
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                        <ScrollView showsVerticalScrollIndicator={false} style={{width: 0.9 * screen.width, flexDirection: "column", backgroundColor: "#3D3D4E", borderBottomLeftRadius: 0.02 * screen.width, borderBottomRightRadius: 0.02 * screen.width}}>
+                            <View style={{flexDirection: "row", height: 0.08 * screen.height}}>
+                                <Image source={{uri: avatar}} style={{margin: 0.02 * screen.height, width: 40 * screen.width / figma_screen_w, height: 40 * screen.width / figma_screen_w, borderRadius: 0.1 * screen.width, 
+                                    margin: 0.015 * screen.width}}/>
+                                <Text style={{color: "white", fontSize: 12, fontWeight: "bold", alignItems: "center", marginTop: 0.015 * screen.width + 10 * screen.width / figma_screen_w}}>Trang Pham </Text>
+                                {postFeeling != null && 
+                                    <View style={{flexDirection: "row", marginTop: 0.015 * screen.width + 10 * screen.width / figma_screen_w}}>
+                                        <Text style={{color: "white", fontSize: 12, fontWeight: "normal", alignItems: "center"}}>is feeling </Text>
+                                        <FontAwesome5Icon name={postFeeling} size={12} solid color='#ffff69' style={{alignItems: "center"}}></FontAwesome5Icon>  
+                                        <Text style={{color: "white", fontSize: 12, fontWeight: "normal", alignItems: "center"}}> funny</Text>
+                                    </View>
+                                }
+                                {postFeeling == null && 
+                                    <TouchableOpacity onPress={() => setPostFeeling("grin-tongue-wink")} style={{flexDirection: "row", marginTop: 0.015 * screen.width + 10 * screen.width / figma_screen_w}}>
+                                        <Text style={{color: "white", fontSize: 12, fontWeight: "normal", alignItems: "center"}}>is adding </Text>
+                                        <FontAwesome5Icon name="smile-wink" size={12} regular color='#ffff69' style={{alignItems: "center"}}></FontAwesome5Icon>  
+                                        <Text style={{color: "white", fontSize: 12, fontWeight: "normal", alignItems: "center"}}> a Feeling/Activity</Text>
+                                    </TouchableOpacity>
+                                }
+                            </View>
+                            {postPhoto != null && 
+                            <TouchableOpacity onPress={pickPhoto}>
+                            <Image source={{uri: postPhoto}} style={{
+                                width: 0.86 * screen.width, 
+                                height: 0.3 * screen.height,
+                                marginLeft: 0.02 * screen.width,
+                                borderRadius: 0.02 * screen.width,
+                                marginBottom: 0.02 * screen.height
+                            }}></Image></TouchableOpacity>}
+                            <TextInput 
+                                multiline={true}
+                                placeholder="What's happening?" 
+                                placeholderTextColor="#c4c4c4" 
+                                style={{
+                                    width: 0.86 * screen.width, 
+                                    padding: 0.02 * screen.width,
+                                    textAlignVertical: "top",
+                                    height: 0.25 * screen.height,
+                                    marginLeft: 0.02 * screen.width,
+                                    backgroundColor: "#363847",
+                                    borderRadius: 0.02 * screen.width,
+                                    color: "white"
+                                }}
+                                onChangeText={setPostText}
+                                value={postText}
+                            />
+                            <View style={{flexDirection: "row", justifyContent: "space-between", marginTop: 0.01 * screen.height, marginLeft: 0.02 * screen.height, marginRight: 0.02 * screen.height}}>
+                                {postPhoto == null &&<TouchableOpacity style={{justifyContent: "center", alignItems: "center"}} onPress={pickPhoto}>
+                                    <FontAwesome5Icon name="image" size={16} solid color='#89ff69' style={{marginBottom: 0.005 * screen.height}}></FontAwesome5Icon> 
+                                    <Text style={{color: "white", fontSize: 14}}>Photo</Text>
+                                </TouchableOpacity>}
+                                {postPhoto == null && <View style={{borderRightColor: "#c4c4c4", borderRightWidth: 1}} />}
+                                {postLocation == null && <TouchableOpacity style={{justifyContent: "center", alignItems: "center"}} onPress={() => setPostLocation("Paris, France")}>
+                                    <FontAwesome5Icon name="map-marker-alt" size={16} solid color='#80b0ff' style={{marginBottom: 0.005 * screen.height}}></FontAwesome5Icon> 
+                                    <Text style={{color: "white", fontSize: 14}}>Location</Text>
+                                </TouchableOpacity>}
+                                {postLocation == null && <View style={{borderRightColor: "#c4c4c4", borderRightWidth: 1}} />}
+                                <TouchableOpacity style={{justifyContent: "center", alignItems: "center"}}>
+                                    <FontAwesome5Icon name="tag" size={16} solid color='#ff5c5c' style={{marginBottom: 0.005 * screen.height}}></FontAwesome5Icon> 
+                                    <Text style={{color: "white", fontSize: 14}}>Tag</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </ScrollView>
                     </View>
-                    <TextInput 
-                        multiline={true}
-                        placeholder="What's happening?" 
-                        placeholderTextColor="#c4c4c4" 
-                        style={{width: 0.86 * screen.width, 
-                        padding: 0.02 * screen.width,
-                        textAlignVertical: "top",
-                        height: 0.25 * screen.height,
-                        marginLeft: 0.02 * screen.width,
-                        backgroundColor: "#363847",
-                        borderRadius: 0.02 * screen.width,
-                        color: "white"}}
-                        onPress={() => setPostModal(true)}
-                    />
-
-
-                </View>
-            </TouchableOpacity>
-        </Modal>
+                </TouchableOpacity>
+            </Modal>
         </View>
     )
 }

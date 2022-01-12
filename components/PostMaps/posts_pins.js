@@ -92,7 +92,7 @@ const PostMaps = (props) => {
                 <View style={styles.content}>
                     <Image source={logo} style={styles.logo} />
                 </View>
-                <TouchableOpacity onPress={() => {navigation.navigate("Home");}} style={{position: "absolute", left: 0.5 * screen.width, top: 0.4 * APPBAR_HEIGHT, zIndex: 0}}>
+                <TouchableOpacity onPress={() => {navigation.goBack();}} style={{position: "absolute", left: 0.5 * screen.width, top: 0.4 * APPBAR_HEIGHT, zIndex: 0}}>
                     <FontAwesome5Icon color='white' name="arrow-circle-up" solid size={18} />
                 </TouchableOpacity>
                 <Svg height={APPBAR_HEIGHT * 0.8} width={screen.width} overflow="hidden" style={styles.svg1} >
