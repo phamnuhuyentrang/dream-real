@@ -1,17 +1,20 @@
-import React, { useState } from "react";
-import { Alert, Modal, StyleSheet, Text, Pressable, View, TextInput, Dimensions, TouchableOpacity, Image, Keyboard, Platform, KeyboardAvoidingView, TouchableWithoutFeedback } from "react-native";
+import React from "react";
+import { Alert, ScrollView, StyleSheet, Text, Pressable, View, TextInput, Dimensions, TouchableOpacity, Image, Keyboard, Platform, KeyboardAvoidingView, TouchableWithoutFeedback } from "react-native";
 
 import background from "../static/img/signup/signup_background.jpg"
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 import * as ImagePicker from 'expo-image-picker';
 import logo from '../static/img/dream-real-logo-nav.png'
 import CustomBar from '../components/statusbar';
-import { ScrollView } from "react-native-gesture-handler";
 import * as SecureStore from 'expo-secure-store';
+import axios from 'axios';
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+
 
 const screen = Dimensions.get("screen");
 const figma_screen_w = 428;
 const figma_screen_h = 926;
+const GOOGLE_PLACES_API_KEY = 'AIzaSyBBkRlU71iBx0edNJz1TxHxdtuFZWCiAqg';
 
 const SignUp = (props) => {
     const [firstname, setFirstname] = React.useState("");
@@ -22,44 +25,43 @@ const SignUp = (props) => {
     const [cpassword, setCPassword] = React.useState("");
     const [avatar, setAvatar] = React.useState(null);
     const [cover, setCover] = React.useState(null);
+    const [email, setEmail] = React.useState("");
 
     const signup = async () => {
-        let body = {
-            first_name: firstname,
-            last_name: lastname,
-            info_lives: location,
-            location_hash: "ChIJzWXFYYuifDUR64Pq5LTtioU",
-            email: username,
-            password: password,
-            c_password: cpassword
+        if (password != cpassword) {
+            Alert.alert("Password is not the same")
         }
-        if (avatar != null) {
-            body.avatar = avatar
-        }
-        if (cover != null) {
-            body.cover = cover
-        }
-        let response = await fetch('https://v3-beta.dreamreal.co/api/register/', {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(body)
-        });
-        try {
-            let json = await response.json();
-            if (json.success) {
-                await SecureStore.setItemAsync("token", json.data.token);
-                await SecureStore.setItemAsync("name", json.data.name);
-                Alert.alert("Dream Real Register Success", "Welcome " + json.data.name+ " to Dream Real !")
+        else {
+            let body = {
+                first_name: firstname,
+                last_name: lastname,
+                username: username,
+                info_lives: location,
+                location_hash: "ChIJzWXFYYuifDUR64Pq5LTtioU",
+                email: username,
+                password: password,
+                avatar: avatar,
+                cover: cover,
             }
-            else {
-                Alert.alert("Dream Real Register Failed", json.message)
+            if (avatar != null) {
+                body.avatar = avatar
             }
-        }
-        catch(e) {
-            Alert.alert("Dream Real Register Error", "Error occured when trying to sign up: " + e)
+            if (cover != null) {
+                body.cover = cover
+            }
+            axios.post('http://dreamreal-env.eba-68upqgat.eu-west-3.elasticbeanstalk.com/register/', body, function(response){
+                let json = response.json();
+                if (json.success) {
+                    SecureStore.setItemAsync("token", json.data.token);
+                    SecureStore.setItemAsync("name", json.data.name);
+                    Alert.alert("Dream Real Register Success", "Welcome " + json.data.name+ " to Dream Real !")
+                }
+                else {
+                    Alert.alert("Dream Real Register Failed", json.message)
+                }
+            }).catch(function (error) {
+                Alert.alert("Dream Real Register Error", "Error occured when trying to sign up: " + error)
+            });
         }
     }
 
@@ -102,9 +104,9 @@ const SignUp = (props) => {
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <View style={styles.centeredView}>
                     <Image source={background} resizeMode="cover" style={styles.background}>
-                    </Image>
-                    <Image source={logo} style={{width: 0.5 * screen.width, height: 0.05 * screen.height, marginBottom: 0.04 * screen.height}} />
-                    <View style={styles.content}>
+                    </Image> 
+                    <ScrollView style={styles.content}>
+                        <Image source={logo} style={{width: 0.5 * screen.width, height: 0.05 * screen.height, marginBottom: 0.04 * screen.height, marginTop: 0.05 * screen.height, marginLeft: 0.05 * screen.width, marginRight: 0.05 * screen.width, alignSelf: "center", alignContent: "center"}} />
                         <Text style={{color: "#fff", fontSize: 30, textAlign: "center", marginBottom: 0.02 * screen.height}}>Create your account!</Text>
                         
                         <View style={styles.row}>
@@ -139,17 +141,48 @@ const SignUp = (props) => {
                         <View style={styles.inputView}>
                             <TextInput
                                 style={styles.TextInput}
-                                placeholder="Location"
+                                placeholder="Username"
                                 placeholderTextColor="#003f5c"
-                                onChangeText={(location) => setLocation(location)}
+                                onChangeText={(usr) => setUsername(usr)}
                             />
                         </View>
+                        
+                        <GooglePlacesAutocomplete
+                            placeholder="Location"
+                            placeholderTextColor="#003f5c"
+                            query={{
+                                key: GOOGLE_PLACES_API_KEY,
+                                language: 'en', // language of the results
+                                types: '(cities)'
+                            }}
+                            onPress={(data, details = null) => {
+                                setLocationHash(data.place_id)
+                                setLocation(data.description)
+                            }}
+                            onFail={(error) => console.error(error)}
+                            styles = {{
+                                container: {
+                                    ...styles.inputView,
+                                },
+                                textInput: {
+                                    backgroundColor: "#c4c4c4",
+                                    borderRadius: 0.02 * screen.width,
+                                    width: 0.9 *screen.width,
+                                    height: 0.06 *  screen.height,
+                                    paddingLeft: 0.05 * screen.width,
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    alignContent: "center",
+                                },
+                            }}
+                            textInputProps={{ placeholderTextColor: '#003f5c' }}
+                        />
                         <View style={styles.inputView}>
                             <TextInput
                                 style={styles.TextInput}
                                 placeholder="Email"
                                 placeholderTextColor="#003f5c"
-                                onChangeText={(usr) => setUsername(usr)}
+                                onChangeText={(email) => setEmail(email)}
                             />
                         </View>
                         <View style={styles.inputView}>
@@ -176,7 +209,7 @@ const SignUp = (props) => {
                         >
                             <Text style={styles.LoginText}>SIGN UP</Text>
                         </Pressable>
-                    </View>
+                    </ScrollView>
                 </View>
             </TouchableWithoutFeedback>
         </KeyboardAvoidingView>
