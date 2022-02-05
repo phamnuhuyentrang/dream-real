@@ -1,5 +1,5 @@
 import React from "react";
-import { Alert, ScrollView, StyleSheet, Text, Pressable, View, TextInput, Dimensions, TouchableOpacity, Image, Keyboard, Platform, KeyboardAvoidingView, TouchableWithoutFeedback, SafeAreaView } from "react-native";
+import { Alert, ScrollView, StyleSheet, Text, Pressable, View, TextInput, Dimensions, TouchableOpacity, Image, Keyboard, Platform, KeyboardAvoidingView, TouchableWithoutFeedback } from "react-native";
 
 import background from "../static/img/signup/signup_background.jpg"
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
@@ -65,7 +65,7 @@ const SignUp = (props) => {
             }
             
             try {
-                const response = await fetch(global.back_end_url + "register", {
+                const response = await fetch(global.back_end_url + "/register", {
                     "method": "POST",
                     "headers": {
                         "Content-Type": "multipart/form-data"
@@ -167,7 +167,7 @@ const SignUp = (props) => {
                                         username: usr.nativeEvent.text
                                     }
                                     try {
-                                        const response = await fetch(global.back_end_url + "usn_validity", {
+                                        const response = await fetch(global.back_end_url + "/usn_validity", {
                                             method: "POST",
                                             headers: {
                                                 Accept: 'application/json',
@@ -215,7 +215,7 @@ const SignUp = (props) => {
                                     }
                                     // console.log(body)
                                     try {
-                                        const response = await fetch(global.back_end_url + "email_validity", {
+                                        const response = await fetch(global.back_end_url + "/email_validity", {
                                             method: "POST",
                                             headers: {
                                                 Accept: 'application/json',

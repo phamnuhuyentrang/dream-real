@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, Image, StyleSheet, Dimensions, TouchableOpacity, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-
+// import userIdProvider from "../Context/user_id_provider"
+// import { userIdProvider } from "../login_page"
 import like from "../../static/img/emoji/like.png";
 import love from "../../static/img/emoji/love.png";
 import sad from "../../static/img/emoji/sad.png";
@@ -9,7 +10,8 @@ import angry from "../../static/img/emoji/angry.png";
 import wow from "../../static/img/emoji/wow.png";
 import haha from "../../static/img/emoji/haha.png";
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
-
+// import manage_user_id from '../../global';
+import userIdProvider from "../Context/user_id_provider" 
 
 const screen = Dimensions.get("screen");
 const window = Dimensions.get("window");
@@ -19,17 +21,19 @@ const figma_screen_h = 926;
 
 const TrendingItems = (props) => {
     const data = props.data;
-
     const navigation = useNavigation()
+    const user_id = React.useContext(userIdProvider);
+    const userId = user_id.id;
     const showComments = () => {
-        navigation.navigate('Comment', {comment: data})
+        // navigation.navigate('Comment', {comment: data})
+        console.log(userId);
     }
     return (
         <View style={styles.content}>
             <View style={styles.content2}>
                 <View>
                     <View style={styles.content4}>
-                        <Image source={{uri: "https://dream-real.s3.eu-west-3.amazonaws.com/" + data.avatar}} style={styles.avatar}></Image>
+                        <Image source={{uri: global.image_host_url + data.avatar}} style={styles.avatar}></Image>
                         <Text style={styles.item4}>{data.first_name + " " + data.last_name}</Text>
                     </View>
                     <Text style={styles.item3}>{data.title}</Text>
@@ -38,8 +42,8 @@ const TrendingItems = (props) => {
                     <Text style={[styles.item2, {color:'#FFF'}]}> {data.location_city + ", " + data.location_country}</Text>
                 </FontAwesome5Icon>
             </View>
-            {typeof(data.image) == "number" && <Image source={"https://dream-real.s3.eu-west-3.amazonaws.com/" + data.image} style={styles.place} />}
-            {typeof(data.image) == "string" && <Image source={{uri: "https://dream-real.s3.eu-west-3.amazonaws.com/" + data.image}} style={styles.place} />}
+            {typeof(data.image) == "number" && <Image source={global.image_host_url + data.image} style={styles.place} />}
+            {typeof(data.image) == "string" && <Image source={{uri: global.image_host_url + data.image}} style={styles.place} />}
             <View style={styles.content5}>
                 <TouchableOpacity>
                     <Text style={styles.item5}>{data.react} reacts</Text>
