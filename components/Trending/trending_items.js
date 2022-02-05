@@ -29,20 +29,20 @@ const TrendingItems = (props) => {
             <View style={styles.content2}>
                 <View>
                     <View style={styles.content4}>
-                        <Image source={{uri: data.avatar}} style={styles.avatar}></Image>
-                        <Text style={styles.item4}>{data.name}</Text>
+                        <Image source={{uri: "https://dream-real.s3.eu-west-3.amazonaws.com/" + data.avatar}} style={styles.avatar}></Image>
+                        <Text style={styles.item4}>{data.first_name + " " + data.last_name}</Text>
                     </View>
-                    <Text style={styles.item3}>{data.emotion}</Text>
+                    <Text style={styles.item3}>{data.title}</Text>
                 </View>
                 <FontAwesome5Icon color='red' name="map-marker-alt" regular size={10} style={styles.item2}>
-                    <Text style={[styles.item2, {color:'#FFF'}]}> {data.place_detail}</Text>
+                    <Text style={[styles.item2, {color:'#FFF'}]}> {data.location_city + ", " + data.location_country}</Text>
                 </FontAwesome5Icon>
             </View>
-            {typeof(data.place) == "number" && <Image source={data.place} style={styles.place} />}
-            {typeof(data.place) == "string" && <Image source={{uri: data.place}} style={styles.place} />}
+            {typeof(data.image) == "number" && <Image source={"https://dream-real.s3.eu-west-3.amazonaws.com/" + data.image} style={styles.place} />}
+            {typeof(data.image) == "string" && <Image source={{uri: "https://dream-real.s3.eu-west-3.amazonaws.com/" + data.image}} style={styles.place} />}
             <View style={styles.content5}>
                 <TouchableOpacity>
-                    <Text style={styles.item5}>{data.number_react} reacts</Text>
+                    <Text style={styles.item5}>{data.react} reacts</Text>
                 </TouchableOpacity>
                 <View>
                     <View style={styles.content7}>
@@ -66,7 +66,7 @@ const TrendingItems = (props) => {
                         </TouchableOpacity>
                         <TouchableOpacity onPress={showComments}>
                             <FontAwesome5Icon color='white' name="comment-alt" regular size={10} style={styles.commenticon}>
-                                <Text style={styles.item8}> {data.number_comment} comments</Text>
+                                <Text style={styles.item8}> {data.comment} comments</Text>
                             </FontAwesome5Icon>
                         </TouchableOpacity>
                     </View>
