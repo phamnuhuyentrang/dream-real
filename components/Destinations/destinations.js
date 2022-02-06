@@ -1,55 +1,60 @@
 import React from 'react';
-import { View, Image, StyleSheet, Dimensions, TouchableOpacity, Text } from 'react-native';
-
-import bangkok from "../../static/img/destinations/bangkok.jpg"
-import hanoi from "../../static/img/destinations/hanoi.jpg"
-import havana from "../../static/img/destinations/havana.jpg"
-import london from "../../static/img/destinations/london.jpg"
-import paris from "../../static/img/destinations/paris.jpg"
-import titlis from "../../static/img/destinations/titlis.jpg"
+import { View, Dimensions, TouchableOpacity, Text, Alert, StyleSheet } from 'react-native';
+import axios from 'axios';
 
 import DestinationItems from './destinations_items';
 
 const screen = Dimensions.get("screen");
-const window = Dimensions.get("window");
-
-const data = [
-    {
-        place_detail: "Hanoi, Vietnam",
-        place: hanoi
-    },
-    {
-        place_detail: "Bangkok, Thailand",
-        place: bangkok
-    },
-    {
-        place_detail: "Havana, Cuba",
-        place: havana
-    },
-    {
-        place_detail: "London, UK",
-        place: london
-    },
-    {
-        place_detail: "Paris, France",
-        place: paris
-    },
-    {
-        place_detail: "Titlis, Switzerland",
-        place: titlis
-    }
-]
 
 const Destinations = () => {
+    const [data, setData] = React.useState([]);
+    const [offset, setOffset] = React.useState(0);
+    const [loading, setLoading] = React.useState(true);
+
+    React.useEffect(() => {
+        if (loading) {
+            axios.get(global.back_end_url + `/destination`, {
+                params: { offset: offset } 
+            })
+            .then((response) => {
+                let json = response.data
+                if (json.success) {
+                    setData([...data, ...JSON.parse(JSON.stringify(json.destinations))])
+                    setLoading(false)
+                    setOffset(offset + 10)
+                }
+                else {
+                    Alert.alert("Dream Real Loading Error", "Error occured when trying to load destinations: " + json.message)
+                }
+            })
+            .catch((error) => Alert.alert("Dream Real Loading Error", "Error occured when trying to load destinations: " + error))
+        }
+    }, [loading])
+
     return (
         <View> 
-            {data.map((person, index) => {
+            {data != [] ? data.map((destination, index) => {
                 return (
-                    <DestinationItems data={person} key={index}/>
+                    <DestinationItems data={destination} key={index}/>
                 )
-            })}
+            }): <Text>Loading ...</Text>}
+            {data != [] && <TouchableOpacity style={styles.buttonLoad} onPress={() => setLoading(true)}>
+                <Text style={{textAlign: "center", alignItems: "center", justifyContent: "center", fontSize: 0.03 * screen.height, color: "white"}}> Load more </Text>
+            </TouchableOpacity> }
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    buttonLoad: {
+        width: 0.9 * screen.width,
+        height: 0.05 * screen.height,
+        marginBottom: 0.02 * screen.height,
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: 0.02 * screen.width,
+        backgroundColor: "#3D3D4E",
+    }
+})
 
 export default Destinations;

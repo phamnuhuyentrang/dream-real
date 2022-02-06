@@ -1,35 +1,15 @@
 import React from "react";
-import { StatusBar, Modal, StyleSheet, Text, View, Dimensions, TouchableOpacity, Image, Platform, TextInput } from "react-native";
+import { StatusBar, Modal, StyleSheet, Text, View, Dimensions, TouchableOpacity, Image, Platform, TextInput,Alert } from "react-native";
 import { ScrollView } from "react-native";
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 import * as ImagePicker from 'expo-image-picker';
 import logo from '../static/img/dream-real-logo-nav.png'
-import coverRaiden from '../static/img/destinations/hanoi.jpg'
 import CustomBar from '../components/statusbar';
 import * as SecureStore from 'expo-secure-store';
-import { Svg, Ellipse, Line } from 'react-native-svg'
+import { Svg, Ellipse } from 'react-native-svg'
 import { useNavigation } from '@react-navigation/native';
-
-import avatarRaiden from '../static/img/my_ava.jpeg';
-import selfie1 from "../static/img/avatar/selfie1.jpg"
-import selfie2 from "../static/img/avatar/selfie2.jpg"
-import selfie3 from "../static/img/avatar/selfie3.jpg"
-import selfie4 from "../static/img/avatar/selfie4.jpg"
-import selfie5 from "../static/img/avatar/selfie5.jpg"
-import selfie6 from "../static/img/avatar/selfie6.jpg"
-import selfie7 from "../static/img/avatar/selfie7.jpg"
-import selfie8 from "../static/img/avatar/selfie8.jpg"
-import selfie10 from "../static/img/avatar/selfie10.jpg"
-import selfie11 from "../static/img/avatar/selfie11.jpg"
-import selfie12 from "../static/img/avatar/selfie12.jpg"
-
-
-import drink_beer from "../static/img/trending/drink_beer.jpg"
-import eating_pizza from "../static/img/trending/eating_pizza.jpg"
-import looking_for_job from "../static/img/trending/looking_for_job.jpg"
-import skating from "../static/img/trending/skating.jpg"
-import travel_to_vietnam from "../static/img/trending/travel_to_vietnam.jpg"
-import travel from "../static/img/trending/travel.jpg"
+import userIdProvider from "../components/Context/user_id_provider"
+import axios from 'axios';
 
 import TrendingItems from "../components/Trending/trending_items";
 
@@ -43,181 +23,18 @@ const SLIDER_WIDTH = Dimensions.get('window').width
 const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.9)
 const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 20 : StatusBar.currentHeight;
 
-const friends = [selfie1, selfie2, selfie3, selfie4, selfie5, selfie6, selfie7];
-const followers = [selfie10, selfie11, selfie8, selfie4, selfie5, selfie6, selfie7];
-const following = [selfie12, selfie3, selfie8, selfie11, selfie6, selfie1, selfie7];
-const avatarDefaultUri = Image.resolveAssetSource(avatarRaiden).uri
+const isCloseToRight = ({ layoutMeasurement, contentOffset, contentSize }) => {
+    const paddingToRight = 0.05 * screen.width;
+    return layoutMeasurement.width + contentOffset.x >= contentSize.width - paddingToRight;
+};
 
-const initData = [
-    {
-        name: "Trang Pham",
-        emotion: "is drinking beer " +  '\u{1f37b}',
-        place_detail: "Lisbon, Portugal",
-        number_react: 9,
-        number_comment: 6,
-        avatar: avatarDefaultUri,
-        place: drink_beer,
-        comment: [
-            {
-                avatar: selfie7,
-                name: "Tina Zhou",
-                time: "1 week ago",
-                content: "Have fun !"
-            },
-            {
-                avatar: selfie2,
-                name: "Liwen Chan",
-                time: "2 days ago",
-                content: "Wish to join youuu !"
-            },{
-                avatar: selfie6,
-                name: "Michele Hyatt",
-                time: "1 week ago",
-                content: "1 2 3 Cheers !"
-            },
-            {
-                avatar: selfie3,
-                name: "Alexandre Analy",
-                time: "2 days ago",
-                content: "Cool !"
-            },{
-                avatar: selfie4,
-                name: "Alex Kurt",
-                time: "1 hour ago",
-                content: "Niceeeeee weekend !"
-            },
-            {
-                avatar: selfie5,
-                name: "Kelly Cat",
-                time: "2 days ago",
-                content: "Beautiful !"
-            }
-        ]
-    },
-    {
-        name: "Trang Pham",
-        emotion: "is eating pizza " + '\u{1f355}',
-        place_detail: "Kualar Lumpur, Malaysia",
-        number_react: 200,
-        number_comment: 2,
-        avatar: avatarDefaultUri,
-        place: eating_pizza,
-        comment: [
-            {
-                avatar: selfie1,
-                name: "Anna Scott",
-                time: "3 weeks ago",
-                content: "Delicious !"
-            },
-            {
-                avatar: selfie5,
-                name: "Kelly Cat",
-                time: "3 days ago",
-                content: "I love it !"
-            }
-        ]
-    },
-    {
-        name: "Trang Pham",
-        emotion: "is skating " + '\u{1f6f9}',
-        place_detail: "Nantes, France",
-        number_react: "1k6",
-        number_comment: 2,
-        avatar: avatarDefaultUri,
-        place: skating,
-        comment: [
-            {
-                avatar: selfie2,
-                name: "Liwen Chan",
-                time: "1 hour ago",
-                content: "Cooooooool !"
-            },
-            {
-                avatar: selfie4,
-                name: "Alex Kurt",
-                time: "1 hour ago",
-                content: "Nice air !"
-            }
-        ]
-    },
-    {
-        name: "Trang Pham",
-        emotion: "is traveling to Vietnam " + '\u{1f1fb}',
-        place_detail: "Hanoi, Vietnam",
-        number_react: "1k",
-        number_comment: 2,
-        avatar: avatarDefaultUri,
-        place: travel_to_vietnam,
-        comment: [
-            {
-                avatar: selfie2,
-                name: "Liwen Chan",
-                time: "1 hour ago",
-                content: "So beautiful this country !"
-            },
-            {
-                avatar: selfie4,
-                name: "Alex Kurt",
-                time: "1 hour ago",
-                content: "I really want to travel there !"
-            }
-        ]
-    },
-    {
-        name: "Trang Pham",
-        emotion: "is looking for job " + '\u{1f468}',
-        place_detail: "New York, USA",
-        number_react: "10",
-        number_comment: 2,
-        avatar: avatarDefaultUri,
-        place: looking_for_job,
-        comment: [
-            {
-                avatar: selfie3,
-                name: "Alexandre Analy",
-                time: "1 hour ago",
-                content: "You an send me your CV and cover letter to my email at aanaly@dream-real-group.co"
-            },
-            {
-                avatar: selfie6,
-                name: "Michele Hyatt",
-                time: "1 hour ago",
-                content: "You can reach me at PM for more details !"
-            }
-        ]
-    },
-    {
-        name: "Trang Pham",
-        emotion: "is traveling " + '\u{1f3d4}',
-        place_detail: "Titlis, Switzerland",
-        number_react: "100",
-        number_comment: 2,
-        avatar: avatarDefaultUri,
-        place: travel,
-        comment: [
-            {
-                avatar: selfie3,
-                name: "Alexandre Analy",
-                time: "1 hour ago",
-                content: "Wow ! Too nice"
-            },
-            {
-                avatar: selfie7,
-                name: "Tina Zhou",
-                time: "1 hour ago",
-                content: "I really love this place !"
-            }
-        ]
-    }
-];
-
-const coverDefaultUri = Image.resolveAssetSource(coverRaiden).uri
 
 const Profile = (props) => {
     const navigation = useNavigation()
-    const [avatar, setAvatar] = React.useState(avatarDefaultUri);
-    const [cover, setCover] = React.useState(coverDefaultUri);
-    const [data, setData] = React.useState(initData);
+    const [avatar, setAvatar] = React.useState("N/A");
+    const [cover, setCover] = React.useState("N/A");
+    const [name, setName] = React.useState("N/A");
+    
     const [seeFriends, setSeeFriends] = React.useState(true);
     const [seeFollowers, setSeeFollowers] = React.useState(false);
     const [seeFollowing, setSeeFollowing] = React.useState(false);
@@ -232,56 +49,174 @@ const Profile = (props) => {
     const [showPostModal, setPostModal] = React.useState(false);
     const [blurIntensity, setBlurIntensity] = React.useState(1);
 
-    const pickAvatar = async () => {
-        let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            allowsEditing: true,
-            aspect: [4, 3],
-            quality: 1,
-            base64: true
-        });
-        
-        if (!result.cancelled) {
-            setAvatar(result.uri);
-        }
-    };
+    const [loadingFriends, setLoadingFriends] = React.useState(true);
+    const [offsetFriends, setOffsetFriends] = React.useState(0);
+    const [friends, setFriends] = React.useState([]);
+    const [nbFriends, setNbFriends] = React.useState(0);
 
-    const pickPhoto = async () => {
-        let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            allowsEditing: true,
-            aspect: [4, 3],
-            quality: 1,
-            base64: true
-        });
-        
-        if (!result.cancelled) {
-            setPostPhoto(result.uri);
-        }
-    };
+    const [loadingFollowers, setLoadingFollowers] = React.useState(true);
+    const [offsetFollowers, setOffsetFollowers] = React.useState(0);
+    const [followers, setFollowers] = React.useState([]);
+    const [nbFollowers, setNbFollowers] = React.useState(0);
 
-    React.useEffect(() => {
-        setData(changeValue => {
-            const list = changeValue.map((d) => {
-                return {...d, avatar: avatar}
+    const [loadingFollowing, setLoadingFollowing] = React.useState(true);
+    const [offsetFollowing, setOffsetFollowing] = React.useState(0);
+    const [following, setFollowing] = React.useState([])
+    const [nbFollowing, setNbFollowing] = React.useState(0);
+
+    const [loadingPost, setLoadingPosts] = React.useState(true);
+    const [offset, setOffset] = React.useState(0);
+    const [data, setData] = React.useState([]);
+
+    const user_id = React.useContext(userIdProvider);
+    const userId = user_id.id;
+
+    React.useEffect(async () => {
+        if (loadingPost) {
+            axios.get(global.back_end_url + '/album_user', {
+                params: { user_id: userId, offset: offset, user_react_id: userId },
+                withCredentials: true 
             })
-            return list;
-        })
-    }, [avatar])
-
-    const pickCover = async () => {
-        let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            allowsEditing: true,
-            aspect: [4, 3],
-            quality: 1,
-            base64: true
-        });
-        
-        if (!result.cancelled) {
-            setCover(result.uri);
+            .then((response) => {
+                let json = response.data;
+                if (json.success) {
+                    setData([...data, ...JSON.parse(JSON.stringify(json.albums))])
+                    setLoadingPosts(false)
+                    setOffset(offset + 10)
+                    let js = JSON.parse(JSON.stringify(json.albums))
+                    setAvatar(global.image_host_url + js[0].avatar)
+                    setCover(global.image_host_url + js[0].cover_image)
+                    setName(js[0].first_name + " " + js[0].last_name)
+                }
+                else {
+                    Alert.alert("Dream Real Loading Posts Error", json.message)
+                }
+            })
+            .catch((error) => Alert.alert("Dream Real Loading Posts Error", error.message))
         }
-    };
+    }, [loadingPost])
+
+    React.useEffect(async () => {
+        if (loadingFriends) {
+            axios.get(global.back_end_url + `/get_friends`, {
+                withCredentials: true,
+                params: { user_id: userId, offset: offsetFriends } 
+            })
+            .then((response) => {
+                let json = response.data;
+                if (json.success) {
+                    setFriends([...friends, ...JSON.parse(JSON.stringify(json.friends))])
+                    setNbFriends(json.nb_friends)
+                    setLoadingFriends(false)
+                    setOffsetFriends(offsetFriends + 10)
+                }
+                else {
+                    Alert.alert("Dream Real Loading Friends Error", json.message)
+                }
+            })
+            .catch((error) => Alert.alert("Dream Real Loading Friends Error", error.message))
+        }
+    }, [loadingFriends])
+
+    React.useEffect(async () => {
+        if (loadingFollowers) {
+            axios.get(global.back_end_url + `/get_followers`, {
+                withCredentials: true,
+                params: { user_id: userId, offset: offsetFollowers } 
+            })
+            .then((response) => {
+                let json = response.data;
+                if (json.success) {
+                    setFollowers([...followers, ...JSON.parse(JSON.stringify(json.followers))])
+                    setNbFollowers(json.nb_followers)
+                    setLoadingFollowers(false)
+                    setOffsetFollowers(offsetFollowers + 10)
+                }
+                else {
+                    Alert.alert("Dream Real Loading Followers Error", json.message)
+                }
+            })
+            .catch((error) => Alert.alert("Dream Real Loading Followers Error", error.message))
+        }
+    }, [loadingFollowers])
+
+    React.useEffect(async () => {
+        let tkn = await SecureStore.getItemAsync("token")
+        if (loadingFollowing) {
+            axios.get(global.back_end_url + `/get_following`, {
+                withCredentials: true,
+                params: { user_id: userId, offset: offsetFollowing },
+                // headers: {
+                //     // Cookie: "access_token=" + tkn
+                //     "cookie": "access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1pbHNhdmljIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjQ0MDk5MDMyfQ.AFL3RxurB6FcdqgK_r08OZ7KQTiIw_vuyDRyyG2-ag4"
+                // }  
+            })
+            .then((response) => {
+                let json = response.data;
+                if (json.success) {
+                    setFollowing([...following, ...JSON.parse(JSON.stringify(json.following))])
+                    setNbFollowing(json.nb_following)
+                    setLoadingFollowing(false)
+                    setOffsetFollowing(offsetFollowing + 10)
+                }
+                else {
+                    Alert.alert("Dream Real Loading Following Error", json.message)
+                }
+            })
+            .catch((error) => Alert.alert("Dream Real Loading Following Error", error))
+        }
+    }, [loadingFollowing])
+
+    // const pickAvatar = async () => {
+    //     let result = await ImagePicker.launchImageLibraryAsync({
+    //         mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    //         allowsEditing: true,
+    //         aspect: [4, 3],
+    //         quality: 1,
+    //         base64: true
+    //     });
+        
+    //     if (!result.cancelled) {
+    //         setAvatar(result.uri);
+    //     }
+    // };
+
+    // const pickPhoto = async () => {
+    //     let result = await ImagePicker.launchImageLibraryAsync({
+    //         mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    //         allowsEditing: true,
+    //         aspect: [4, 3],
+    //         quality: 1,
+    //         base64: true
+    //     });
+        
+    //     if (!result.cancelled) {
+    //         setPostPhoto(result.uri);
+    //     }
+    // };
+
+    // React.useEffect(() => {
+    //     setData(changeValue => {
+    //         const list = changeValue.map((d) => {
+    //             return {...d, avatar: avatar}
+    //         })
+    //         return list;
+    //     })
+    // }, [avatar])
+
+    // const pickCover = async () => {
+    //     let result = await ImagePicker.launchImageLibraryAsync({
+    //         mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    //         allowsEditing: true,
+    //         aspect: [4, 3],
+    //         quality: 1,
+    //         base64: true
+    //     });
+        
+    //     if (!result.cancelled) {
+    //         setCover(result.uri);
+    //     }
+    // };
 
     return (
         <View>
@@ -295,7 +230,7 @@ const Profile = (props) => {
                     </TouchableOpacity>
                     <Image source={logo} style={styles.logo} />
                 </View>
-                <TouchableOpacity onPress={pickAvatar} style={{position: "absolute", left: 0.42 * screen.width, top: 0.21 * screen.height, zIndex: 1}}>
+                <TouchableOpacity onPress={() => console.log("Clicked")} style={{position: "absolute", left: 0.42 * screen.width, top: 0.21 * screen.height, zIndex: 1}}>
                     <Image source={{uri: avatar}} style={styles.avatar}/>
                 </TouchableOpacity>
                 <Svg height={APPBAR_HEIGHT * 0.8} width={screen.width} overflow="hidden" style={styles.svg1} >
@@ -309,17 +244,17 @@ const Profile = (props) => {
                         strokeWidth="2"
                     />
                 </Svg>
-                <TouchableOpacity onPress={pickCover} style={styles.cover}>
+                <TouchableOpacity onPress={() => console.log("Clicked")} style={styles.cover}>
                     <Image source={{uri: cover}} style={styles.coverImage}/>
                 </TouchableOpacity>
                 <View style={{top: 0.06 * screen.height, zIndex: 3}}>
-                    <Text adjustsFontSizeToFit style={{color: "white", textAlign: "center", textAlignVertical: "center", fontSize: 20, fontWeight: 'bold'}}>Trang Pham</Text>
+                    <Text adjustsFontSizeToFit style={{color: "white", textAlign: "center", textAlignVertical: "center", fontSize: 20, fontWeight: 'bold'}}>{name}</Text>
                 </View>
                 <View style={{backgroundColor: "#252A38", marginTop: 0.1 * screen.height}}>
                     <View style={styles.row}>
                         <View style={styles.col1}>
                             <View style={{flexDirection: "row", alignItems: "center", justifyContent: "space-around", marginTop: 0.015 * screen.height}}>
-                                <TouchableOpacity onPress={() => navigation.navigate("Maps", {post: data})}>
+                                {/* <TouchableOpacity onPress={() => navigation.navigate("Maps", {post: data})}>
                                     <View style={{width: 0.1*screen.width, height: 0.02*screen.height, backgroundColor:"#B456F1", marginLeft: 0.05 * screen.width, borderRadius: 0.01 * screen.width, alignItems: "center", justifyContent: "center"}}>
                                         <FontAwesome5Icon name="map-marked-alt" size={10} solid color='white' style={{alignSelf: "center"}}></FontAwesome5Icon>
                                     </View>
@@ -328,7 +263,7 @@ const Profile = (props) => {
                                     <View style={{width: 0.1*screen.width, height: 0.02*screen.height, backgroundColor:"#B456F1", marginRight: 0.05 * screen.width, borderRadius: 0.01 * screen.width, alignItems: "center", justifyContent: "center"}}>
                                         <FontAwesome5Icon name="bookmark" size={10} solid color='white' style={{alignSelf: "center"}}></FontAwesome5Icon>
                                     </View>
-                                </TouchableOpacity>
+                                </TouchableOpacity> */}
                             </View>
                             <View style={{flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: 0.01 * screen.height}}>
                                 <Text style={{color: "#fff", textAlign: "left", marginLeft: 0.02 * screen.width}}>My score</Text>
@@ -350,7 +285,7 @@ const Profile = (props) => {
                                         setTextColorFollowing("white");
                                         setTextColorFollowers("white");
                                     }}
-                                >8 Friends</Text>
+                                >{nbFriends} Friends</Text>
                                 <Text style={{color: textColorFollowers}} 
                                     onPress={() => {
                                         setSeeFriends(false); 
@@ -360,7 +295,7 @@ const Profile = (props) => {
                                         setTextColorFollowing("white");
                                         setTextColorFollowers("#B456F1");
                                     }}
-                                >8 Followers</Text>
+                                >{nbFollowers} Followers</Text>
                                 <Text style={{color: textColorFollowing}} 
                                     onPress={() => {
                                         setSeeFriends(false); 
@@ -370,28 +305,40 @@ const Profile = (props) => {
                                         setTextColorFollowers("white");
                                         setTextColorFollowing("#B456F1")
                                     }}
-                                >8 Following</Text>
+                                >{nbFollowing} Following</Text>
                             </View>
-                            {seeFriends && <ScrollView showsHorizontalScrollIndicator={false} horizontal={true} style={{marginTop: 0.01 * screen.height}}>
+                            {seeFriends && friends != [] && <ScrollView showsHorizontalScrollIndicator={false} horizontal={true} style={{marginTop: 0.01 * screen.height}} onScroll={({nativeEvent}) => {
+                                if (isCloseToRight(nativeEvent)) {
+                                    setLoadingFriends(true);
+                                }
+                            }} scrollEventThrottle={400}>
                                 {friends.map((friend, index) => (
                                     <TouchableOpacity  key={index}>
-                                        <Image source={friend} style={styles.friend}></Image>
+                                        <Image source={{uri: global.image_host_url + friend.avatar}} style={styles.friend}></Image>
                                     </TouchableOpacity>
                                 ))}       
                             </ScrollView>
                             }
-                            {seeFollowers && <ScrollView showsHorizontalScrollIndicator={false} horizontal={true} style={{marginTop: 0.01 * screen.height}}>
-                                {followers.map((friend, index) => (
+                            {seeFollowers && followers != [] && <ScrollView showsHorizontalScrollIndicator={false} horizontal={true} style={{marginTop: 0.01 * screen.height}} onScroll={({nativeEvent}) => {
+                                if (isCloseToRight(nativeEvent)) {
+                                    setLoadingFollowers(true);
+                                }
+                            }} scrollEventThrottle={400}>
+                                {followers.map((follower, index) => (
                                     <TouchableOpacity  key={index}>
-                                        <Image source={friend} style={styles.friend}></Image>
+                                        <Image source={{uri: global.image_host_url + follower.avatar}} style={styles.friend}></Image>
                                     </TouchableOpacity>
                                 ))}       
                             </ScrollView>
                             }
-                            {seeFollowing && <ScrollView showsHorizontalScrollIndicator={false} horizontal={true} style={{marginTop: 0.01 * screen.height}}>
-                                {following.map((friend, index) => (
+                            {seeFollowing && following != [] && <ScrollView showsHorizontalScrollIndicator={false} horizontal={true} style={{marginTop: 0.01 * screen.height}} onScroll={({nativeEvent}) => {
+                                if (isCloseToRight(nativeEvent)) {
+                                    setLoadingFollowing(true);
+                                }
+                            }} scrollEventThrottle={400}>
+                                {following.map((following, index) => (
                                     <TouchableOpacity  key={index}>
-                                        <Image source={friend} style={styles.friend}></Image>
+                                        <Image source={{uri: global.image_host_url + following.avatar}} style={styles.friend}></Image>
                                     </TouchableOpacity>
                                 ))}       
                             </ScrollView>
@@ -419,7 +366,7 @@ const Profile = (props) => {
                             }}
                         />
                         <View style={{flexDirection: "row", justifyContent: "space-between", marginTop: 0.01 * screen.height, marginLeft: 0.02 * screen.height, marginRight: 0.02 * screen.height}}>
-                            {postPhoto == null && <TouchableOpacity style={{justifyContent: "center", alignItems: "center"}} onPress={pickPhoto}>
+                            {postPhoto == null && <TouchableOpacity style={{justifyContent: "center", alignItems: "center"}} onPress={() => console.log("Clicked")}>
                                 <FontAwesome5Icon name="image" size={16} solid color='#89ff69' style={{marginBottom: 0.005 * screen.height}}></FontAwesome5Icon> 
                                 <Text style={{color: "white", fontSize: 14}}>Photo</Text>
                             </TouchableOpacity>}
@@ -441,11 +388,14 @@ const Profile = (props) => {
                         </View>
                     </View> 
                     <View style={styles.containerPost}> 
-                        {data.map((person, index) => {
+                        {data != [] ? data.map((person) => {
                             return (
-                                <TrendingItems data={person} key={index} />
+                                <TrendingItems data={person} key={person.album_id}/>
                             )
-                        })}
+                        }): <Text>Loading ...</Text>}
+                        {data != [] && <TouchableOpacity style={styles.buttonLoad} onPress={() => setLoadingPosts(true)}>
+                            <Text style={{textAlign: "center", alignItems: "center", justifyContent: "center", fontSize: 0.03 * screen.height, color: "white"}}> Load more </Text>
+                        </TouchableOpacity>}
                     </View> 
                 </View>
             </ScrollView>
@@ -472,7 +422,7 @@ const Profile = (props) => {
                                 <Text style={{color: "#fff", fontSize: 18, textAlign: "center"}}>Create Post</Text>
                             </View>
                             <View style={{alignItems: "center", justifyContent: "center", marginRight: 0.04 * screen.width}}>
-                                <TouchableOpacity 
+                                {/* <TouchableOpacity 
                                     disabled={postText == "" || postFeeling == null || postLocation == null || postPhoto == null ? true: false} 
                                     style={{
                                         backgroundColor: postText == "" || postFeeling == null || postLocation == null || postPhoto == null ? "#c4c4c4": "#29b6f6", 
@@ -499,7 +449,7 @@ const Profile = (props) => {
                                         setPostModal(false);
                                     }}>
                                     <Text style={{color: "#fff", fontSize: 18, textAlign: "center", opacity: postText == "" ? 0.5: 1}}>Post</Text>    
-                                </TouchableOpacity>
+                                </TouchableOpacity> */}
                             </View>
                         </View>
                         <ScrollView showsVerticalScrollIndicator={false} style={{width: 0.9 * screen.width, flexDirection: "column", backgroundColor: "#3D3D4E", borderBottomLeftRadius: 0.02 * screen.width, borderBottomRightRadius: 0.02 * screen.width}}>
@@ -523,7 +473,7 @@ const Profile = (props) => {
                                 }
                             </View>
                             {postPhoto != null && 
-                            <TouchableOpacity onPress={pickPhoto}>
+                            <TouchableOpacity onPress={() => console.log("Clicked")}>
                             <Image source={{uri: postPhoto}} style={{
                                 width: 0.86 * screen.width, 
                                 height: 0.3 * screen.height,
@@ -549,7 +499,7 @@ const Profile = (props) => {
                                 value={postText}
                             />
                             <View style={{flexDirection: "row", justifyContent: "space-between", marginTop: 0.01 * screen.height, marginLeft: 0.02 * screen.height, marginRight: 0.02 * screen.height}}>
-                                {postPhoto == null &&<TouchableOpacity style={{justifyContent: "center", alignItems: "center"}} onPress={pickPhoto}>
+                                {postPhoto == null &&<TouchableOpacity style={{justifyContent: "center", alignItems: "center"}} onPress={() => console.log("Clicked")}>
                                     <FontAwesome5Icon name="image" size={16} solid color='#89ff69' style={{marginBottom: 0.005 * screen.height}}></FontAwesome5Icon> 
                                     <Text style={{color: "white", fontSize: 14}}>Photo</Text>
                                 </TouchableOpacity>}

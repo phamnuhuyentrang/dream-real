@@ -13,18 +13,18 @@ const DestinationItems = (props) => {
     const data = props.data;
     const navigation = useNavigation();
     const showImage = () => {
-        navigation.navigate('DestinationDetails', {place: data.place})
+        navigation.navigate('DestinationDetails', {place: global.image_host_url + data.image})
     }
 
     return (
         <View style={styles.content}>
             <View style={styles.content2}>
                 <FontAwesome5Icon color='red' name="map-marker-alt" regular size={10} style={styles.item2}>
-                    <Text style={[styles.item2, {color:'#FFF'}]}> {data.place_detail}</Text>
+                    <Text style={[styles.item2, {color:'#FFF'}]}> {data.location_formatted}</Text>
                 </FontAwesome5Icon>
             </View>
             <TouchableOpacity onPress={showImage}>
-                <Image source={data.place} style={styles.place}></Image>
+                <Image source={{uri: global.image_host_url + data.image}} style={styles.place}></Image>
             </TouchableOpacity>
         </View>
     )
