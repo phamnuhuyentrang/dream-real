@@ -6,6 +6,8 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import rocket from "../../static/img/rocket.png"
 import facebook from "../../static/img/facebook.png"
 import instagram from "../../static/img/instagram.png"
+import axios from 'axios';
+import userIdProvider from '../Context/user_id_provider';
 
 const screen = Dimensions.get("screen");
 const window = Dimensions.get("window");
@@ -15,12 +17,15 @@ const figma_screen_h = 926;
 
 const ConnectItems = (props) => {
     const data = props.data;
-    const [follow, setFollow] = React.useState(data.is_followed);
-
-    const listReplace = data.name.substring(0, 13).split(" ")
+    const [follow, setFollow] = React.useState(data.following);
+    const [type, setType] = React.useState(data.type)
+    const user_item = React.useContext(userIdProvider)
+    const location = data.location_city + ", " + data.location_country
+    const name = data.first_name + " " + data.last_name
+    const listReplace = name.substring(0, 13).split(" ")
     const lastItem = listReplace[listReplace.length - 1]
-    const nameReplace = data.name.substring(0, 13 - lastItem.length) + lastItem.substring(0, 1)
-
+    const nameReplace = name.substring(0, 13 - lastItem.length) + lastItem.substring(0, 1)
+    const [status, setStatus] = React.useState(data.status)
     const handlePressFacebook = useCallback(async () => {
         // Checking if the link is supported for links with custom URL scheme.
         // const url = "fb://profile/" + data.facebook;
@@ -48,16 +53,29 @@ const ConnectItems = (props) => {
     return (
         <View style={styles.content}>
             {(() => {
-                if (follow === true) {
+                if (follow === 1) {
                     return (
-                        <TouchableOpacity onPress={() => {setFollow(!follow); data.is_followed = false}}>
+                        <TouchableOpacity onPress={() => {
+                            axios.post(global.back_end_url + "/unfollow", {
+                                "user_id" : user_item.id,
+                                "user_follow_id": data.user_id
+                            }).then((response) => {
+                                setFollow(0)
+                            }).catch((error) => Alert.alert("Dream Real Loading Error", "Error occured when trying to add comment: " + error))}
+                        }>
                             <FontAwesome5Icon color='red' name="heart" solid size={10} style={styles.item2} />
                         </TouchableOpacity>
                     )
                 }
                 else {
                     return (
-                        <TouchableOpacity onPress={() => {setFollow(!follow); data.is_followed = true}}>
+                        <TouchableOpacity onPress={() => {axios.post(global.back_end_url + "/follow", {
+                                "user_id" : user_item.id,
+                                "user_follow_id": data.user_id
+                            }).then((response) => {
+                                setFollow(1)
+                            }).catch((error) => Alert.alert("Dream Real Loading Error", "Error occured when trying to add comment: " + error))}
+                        }>
                             <FontAwesome5Icon color='#FFF' name="heart" regular size={10} style={styles.item2} />
                         </TouchableOpacity>
                     )
@@ -66,11 +84,11 @@ const ConnectItems = (props) => {
             <View style={styles.content7}>
                 <View style={{flexDirection: "row", alignContent: "center", alignItems: "center"}}>
                     <View style={styles.content4}>
-                        <Image source={data.avatar} style={styles.avatar}></Image>
-                        <Text style={styles.item4}>{data.name.length <= 15 ? data.name : nameReplace}</Text>
-                        <FontAwesome5Icon color='red' name="map-marker-alt" regular size={10} style={styles.item3}>
-                            <Text style={[styles.item3, {color:'#FFF'}]}> {data.place_detail}</Text>
-                        </FontAwesome5Icon>
+                        <Image source={{uri: global.image_host_url + data.avatar}} style={styles.avatar}></Image>
+                        <Text style={styles.item4}>{name.length <= 15 ? name : nameReplace}</Text>
+                        {data.location_city != null ? <FontAwesome5Icon color='red' name="map-marker-alt" regular size={10} style={styles.item3}>
+                            <Text style={[styles.item3, {color:'#FFF'}]}> {location.length <= 20 ? location: location.substring(0, 20) + "..."}</Text>
+                        </FontAwesome5Icon>: <View style={{height: 0.015 * screen.height}}></View>}
                     </View>                   
                 </View>
             </View>
@@ -85,15 +103,87 @@ const ConnectItems = (props) => {
                     <Image source={instagram} style={styles.avatar}></Image> 
                 </TouchableOpacity>
             </View>
+            {(() => {
+                if (status === null) {
+                    return <TouchableHighlight
+                                style={styles.button}
+                                onPress={() => axios.post(global.back_end_url + "/send_friend_request", {
+                                    "user_id": user_item.id,
+                                    "friend_id": data.user_id
+                                }).then((response) => {
+                                    setStatus("pending")
+                                    setType("sender")
+                                })}
+                                underlayColor='#fff'>
+                                    <Text style={styles.buttonlabel}> Add friend </Text>
+                            </TouchableHighlight>
+                }
+                else if (status === "pending") {
+                    if (type === "sender") {
+                        return <TouchableHighlight
+                                    style={styles.button}
+                                    onPress={() => axios.post(global.back_end_url + "/answer_friend_request", {
+                                        "user_id": user_item.id,
+                                        "friend_id": data.user_id,
+                                        "action": "decline"
+                                    }).then((response) => {
+                                        setStatus(null)
+                                    })}
+                                    underlayColor='#fff'>
+                                        <Text style={styles.buttonlabel}>Pending request</Text>
+                                </TouchableHighlight>
+                    }
+                    else {
+                        return <View style={{flexDirection: 'row', alignItems: "center", justifyContent: "space-around"}}>
+                                    <TouchableHighlight
+                                        style={{...styles.button, width: screen.width / 5 - 0.03 * screen.width, marginLeft: 0.03 * screen.width, marginRight: 0.015 * screen.width,}}
+                                        onPress={() => axios.post(global.back_end_url + "/answer_friend_request", {
+                                            "user_id": user_item.id,
+                                            "friend_id": data.user_id,
+                                            "action": "accept"
+                                        }).then((response) => {
+                                            setStatus("accepted")
+                                        })}
+                                        underlayColor='#fff'>
+                                            <Text style={{...styles.buttonlabel, fontSize: 10}}>Accept request</Text>
+                                    </TouchableHighlight>
+                                    <TouchableHighlight
+                                        style={{...styles.button, width: screen.width / 5 - 0.03 * screen.width, marginLeft: 0.015 * screen.width, marginRight: 0.03 * screen.width}}
+                                        onPress={() => axios.post(global.back_end_url + "/answer_friend_request", {
+                                            "user_id": user_item.id,
+                                            "friend_id": data.user_id,
+                                            "action": "decline"
+                                        }).then((response) => {
+                                            setStatus(null)
+                                        })}
+                                        underlayColor='#fff'>
+                                            <Text style={{...styles.buttonlabel, fontSize: 10}}>Refuse request</Text>
+                                    </TouchableHighlight>
+                                </View>
+                    }
+                }
+                else {
+                    return <TouchableHighlight
+                        style={styles.button}
+                        onPress={() => axios.post(global.back_end_url + "/answer_friend_request", {
+                            "user_id": user_item.id,
+                            "friend_id": data.user_id,
+                            "action": "decline"
+                        }).then((response) => {
+                            setStatus(null)
+                        })}
+                        underlayColor='#fff'>
+                            <FontAwesome5Icon color='#FFF' name="check" regular size={32} style={{...styles.buttonlabel, fontSize: 21}}>
+                                <Text style={{...styles.buttonlabel, fontSize: 18}}>  Friend</Text>
+                            </FontAwesome5Icon>
+                    </TouchableHighlight>
+                }
+            })()}
+
+
             <TouchableHighlight
                 style={styles.button}
-                onPress={() => console.log("Add friend")}
-                underlayColor='#fff'>
-                    <Text style={styles.buttonlabel}>Friend request</Text>
-            </TouchableHighlight>
-            <TouchableHighlight
-                style={styles.button}
-                onPress={() => console.log("Send message")}
+                onPress={() => {}}
                 underlayColor='#fff'>
                     <Text style={styles.buttonlabel}>Send message</Text>
             </TouchableHighlight>

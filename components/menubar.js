@@ -4,14 +4,14 @@ import Trending from './Trending/trending';
 import Destinations from './Destinations/destinations';
 import Messages from './Messages/messages';
 import Connect from './Connect/connect';
-
+import userIdProvider from './Context/user_id_provider';
 const screen = Dimensions.get("screen");
 const window = Dimensions.get("window");
 
 const MenuBar = () => {
 
     const [click, toogleClick] = React.useState(0);
-    
+    const user_item = React.useContext(userIdProvider);
     const loadContent = (click) => {
         switch(click) {
             case 0:
@@ -36,14 +36,14 @@ const MenuBar = () => {
                     <Text style={styles.text}>Destinations</Text>
                     <View style={click === 1 ? {...styles.underline, backgroundColor: "#B456F1"} : {...styles.underline}}></View>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => toogleClick(2)}>
+                {user_item.id != 0 && <TouchableOpacity onPress={() => toogleClick(2)}>
                     <Text style={styles.text}>Messages</Text>
                     <View style={click === 2 ? {...styles.underline, backgroundColor: "#B456F1"} : {...styles.underline}}></View>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => toogleClick(3)}>
+                </TouchableOpacity>}
+                {user_item.id != 0 && <TouchableOpacity onPress={() => toogleClick(3)}>
                     <Text style={styles.text}>Connect</Text>
                     <View style={click === 3 ? {...styles.underline, backgroundColor: "#B456F1"} : {...styles.underline}}></View>
-                </TouchableOpacity>
+                </TouchableOpacity>}
             </View>
             <ScrollView style={styles.second_content}>
                 {loadContent(click)}

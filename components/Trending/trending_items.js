@@ -12,6 +12,8 @@ import haha from "../../static/img/emoji/haha.png";
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
 // import manage_user_id from '../../global';
 import userIdProvider from "../Context/user_id_provider" 
+import LoginPage from '../login_page';
+import axios from 'axios';
 
 const screen = Dimensions.get("screen");
 const window = Dimensions.get("window");
@@ -22,11 +24,17 @@ const figma_screen_h = 926;
 const TrendingItems = (props) => {
     const data = props.data;
     const navigation = useNavigation()
-    const user_id = React.useContext(userIdProvider);
-    const userId = user_id.id;
+    const user_item = React.useContext(userIdProvider);
+    const userId = user_item.id;
+    const [nbReact, setNbReact] = React.useState(data.react)
     const showComments = () => {
         // navigation.navigate('Comment', {comment: data})
-        console.log(userId);
+        if (userId === 0) {
+            user_item.setLogin(!user_item.login)
+        }
+        else {
+            navigation.navigate('Comment', {comment: data})
+        }
     }
     return (
         <View style={styles.content}>
@@ -46,7 +54,7 @@ const TrendingItems = (props) => {
             {typeof(data.image) == "string" && <Image source={{uri: global.image_host_url + data.image}} style={styles.place} />}
             <View style={styles.content5}>
                 <TouchableOpacity>
-                    <Text style={styles.item5}>{data.react} reacts</Text>
+                    <Text style={styles.item5}>{nbReact} reacts</Text>
                 </TouchableOpacity>
                 <View>
                     <View style={styles.content7}>
@@ -76,6 +84,7 @@ const TrendingItems = (props) => {
                     </View>
                 </View>
             </View>
+            <LoginPage login={user_item.login} setLogin={user_item.setLogin} loginned={user_item.loginned} setLoginned={user_item.setLoginned}></LoginPage>
         </View>
     )
 }

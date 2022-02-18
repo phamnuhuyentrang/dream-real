@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, Dimensions } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-
+import moment from "moment";
 const screen = Dimensions.get("screen");
 const figma_screen_w = 428;
 const figma_screen_h = 926;
@@ -12,14 +12,14 @@ const CommentLayout = (props) => {
         <View style={styles.content}>
             <View style={styles.content2}>
                 <View style={styles.content4}>
-                    <Image source={comment.avatar} style={styles.avatar}></Image>
-                    <Text style={styles.item4}>{comment.name}</Text>
+                    <Image source={{uri: global.image_host_url + comment.avatar}} style={styles.avatar}></Image>
+                    <Text style={styles.item4}>{comment.first_name + " " + comment.last_name}</Text>
                 </View>
-                <View style={{backgroundColor:"#363847", borderRadius: 0.02 * screen.width,  marginBottom: 0.01 * screen.height, height: hp(5), marginRight: 0.025 * screen.width}}>
-                    <Text style={styles.item3}>{comment.content}</Text>
+                <View style={{backgroundColor:"#363847", borderRadius: 0.02 * screen.width,  marginBottom: 0.01 * screen.height, marginRight: 0.025 * screen.width}}>
+                    <Text style={styles.item3}>{comment.context}</Text>
                 </View>
-                <View>
-                    <Text style={styles.comment_time}>{comment.time}</Text>
+                <View style={{marginBottom: 0.01 * screen.height}}>
+                    <Text style={styles.comment_time}>{moment(comment.created_at).format("YYYY-MM-DD hh:mm:ss")}</Text>
                 </View>
             </View>
         </View>
@@ -30,7 +30,6 @@ const CommentLayout = (props) => {
 const styles = StyleSheet.create({
     content: {
         backgroundColor: "#3D3D4E",
-        height: 0.15 * screen.height,
         borderRadius: 0.02 * screen.width,
         marginBottom: 0.03 * screen.height
     },

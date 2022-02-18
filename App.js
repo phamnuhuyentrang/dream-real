@@ -17,9 +17,30 @@ const Stack = createNativeStackNavigator();
 
 const App = () => {
 	const [userId, setUserId] = React.useState(0);
+	const [login, setLogin] = React.useState(false);
+    const [loginned, setLoginned] = React.useState(false);
+	const [firstname, setFirstname] = React.useState("");
+	const [lastname, setLastname] = React.useState("");
+	const [avatar, setAvatar] = React.useState("");
+	const [cover, setCover] = React.useState("N/A");
+	const [username, setUsername] = React.useState("");
 	const userSettings = {
 		id: userId,
-		setUserId
+		setUserId,
+		username: username,
+		setUsername,
+		login: login,
+		setLogin,
+		loginned: loginned,
+		setLoginned,
+		firstname: firstname,
+		setFirstname,
+		lastname: lastname,
+		setLastname,
+		avatar: avatar,
+		setAvatar,
+		cover: cover,
+		setCover
 	}
 	return (
 		<userIdProvider.Provider value={userSettings}>

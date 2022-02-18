@@ -1,6 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Dimensions, TouchableOpacity, Text } from 'react-native';
-
+import { View, StyleSheet, Dimensions, TouchableOpacity, Text, Alert } from 'react-native';
 import axios from 'axios';
 import userIdProvider from "../Context/user_id_provider"
 import TrendingItems from './trending_items';
@@ -10,36 +9,43 @@ const window = Dimensions.get("window");
 const figma_screen_w = 428;
 const figma_screen_h = 926;
 
-
+const isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
+    const paddingToRight = 0.05 * screen.width;
+    return layoutMeasurement.width + contentOffset.x >= contentSize.width - paddingToRight;
+};
 const Trending = () => {
     const [data, setData] = React.useState([]);
     const [offset, setOffset] = React.useState(0);
     const [loading, setLoading] = React.useState(true);
-    const user_id = React.useContext(userIdProvider);
-    const userId = user_id.id;
-    console.log(userId)
-    console.log(global.back_end_url)
+    const [end, setEnd] = React.useState(false);
+    const user_item = React.useContext(userIdProvider);
+    const userId = user_item.id;
+    
     React.useEffect(() => {
         if (loading) {
             axios.get(global.back_end_url + `/album_trending`, {
                 params: { user_id: userId, offset: offset } 
             }).then((response) => {
+                if (JSON.parse(JSON.stringify(response.data.albums)).length < 10) {    
+                    setEnd(true)
+                }
                 setData([...data, ...JSON.parse(JSON.stringify(response.data.albums))])
                 setLoading(false)
                 setOffset(offset + 10)
             })
             .catch((error) => Alert.alert("Dream Real Loading Error", "Error occured when trying to load posts: " + error))
         }
+        
     }, [loading])
     
     return (
         <View style={styles.container}> 
             {data != [] ? data.map((person) => {
                 return (
-                    <TrendingItems data={person} key={person.album_id} ava={"N/A"}/>
+                    <TrendingItems data={person} key={person.album_id}/>
                 )
             }): <Text>Loading ...</Text>}
-            {data != [] && <TouchableOpacity style={styles.buttonLoad} onPress={() => setLoading(true)}>
+            {!end && <TouchableOpacity style={styles.buttonLoad} onPress={() => setLoading(true)}>
                 <Text style={styles.button}> Load more </Text>
             </TouchableOpacity> }
         </View> 

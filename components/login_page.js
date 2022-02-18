@@ -14,7 +14,7 @@ const LoginPage = (props) => {
     const navigation = useNavigation();
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
-    const userId = React.useContext(userIdProvider);
+    const user_item = React.useContext(userIdProvider);
 
     const login = () => {
         axios.post(global.back_end_url + '/login', {
@@ -28,7 +28,12 @@ const LoginPage = (props) => {
                 Alert.alert("Dream Real Login Success", "Welcome back !")
                 props.setLogin(!props.login);
                 props.setLoginned(!props.loginned);
-                userId.setUserId(json.id)
+                user_item.setUserId(json.id)
+                user_item.setAvatar(json.avatar)
+                user_item.setFirstname(json.first_name)
+                user_item.setLastname(json.last_name)
+                user_item.setUsername(json.username)
+                user_item.setCover(json.cover)
             }
             else {
                 Alert.alert("Dream Real Login Failed", json.message)

@@ -10,8 +10,10 @@ import { Svg, Ellipse } from 'react-native-svg'
 import { useNavigation } from '@react-navigation/native';
 import userIdProvider from "../components/Context/user_id_provider"
 import axios from 'axios';
-
+import moment from "moment";
 import TrendingItems from "../components/Trending/trending_items";
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import { LogBox } from 'react-native';
 
 const screen = Dimensions.get("screen");
 const window = Dimensions.get("window");
@@ -22,6 +24,7 @@ const APPBAR_HEIGHT = 200 * screen.height / figma_screen_h;
 const SLIDER_WIDTH = Dimensions.get('window').width 
 const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.9)
 const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 20 : StatusBar.currentHeight;
+const GOOGLE_PLACES_API_KEY = 'AIzaSyBBkRlU71iBx0edNJz1TxHxdtuFZWCiAqg';
 
 const isCloseToRight = ({ layoutMeasurement, contentOffset, contentSize }) => {
     const paddingToRight = 0.05 * screen.width;
@@ -31,24 +34,27 @@ const isCloseToRight = ({ layoutMeasurement, contentOffset, contentSize }) => {
 
 const Profile = (props) => {
     const navigation = useNavigation()
-    const [avatar, setAvatar] = React.useState("N/A");
-    const [cover, setCover] = React.useState("N/A");
-    const [name, setName] = React.useState("N/A");
-    
+
+    const [end, setEnd] = React.useState(false)
     const [seeFriends, setSeeFriends] = React.useState(true);
+    const [endFriends, setEndFriends] = React.useState(false);
     const [seeFollowers, setSeeFollowers] = React.useState(false);
+    const [endFollowers, setEndFollowers] = React.useState(false);
     const [seeFollowing, setSeeFollowing] = React.useState(false);
+    const [endFollowing, setEndFollowing] = React.useState(false);
     const [textColorFriends, setTextColorFriends] = React.useState("#B456F1");
     const [textColorFollowers, setTextColorFollowers] = React.useState("white");
     const [textColorFollowing, setTextColorFollowing] = React.useState("white");
+
     const [postPhoto, setPostPhoto] = React.useState(null);
     const [postFeeling, setPostFeeling] = React.useState(null);
-    const [postLocation, setPostLocation] = React.useState(null);
+    const [location, setLocation] = React.useState("");
+    const [locationHash, setLocationHash] = React.useState("");
+
     const [postText, setPostText] = React.useState("");
     // const [postTag, setPostTag] = React.useState(null);
     const [showPostModal, setPostModal] = React.useState(false);
     const [blurIntensity, setBlurIntensity] = React.useState(1);
-
     const [loadingFriends, setLoadingFriends] = React.useState(true);
     const [offsetFriends, setOffsetFriends] = React.useState(0);
     const [friends, setFriends] = React.useState([]);
@@ -68,10 +74,14 @@ const Profile = (props) => {
     const [offset, setOffset] = React.useState(0);
     const [data, setData] = React.useState([]);
 
-    const user_id = React.useContext(userIdProvider);
-    const userId = user_id.id;
+    const user = React.useContext(userIdProvider);
+    const userId = user.id;
 
-    React.useEffect(async () => {
+    React.useEffect(() => {
+        LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+    }, [])
+
+    React.useEffect(() => {
         if (loadingPost) {
             axios.get(global.back_end_url + '/album_user', {
                 params: { user_id: userId, offset: offset, user_react_id: userId },
@@ -80,13 +90,12 @@ const Profile = (props) => {
             .then((response) => {
                 let json = response.data;
                 if (json.success) {
+                    if (JSON.parse(JSON.stringify(json.albums)).length < 10 ) {
+                        setEnd(true)
+                    } 
                     setData([...data, ...JSON.parse(JSON.stringify(json.albums))])
                     setLoadingPosts(false)
                     setOffset(offset + 10)
-                    let js = JSON.parse(JSON.stringify(json.albums))
-                    setAvatar(global.image_host_url + js[0].avatar)
-                    setCover(global.image_host_url + js[0].cover_image)
-                    setName(js[0].first_name + " " + js[0].last_name)
                 }
                 else {
                     Alert.alert("Dream Real Loading Posts Error", json.message)
@@ -94,9 +103,6 @@ const Profile = (props) => {
             })
             .catch((error) => Alert.alert("Dream Real Loading Posts Error", error.message))
         }
-    }, [loadingPost])
-
-    React.useEffect(async () => {
         if (loadingFriends) {
             axios.get(global.back_end_url + `/get_friends`, {
                 withCredentials: true,
@@ -105,10 +111,15 @@ const Profile = (props) => {
             .then((response) => {
                 let json = response.data;
                 if (json.success) {
-                    setFriends([...friends, ...JSON.parse(JSON.stringify(json.friends))])
-                    setNbFriends(json.nb_friends)
-                    setLoadingFriends(false)
-                    setOffsetFriends(offsetFriends + 10)
+                    if (json.nb_friends > 0) {
+                        if (json.nb_friends < 10) {
+                            setEndFriends(true)
+                        }
+                        setFriends([...friends, ...JSON.parse(JSON.stringify(json.friends))])
+                        setOffsetFriends(offsetFriends + 10)
+                        setNbFriends(json.nb_friends)
+                    }
+                    setLoadingFriends(false)        
                 }
                 else {
                     Alert.alert("Dream Real Loading Friends Error", json.message)
@@ -116,9 +127,6 @@ const Profile = (props) => {
             })
             .catch((error) => Alert.alert("Dream Real Loading Friends Error", error.message))
         }
-    }, [loadingFriends])
-
-    React.useEffect(async () => {
         if (loadingFollowers) {
             axios.get(global.back_end_url + `/get_followers`, {
                 withCredentials: true,
@@ -127,10 +135,15 @@ const Profile = (props) => {
             .then((response) => {
                 let json = response.data;
                 if (json.success) {
-                    setFollowers([...followers, ...JSON.parse(JSON.stringify(json.followers))])
-                    setNbFollowers(json.nb_followers)
+                    if (json.nb_followers > 0) {
+                        if (json.nb_followers < 10) {
+                            setEndFollowers(true)
+                        }
+                        setNbFollowers(json.nb_followers)
+                        setFollowers([...followers, ...JSON.parse(JSON.stringify(json.followers))])
+                        setOffsetFollowers(offsetFollowers + 10)
+                    }
                     setLoadingFollowers(false)
-                    setOffsetFollowers(offsetFollowers + 10)
                 }
                 else {
                     Alert.alert("Dream Real Loading Followers Error", json.message)
@@ -138,10 +151,7 @@ const Profile = (props) => {
             })
             .catch((error) => Alert.alert("Dream Real Loading Followers Error", error.message))
         }
-    }, [loadingFollowers])
-
-    React.useEffect(async () => {
-        let tkn = await SecureStore.getItemAsync("token")
+        let tkn = SecureStore.getItemAsync("token")
         if (loadingFollowing) {
             axios.get(global.back_end_url + `/get_following`, {
                 withCredentials: true,
@@ -154,10 +164,15 @@ const Profile = (props) => {
             .then((response) => {
                 let json = response.data;
                 if (json.success) {
-                    setFollowing([...following, ...JSON.parse(JSON.stringify(json.following))])
-                    setNbFollowing(json.nb_following)
-                    setLoadingFollowing(false)
-                    setOffsetFollowing(offsetFollowing + 10)
+                    if (json.nb_following > 0) {
+                        if (json.nb_following < 10) {
+                            setEndFollowing(true)
+                        }
+                        setFollowing([...following, ...JSON.parse(JSON.stringify(json.following))])
+                        setOffsetFollowing(offsetFollowing + 10)
+                        setNbFollowing(json.nb_following)
+                    }      
+                    setLoadingFollowing(false)               
                 }
                 else {
                     Alert.alert("Dream Real Loading Following Error", json.message)
@@ -165,7 +180,78 @@ const Profile = (props) => {
             })
             .catch((error) => Alert.alert("Dream Real Loading Following Error", error))
         }
-    }, [loadingFollowing])
+    }, [loadingPost, loadingFriends, loadingFollowers, loadingFollowing])
+
+    // React.useEffect(async () => {
+    //     if (loadingFriends) {
+    //         axios.get(global.back_end_url + `/get_friends`, {
+    //             withCredentials: true,
+    //             params: { user_id: userId, offset: offsetFriends } 
+    //         })
+    //         .then((response) => {
+    //             let json = response.data;
+    //             if (json.success) {
+    //                 setFriends([...friends, ...JSON.parse(JSON.stringify(json.friends))])
+    //                 setNbFriends(json.nb_friends)
+    //                 setLoadingFriends(false)
+    //                 setOffsetFriends(offsetFriends + 10)
+    //             }
+    //             else {
+    //                 Alert.alert("Dream Real Loading Friends Error", json.message)
+    //             }
+    //         })
+    //         .catch((error) => Alert.alert("Dream Real Loading Friends Error", error.message))
+    //     }
+    // }, [loadingFriends])
+
+    // React.useEffect(async () => {
+    //     if (loadingFollowers) {
+    //         axios.get(global.back_end_url + `/get_followers`, {
+    //             withCredentials: true,
+    //             params: { user_id: userId, offset: offsetFollowers } 
+    //         })
+    //         .then((response) => {
+    //             let json = response.data;
+    //             if (json.success) {
+    //                 setFollowers([...followers, ...JSON.parse(JSON.stringify(json.followers))])
+    //                 setNbFollowers(json.nb_followers)
+    //                 setLoadingFollowers(false)
+    //                 setOffsetFollowers(offsetFollowers + 10)
+    //             }
+    //             else {
+    //                 Alert.alert("Dream Real Loading Followers Error", json.message)
+    //             }
+    //         })
+    //         .catch((error) => Alert.alert("Dream Real Loading Followers Error", error.message))
+    //     }
+    // }, [loadingFollowers])
+
+    // React.useEffect(async () => {
+    //     let tkn = await SecureStore.getItemAsync("token")
+    //     if (loadingFollowing) {
+    //         axios.get(global.back_end_url + `/get_following`, {
+    //             withCredentials: true,
+    //             params: { user_id: userId, offset: offsetFollowing },
+    //             // headers: {
+    //             //     // Cookie: "access_token=" + tkn
+    //             //     "cookie": "access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1pbHNhdmljIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjQ0MDk5MDMyfQ.AFL3RxurB6FcdqgK_r08OZ7KQTiIw_vuyDRyyG2-ag4"
+    //             // }  
+    //         })
+    //         .then((response) => {
+    //             let json = response.data;
+    //             if (json.success) {
+    //                 setFollowing([...following, ...JSON.parse(JSON.stringify(json.following))])
+    //                 setNbFollowing(json.nb_following)
+    //                 setLoadingFollowing(false)
+    //                 setOffsetFollowing(offsetFollowing + 10)
+    //             }
+    //             else {
+    //                 Alert.alert("Dream Real Loading Following Error", json.message)
+    //             }
+    //         })
+    //         .catch((error) => Alert.alert("Dream Real Loading Following Error", error))
+    //     }
+    // }, [loadingFollowing])
 
     // const pickAvatar = async () => {
     //     let result = await ImagePicker.launchImageLibraryAsync({
@@ -181,19 +267,19 @@ const Profile = (props) => {
     //     }
     // };
 
-    // const pickPhoto = async () => {
-    //     let result = await ImagePicker.launchImageLibraryAsync({
-    //         mediaTypes: ImagePicker.MediaTypeOptions.Images,
-    //         allowsEditing: true,
-    //         aspect: [4, 3],
-    //         quality: 1,
-    //         base64: true
-    //     });
+    const pickPhoto = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+            base64: true
+        });
         
-    //     if (!result.cancelled) {
-    //         setPostPhoto(result.uri);
-    //     }
-    // };
+        if (!result.cancelled) {
+            setPostPhoto(result.uri);
+        }
+    };
 
     // React.useEffect(() => {
     //     setData(changeValue => {
@@ -231,7 +317,7 @@ const Profile = (props) => {
                     <Image source={logo} style={styles.logo} />
                 </View>
                 <TouchableOpacity onPress={() => console.log("Clicked")} style={{position: "absolute", left: 0.42 * screen.width, top: 0.21 * screen.height, zIndex: 1}}>
-                    <Image source={{uri: avatar}} style={styles.avatar}/>
+                    <Image source={{uri: global.image_host_url + user.avatar}} style={styles.avatar}/>
                 </TouchableOpacity>
                 <Svg height={APPBAR_HEIGHT * 0.8} width={screen.width} overflow="hidden" style={styles.svg1} >
                     <Ellipse
@@ -245,10 +331,10 @@ const Profile = (props) => {
                     />
                 </Svg>
                 <TouchableOpacity onPress={() => console.log("Clicked")} style={styles.cover}>
-                    <Image source={{uri: cover}} style={styles.coverImage}/>
+                    <Image source={{uri: global.image_host_url + user.cover}} style={styles.coverImage}/>
                 </TouchableOpacity>
                 <View style={{top: 0.06 * screen.height, zIndex: 3}}>
-                    <Text adjustsFontSizeToFit style={{color: "white", textAlign: "center", textAlignVertical: "center", fontSize: 20, fontWeight: 'bold'}}>{name}</Text>
+                    <Text adjustsFontSizeToFit style={{color: "white", textAlign: "center", textAlignVertical: "center", fontSize: 20, fontWeight: 'bold'}}>{user.name}</Text>
                 </View>
                 <View style={{backgroundColor: "#252A38", marginTop: 0.1 * screen.height}}>
                     <View style={styles.row}>
@@ -308,7 +394,7 @@ const Profile = (props) => {
                                 >{nbFollowing} Following</Text>
                             </View>
                             {seeFriends && friends != [] && <ScrollView showsHorizontalScrollIndicator={false} horizontal={true} style={{marginTop: 0.01 * screen.height}} onScroll={({nativeEvent}) => {
-                                if (isCloseToRight(nativeEvent)) {
+                                if (isCloseToRight(nativeEvent) && !endFriends) {
                                     setLoadingFriends(true);
                                 }
                             }} scrollEventThrottle={400}>
@@ -320,7 +406,7 @@ const Profile = (props) => {
                             </ScrollView>
                             }
                             {seeFollowers && followers != [] && <ScrollView showsHorizontalScrollIndicator={false} horizontal={true} style={{marginTop: 0.01 * screen.height}} onScroll={({nativeEvent}) => {
-                                if (isCloseToRight(nativeEvent)) {
+                                if (isCloseToRight(nativeEvent) && !endFollowers) {
                                     setLoadingFollowers(true);
                                 }
                             }} scrollEventThrottle={400}>
@@ -332,7 +418,7 @@ const Profile = (props) => {
                             </ScrollView>
                             }
                             {seeFollowing && following != [] && <ScrollView showsHorizontalScrollIndicator={false} horizontal={true} style={{marginTop: 0.01 * screen.height}} onScroll={({nativeEvent}) => {
-                                if (isCloseToRight(nativeEvent)) {
+                                if (isCloseToRight(nativeEvent) && !endFollowing) {
                                     setLoadingFollowing(true);
                                 }
                             }} scrollEventThrottle={400}>
@@ -347,7 +433,7 @@ const Profile = (props) => {
                     </View>
                     <View style={{flexDirection: 'column', backgroundColor: "#3D3D4E", marginTop: 0.02 * screen.height, height: 0.175 * screen.height, width: 0.9 * screen.width, borderRadius: 0.02 * screen.width, alignSelf: "center"}}>
                         <TouchableOpacity style={{flexDirection: "row"}} onPress={() => {setPostModal(true); setBlurIntensity(0.5)}}>
-                            <Image source={{uri: avatar}} style={{width: 50 * screen.width / figma_screen_w, height: 50 * screen.width / figma_screen_w, borderRadius: 0.1 * screen.width, margin: 0.015 * screen.height}}/>
+                            <Image source={{uri: global.image_host_url + user.avatar}} style={{width: 50 * screen.width / figma_screen_w, height: 50 * screen.width / figma_screen_w, borderRadius: 0.1 * screen.width, margin: 0.015 * screen.height}}/>
                             <Text
                                 style={{
                                     width: 0.9 * screen.width - (50 * screen.width / figma_screen_w), 
@@ -366,7 +452,7 @@ const Profile = (props) => {
                             }}
                         />
                         <View style={{flexDirection: "row", justifyContent: "space-between", marginTop: 0.01 * screen.height, marginLeft: 0.02 * screen.height, marginRight: 0.02 * screen.height}}>
-                            {postPhoto == null && <TouchableOpacity style={{justifyContent: "center", alignItems: "center"}} onPress={() => console.log("Clicked")}>
+                            {postPhoto == null && <TouchableOpacity style={{justifyContent: "center", alignItems: "center"}} onPress={() => pickPhoto()}>
                                 <FontAwesome5Icon name="image" size={16} solid color='#89ff69' style={{marginBottom: 0.005 * screen.height}}></FontAwesome5Icon> 
                                 <Text style={{color: "white", fontSize: 14}}>Photo</Text>
                             </TouchableOpacity>}
@@ -376,11 +462,11 @@ const Profile = (props) => {
                                 <Text style={{color: "white", fontSize: 14}}>Feeling/Activity</Text>
                             </TouchableOpacity>
                             <View style={{borderRightColor: "#c4c4c4", borderRightWidth: 1}} />
-                            {postLocation == null && <TouchableOpacity style={{justifyContent: "center", alignItems: "center"}} onPress={() => setPostLocation("Paris, France")}>
+                            {/* {location == "" && <TouchableOpacity style={{justifyContent: "center", alignItems: "center"}} onPress={() => {setGoogle(true); setBlurIntensity(0.5)}}>
                                 <FontAwesome5Icon name="map-marker-alt" size={16} solid color='#80b0ff' style={{marginBottom: 0.005 * screen.height}}></FontAwesome5Icon> 
                                 <Text style={{color: "white", fontSize: 14}}>Location</Text>
                             </TouchableOpacity>}
-                            {postLocation == null && <View style={{borderRightColor: "#c4c4c4", borderRightWidth: 1}} />}
+                            {location == "" && <View style={{borderRightColor: "#c4c4c4", borderRightWidth: 1}} />} */}
                             <TouchableOpacity style={{justifyContent: "center", alignItems: "center"}}>
                                 <FontAwesome5Icon name="tag" size={16} solid color='#ff5c5c' style={{marginBottom: 0.005 * screen.height}}></FontAwesome5Icon> 
                                 <Text style={{color: "white", fontSize: 14}}>Tag</Text>
@@ -393,7 +479,8 @@ const Profile = (props) => {
                                 <TrendingItems data={person} key={person.album_id}/>
                             )
                         }): <Text>Loading ...</Text>}
-                        {data != [] && <TouchableOpacity style={styles.buttonLoad} onPress={() => setLoadingPosts(true)}>
+                        {data.length == 0 && <View style={{backgroundColor: '#252A38', width: "100%", height: 0.18 * screen.height}}/>}
+                        {!end && <TouchableOpacity style={styles.buttonLoad} onPress={() => setLoadingPosts(true)}>
                             <Text style={{textAlign: "center", alignItems: "center", justifyContent: "center", fontSize: 0.03 * screen.height, color: "white"}}> Load more </Text>
                         </TouchableOpacity>}
                     </View> 
@@ -422,26 +509,53 @@ const Profile = (props) => {
                                 <Text style={{color: "#fff", fontSize: 18, textAlign: "center"}}>Create Post</Text>
                             </View>
                             <View style={{alignItems: "center", justifyContent: "center", marginRight: 0.04 * screen.width}}>
-                                {/* <TouchableOpacity 
-                                    disabled={postText == "" || postFeeling == null || postLocation == null || postPhoto == null ? true: false} 
+                                <TouchableOpacity 
+                                    disabled={postText == "" || postFeeling == null || location == null || postPhoto == null ? true: false} 
                                     style={{
-                                        backgroundColor: postText == "" || postFeeling == null || postLocation == null || postPhoto == null ? "#c4c4c4": "#29b6f6", 
+                                        backgroundColor: postText == "" || postFeeling == null || location == null || postPhoto == null ? "#c4c4c4": "#29b6f6", 
                                         width: "125%", height: "75%", 
                                         marginRight: 0.02 * screen.width, 
                                         alignItems: "center", 
                                         justifyContent: "center",
                                         borderRadius: 0.02 * screen.width}}
-                                    onPress={() => {
-                                        setData(addData => [{
-                                            name: "Trang Pham",
-                                            emotion: "is feeling happy " +  '\u{1f61c}',
-                                            place_detail: postLocation,
-                                            number_react: 0,
-                                            number_comment: 0,
-                                            avatar: avatar,
-                                            place: postPhoto,
-                                            comment: []
-                                        }, ...addData])
+                                    onPress={async () => {
+                                        const formData = new FormData()
+                                        formData.append("first_name", user.firstname)
+                                        formData.append("last_name", user.lastname)
+                                        formData.append("username", user.username)
+                                        if (postPhoto != null) {
+                                            formData.append("image", {
+                                                uri: postPhoto,
+                                                type: "image/jpg",
+                                                name: user.username + "_" + moment().format("YYYYMMDDhhmmss") + ".jpg" 
+                                            })
+                                        }
+                                        formData.append("location", location)
+                                        formData.append("location_hash", locationHash)
+                                        formData.append("user_id", user.id)
+                                        formData.append("description", postText)
+                                        formData.append("id_tag", 1)
+                                        formData.append("dream_real", 1)
+                                        try {
+                                            const response = await fetch(global.back_end_url + "/new_album", {
+                                                "method": "POST",
+                                                "headers": {
+                                                    "Content-Type": "multipart/form-data"
+                                                },
+                                                "body": formData
+                                            })
+                                            let json = await response.json();
+                                            console.log(json)
+                                            if (json.success) {
+                                                Alert.alert("Dream Real Post Success", "Post to Dream Real !")
+                                            }
+                                            else {
+                                                Alert.alert("Dream Real Post Failed")
+                                            }
+                                        }
+                                        catch(err) {
+                                            Alert.alert("Dream Real Post Error", "Error occured when trying to post: " + err.message);
+                                        }
                                         setBlurIntensity(1);
                                         setPostFeeling(null);
                                         setPostPhoto(null);
@@ -449,14 +563,14 @@ const Profile = (props) => {
                                         setPostModal(false);
                                     }}>
                                     <Text style={{color: "#fff", fontSize: 18, textAlign: "center", opacity: postText == "" ? 0.5: 1}}>Post</Text>    
-                                </TouchableOpacity> */}
+                                </TouchableOpacity>
                             </View>
                         </View>
-                        <ScrollView showsVerticalScrollIndicator={false} style={{width: 0.9 * screen.width, flexDirection: "column", backgroundColor: "#3D3D4E", borderBottomLeftRadius: 0.02 * screen.width, borderBottomRightRadius: 0.02 * screen.width}}>
+                        <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps={"handled"} style={{width: 0.9 * screen.width, flexDirection: "column", backgroundColor: "#3D3D4E", borderBottomLeftRadius: 0.02 * screen.width, borderBottomRightRadius: 0.02 * screen.width}}>
                             <View style={{flexDirection: "row", height: 0.08 * screen.height}}>
-                                <Image source={{uri: avatar}} style={{margin: 0.02 * screen.height, width: 40 * screen.width / figma_screen_w, height: 40 * screen.width / figma_screen_w, borderRadius: 0.1 * screen.width, 
+                                <Image source={{uri: global.image_host_url + user.avatar}} style={{margin: 0.02 * screen.height, width: 40 * screen.width / figma_screen_w, height: 40 * screen.width / figma_screen_w, borderRadius: 0.1 * screen.width, 
                                     margin: 0.015 * screen.width}}/>
-                                <Text style={{color: "white", fontSize: 12, fontWeight: "bold", alignItems: "center", marginTop: 0.015 * screen.width + 10 * screen.width / figma_screen_w}}>Trang Pham </Text>
+                                <Text style={{color: "white", fontSize: 12, fontWeight: "bold", alignItems: "center", marginTop: 0.015 * screen.width + 10 * screen.width / figma_screen_w}}>{user.firstname + " " + user.lastname} </Text>
                                 {postFeeling != null && 
                                     <View style={{flexDirection: "row", marginTop: 0.015 * screen.width + 10 * screen.width / figma_screen_w}}>
                                         <Text style={{color: "white", fontSize: 12, fontWeight: "normal", alignItems: "center"}}>is feeling </Text>
@@ -472,8 +586,26 @@ const Profile = (props) => {
                                     </TouchableOpacity>
                                 }
                             </View>
+                        
+                            <GooglePlacesAutocomplete
+                                placeholder= "Location"
+                                query={{
+                                    key: GOOGLE_PLACES_API_KEY,
+                                    language: 'en', // language of the results
+                                    types: '(cities)'
+                                }}
+                                value={location}
+                                onPress={(data, details = null) => {
+                                    setLocationHash(data.place_id)
+                                    setLocation(data.description)
+                                }}
+                                onFail={(error) => console.error(error)}
+                                styles={locationStyles}
+                                textInputProps={{ placeholderTextColor: 'white' }}
+                            />  
+
                             {postPhoto != null && 
-                            <TouchableOpacity onPress={() => console.log("Clicked")}>
+                            <TouchableOpacity onPress={() => pickPhoto()}>
                             <Image source={{uri: postPhoto}} style={{
                                 width: 0.86 * screen.width, 
                                 height: 0.3 * screen.height,
@@ -499,16 +631,16 @@ const Profile = (props) => {
                                 value={postText}
                             />
                             <View style={{flexDirection: "row", justifyContent: "space-between", marginTop: 0.01 * screen.height, marginLeft: 0.02 * screen.height, marginRight: 0.02 * screen.height}}>
-                                {postPhoto == null &&<TouchableOpacity style={{justifyContent: "center", alignItems: "center"}} onPress={() => console.log("Clicked")}>
+                                {postPhoto == null &&<TouchableOpacity style={{justifyContent: "center", alignItems: "center"}} onPress={() => pickPhoto()}>
                                     <FontAwesome5Icon name="image" size={16} solid color='#89ff69' style={{marginBottom: 0.005 * screen.height}}></FontAwesome5Icon> 
                                     <Text style={{color: "white", fontSize: 14}}>Photo</Text>
                                 </TouchableOpacity>}
                                 {postPhoto == null && <View style={{borderRightColor: "#c4c4c4", borderRightWidth: 1}} />}
-                                {postLocation == null && <TouchableOpacity style={{justifyContent: "center", alignItems: "center"}} onPress={() => setPostLocation("Paris, France")}>
+                                {/* {location == "" && <TouchableOpacity style={{justifyContent: "center", alignItems: "center"}} onPress={() => setGoogleModal(!googleModal)}>
                                     <FontAwesome5Icon name="map-marker-alt" size={16} solid color='#80b0ff' style={{marginBottom: 0.005 * screen.height}}></FontAwesome5Icon> 
                                     <Text style={{color: "white", fontSize: 14}}>Location</Text>
                                 </TouchableOpacity>}
-                                {postLocation == null && <View style={{borderRightColor: "#c4c4c4", borderRightWidth: 1}} />}
+                                {location == "" && <View style={{borderRightColor: "#c4c4c4", borderRightWidth: 1}} />} */}
                                 <TouchableOpacity style={{justifyContent: "center", alignItems: "center"}}>
                                     <FontAwesome5Icon name="tag" size={16} solid color='#ff5c5c' style={{marginBottom: 0.005 * screen.height}}></FontAwesome5Icon> 
                                     <Text style={{color: "white", fontSize: 14}}>Tag</Text>
@@ -648,6 +780,43 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         marginLeft: 0.02 * screen.width,
         marginRight: 0.02 * screen.width
+    },
+    buttonLoad: {
+        width: 0.9 * screen.width,
+        height: 0.05 * screen.height,
+        marginBottom: 0.02 * screen.height,
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: 0.02 * screen.width,
+        backgroundColor: "#3D3D4E",
+    },
+    button: {
+        textAlign: "center",
+        alignItems: "center",
+        justifyContent: "center",
+        fontSize: 0.03 * screen.height,
+        color: "white"
+    },
+    inputView: {
+        height: 0.06 * screen.height, 
+        width: 0.9 * screen.width
+    },
+})
+const locationStyles = StyleSheet.create({
+    textInputContainer: {
+        ...styles.inputView,
+        marginBottom: 0.01 * screen.height
+    },
+    textInput: {
+        backgroundColor: "#252A38",
+        borderRadius: 0.02 * screen.width,
+        width: 0.6 *screen.width,
+        height: 0.06 *  screen.height,
+        paddingLeft: 0.05 * screen.width,
+        alignItems: "center",
+        justifyContent: "center",
+        alignContent: "center",
+        color: "#fff"
     }
 })
 export default Profile;
