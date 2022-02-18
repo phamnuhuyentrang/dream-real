@@ -1,8 +1,6 @@
 import React from 'react';
 import { View, Image, StyleSheet, Dimensions, TouchableOpacity, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-// import userIdProvider from "../Context/user_id_provider"
-// import { userIdProvider } from "../login_page"
 import like from "../../static/img/emoji/like.png";
 import love from "../../static/img/emoji/love.png";
 import sad from "../../static/img/emoji/sad.png";
@@ -10,7 +8,6 @@ import angry from "../../static/img/emoji/angry.png";
 import wow from "../../static/img/emoji/wow.png";
 import haha from "../../static/img/emoji/haha.png";
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
-// import manage_user_id from '../../global';
 import userIdProvider from "../Context/user_id_provider" 
 import LoginPage from '../login_page';
 import axios from 'axios';
@@ -27,8 +24,8 @@ const TrendingItems = (props) => {
     const user_item = React.useContext(userIdProvider);
     const userId = user_item.id;
     const [nbReact, setNbReact] = React.useState(data.react)
+    const [reactIndex, setReactIndex] = React.useState(data.user_react === null ? 0 : data.user_react);
     const showComments = () => {
-        // navigation.navigate('Comment', {comment: data})
         if (userId === 0) {
             user_item.setLogin(!user_item.login)
         }
@@ -58,23 +55,44 @@ const TrendingItems = (props) => {
                 </TouchableOpacity>
                 <View>
                     <View style={styles.content7}>
-                        <TouchableOpacity>
-                            <Image source={like} style={styles.item7}></Image>
+                        <TouchableOpacity onPress={() => {
+                            if (reactIndex === 1) {
+                                setReactIndex(0);
+
+                            }
+                            else setReactIndex(1);
+                        }}>
+                            <Image source={like} style={{...styles.item7, opacity:reactIndex != 1 || reactIndex === 0 ? 0.3 : 1}}></Image>
                         </TouchableOpacity>
-                        <TouchableOpacity>
-                            <Image source={love} style={styles.item7}></Image>
+                        <TouchableOpacity onPress={() => {
+                            if (reactIndex === 2) setReactIndex(0);
+                            else setReactIndex(2);
+                        }}>
+                            <Image source={love} style={{...styles.item7, opacity:reactIndex != 2 || reactIndex === 0 ? 0.3 : 1}}></Image>
                         </TouchableOpacity>
-                        <TouchableOpacity>
-                            <Image source={haha} style={styles.item7}></Image>
+                        <TouchableOpacity onPress={() => {
+                            if (reactIndex === 3) setReactIndex(0);
+                            else setReactIndex(3);
+                        }}>
+                            <Image source={haha} style={{...styles.item7, opacity:reactIndex != 3 || reactIndex === 0 ? 0.3 : 1}}></Image>
                         </TouchableOpacity>
-                        <TouchableOpacity>
-                            <Image source={sad} style={styles.item7}></Image>
+                        <TouchableOpacity onPress={() => {
+                            if (reactIndex === 4) setReactIndex(0);
+                            else setReactIndex(4);
+                        }}>
+                            <Image source={sad} style={{...styles.item7, opacity:reactIndex != 4 || reactIndex === 0 ? 0.3 : 1}}></Image>
                         </TouchableOpacity>
-                        <TouchableOpacity>
-                            <Image source={wow} style={styles.item7}></Image>
+                        <TouchableOpacity onPress={() => {
+                            if (reactIndex === 5) setReactIndex(0);
+                            else setReactIndex(5);
+                        }}>
+                            <Image source={wow} style={{...styles.item7, opacity:reactIndex != 5 || reactIndex === 0 ? 0.3 : 1}}></Image>
                         </TouchableOpacity>
-                        <TouchableOpacity>
-                            <Image source={angry} style={styles.item7}></Image>
+                        <TouchableOpacity onPress={() => {
+                            if (reactIndex === 6) setReactIndex(0);
+                            else setReactIndex(6);
+                        }}>
+                            <Image source={angry} style={{...styles.item7, opacity:reactIndex != 6 || reactIndex === 0 ? 0.3 : 1}}></Image>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={showComments}>
                             <FontAwesome5Icon color='white' name="comment-alt" regular size={10} style={styles.commenticon}>
@@ -165,7 +183,7 @@ const styles = StyleSheet.create({
         marginRight: 0.01 * screen.width,
         marginTop: 0.015 * screen.height,
         width: 15 * screen.width / figma_screen_w,
-        height: 15 * screen.width / figma_screen_w,
+        height: 15 * screen.width / figma_screen_w
     },
     commenticon: {
         marginRight: 0.01 * screen.width,

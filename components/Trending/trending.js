@@ -20,6 +20,16 @@ const Trending = () => {
     const [end, setEnd] = React.useState(false);
     const user_item = React.useContext(userIdProvider);
     const userId = user_item.id;
+    const oldId = user_item.oldId;
+
+    React.useEffect(() => {
+        if (userId != oldId) {
+            setLoading(true);
+            setOffset(0);
+            setData([]);
+            user_item.setOldId(userId);
+        }
+    }, [userId, oldId])
     
     React.useEffect(() => {
         if (loading) {

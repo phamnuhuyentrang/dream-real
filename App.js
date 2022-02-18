@@ -24,6 +24,7 @@ const App = () => {
 	const [avatar, setAvatar] = React.useState("");
 	const [cover, setCover] = React.useState("N/A");
 	const [username, setUsername] = React.useState("");
+	const [oldId, setOldId] = React.useState(0);
 	const userSettings = {
 		id: userId,
 		setUserId,
@@ -40,7 +41,9 @@ const App = () => {
 		avatar: avatar,
 		setAvatar,
 		cover: cover,
-		setCover
+		setCover,
+		oldId: oldId,
+		setOldId
 	}
 	return (
 		<userIdProvider.Provider value={userSettings}>
