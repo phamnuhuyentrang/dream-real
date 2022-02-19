@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 import { View, Image, StyleSheet, Dimensions, TouchableOpacity, Text, TouchableHighlight, Linking, Alert } from 'react-native';
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { useNavigation } from '@react-navigation/native';
 
 import rocket from "../../static/img/rocket.png"
 import facebook from "../../static/img/facebook.png"
@@ -16,6 +17,7 @@ const figma_screen_h = 926;
 
 
 const ConnectItems = (props) => {
+    const navigation = useNavigation()
     const data = props.data;
     const [follow, setFollow] = React.useState(data.following);
     const [type, setType] = React.useState(data.type)
@@ -50,6 +52,10 @@ const ConnectItems = (props) => {
           Alert.alert(`Don't know how to open this URL: ${data.instagram}`);
         }
     });
+    const handlePressDreamReal = () => {
+        navigation.navigate("Profile", {"profile": data})
+    }
+
     return (
         <View style={styles.content}>
             {(() => {
@@ -93,7 +99,7 @@ const ConnectItems = (props) => {
                 </View>
             </View>
             <View style={styles.content7}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={handlePressDreamReal}>
                     <Image source={rocket} style={styles.avatar}></Image> 
                 </TouchableOpacity>
                 <TouchableOpacity onPress={handlePressFacebook}>
@@ -130,7 +136,7 @@ const ConnectItems = (props) => {
                                         setStatus(null)
                                     })}
                                     underlayColor='#fff'>
-                                        <Text style={styles.buttonlabel}>Pending request</Text>
+                                        <Text style={styles.buttonlabel}>Pending</Text>
                                 </TouchableHighlight>
                     }
                     else {

@@ -27,6 +27,7 @@ const Trending = () => {
             setLoading(true);
             setOffset(0);
             setData([]);
+            user_item.setPostTrending([]);
             user_item.setOldId(userId);
         }
     }, [userId, oldId])
@@ -40,6 +41,7 @@ const Trending = () => {
                     setEnd(true)
                 }
                 setData([...data, ...JSON.parse(JSON.stringify(response.data.albums))])
+                user_item.setPostTrending([...user_item.posts, ...JSON.parse(JSON.stringify(response.data.albums))]);
                 setLoading(false)
                 setOffset(offset + 10)
             })

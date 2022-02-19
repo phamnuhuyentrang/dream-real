@@ -25,6 +25,7 @@ const App = () => {
 	const [cover, setCover] = React.useState("N/A");
 	const [username, setUsername] = React.useState("");
 	const [oldId, setOldId] = React.useState(0);
+	const [postTrending, setPostTrending] = React.useState([]);
 	const userSettings = {
 		id: userId,
 		setUserId,
@@ -43,7 +44,9 @@ const App = () => {
 		cover: cover,
 		setCover,
 		oldId: oldId,
-		setOldId
+		setOldId,
+		posts: postTrending,
+		setPostTrending
 	}
 	return (
 		<userIdProvider.Provider value={userSettings}>
@@ -55,7 +58,7 @@ const App = () => {
 					<Stack.Screen name="Comment" component={Comment} />
 					<Stack.Screen name="Maps" component={PostMaps} />
 					<Stack.Screen name="SignUp" component={SignUp} />
-					<Stack.Screen name="Profile" component={Profile} />
+					<Stack.Screen name="Profile" component={Profile} initialParams={{"profile": {}}}/>
 				</Stack.Navigator>
 			</NavigationContainer>
 		</userIdProvider.Provider>

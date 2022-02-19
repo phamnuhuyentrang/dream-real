@@ -1,4 +1,4 @@
-global.back_end_url = "http://169.254.243.222:5000"
+global.back_end_url = "http://169.254.101.241:5000"
 global.image_host_url = "https://dream-real.s3.eu-west-3.amazonaws.com/"
 
 let user_id = 0;

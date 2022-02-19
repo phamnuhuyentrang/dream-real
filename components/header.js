@@ -25,7 +25,7 @@ const Header = () => {
 
     const startSearch = () => toogleShowLogo(displayLogo => !displayLogo);
     const onSwipeDown = (gestureState) => {
-        navigation.navigate("Maps", {post: data});
+        navigation.navigate("Maps", {post: user_item.posts});
     }
     const config = {
         velocityThreshold: 0,

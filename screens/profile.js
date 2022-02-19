@@ -75,16 +75,17 @@ const Profile = (props) => {
     const [data, setData] = React.useState([]);
 
     const user = React.useContext(userIdProvider);
-    const userId = user.id;
+    const [userId, setUserId] = React.useState(user.id);
+    const userProfile = props.route.params.profile;
 
     React.useEffect(() => {
         LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
-    }, [])
-
-    React.useEffect(() => {
+        if (Object.keys(userProfile).length) {
+            setUserId(userProfile.user_id);
+        }
         if (loadingPost) {
             axios.get(global.back_end_url + '/album_user', {
-                params: { user_id: userId, offset: offset, user_react_id: userId },
+                params: { user_id: user.id, offset: offset, user_react_id: Object.keys(userProfile).length ? userProfile.user_id: user.id },
                 withCredentials: true 
             })
             .then((response) => {
@@ -106,7 +107,7 @@ const Profile = (props) => {
         if (loadingFriends) {
             axios.get(global.back_end_url + `/get_friends`, {
                 withCredentials: true,
-                params: { user_id: userId, offset: offsetFriends } 
+                params: { user_id: Object.keys(userProfile).length ? userProfile.user_id: user.id, offset: offsetFriends } 
             })
             .then((response) => {
                 let json = response.data;
@@ -130,7 +131,7 @@ const Profile = (props) => {
         if (loadingFollowers) {
             axios.get(global.back_end_url + `/get_followers`, {
                 withCredentials: true,
-                params: { user_id: userId, offset: offsetFollowers } 
+                params: { user_id: Object.keys(userProfile).length ? userProfile.user_id: user.id, offset: offsetFollowers } 
             })
             .then((response) => {
                 let json = response.data;
@@ -155,11 +156,7 @@ const Profile = (props) => {
         if (loadingFollowing) {
             axios.get(global.back_end_url + `/get_following`, {
                 withCredentials: true,
-                params: { user_id: userId, offset: offsetFollowing },
-                // headers: {
-                //     // Cookie: "access_token=" + tkn
-                //     "cookie": "access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1pbHNhdmljIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjQ0MDk5MDMyfQ.AFL3RxurB6FcdqgK_r08OZ7KQTiIw_vuyDRyyG2-ag4"
-                // }  
+                params: { user_id: Object.keys(userProfile).length ? userProfile.user_id: user.id, offset: offsetFollowing }, 
             })
             .then((response) => {
                 let json = response.data;
@@ -317,7 +314,7 @@ const Profile = (props) => {
                     <Image source={logo} style={styles.logo} />
                 </View>
                 <TouchableOpacity onPress={() => console.log("Clicked")} style={{position: "absolute", left: 0.42 * screen.width, top: 0.21 * screen.height, zIndex: 1}}>
-                    <Image source={{uri: global.image_host_url + user.avatar}} style={styles.avatar}/>
+                    <Image source={{uri: user.id === userId? global.image_host_url + user.avatar : global.image_host_url + userProfile.avatar}} style={styles.avatar}/>
                 </TouchableOpacity>
                 <Svg height={APPBAR_HEIGHT * 0.8} width={screen.width} overflow="hidden" style={styles.svg1} >
                     <Ellipse
@@ -331,16 +328,16 @@ const Profile = (props) => {
                     />
                 </Svg>
                 <TouchableOpacity onPress={() => console.log("Clicked")} style={styles.cover}>
-                    <Image source={{uri: global.image_host_url + user.cover}} style={styles.coverImage}/>
+                    <Image source={{uri: user.id === userId? global.image_host_url + user.cover : global.image_host_url + userProfile.cover_image}} style={styles.coverImage}/>
                 </TouchableOpacity>
                 <View style={{top: 0.06 * screen.height, zIndex: 3}}>
-                    <Text adjustsFontSizeToFit style={{color: "white", textAlign: "center", textAlignVertical: "center", fontSize: 20, fontWeight: 'bold'}}>{user.name}</Text>
+                    <Text adjustsFontSizeToFit style={{color: "white", textAlign: "center", textAlignVertical: "center", fontSize: 20, fontWeight: 'bold'}}>{user.id === userId? user.firstname + " " + user.lastname : userProfile.first_name + " " + userProfile.last_name}</Text>
                 </View>
                 <View style={{backgroundColor: "#252A38", marginTop: 0.1 * screen.height}}>
                     <View style={styles.row}>
                         <View style={styles.col1}>
                             <View style={{flexDirection: "row", alignItems: "center", justifyContent: "space-around", marginTop: 0.015 * screen.height}}>
-                                {/* <TouchableOpacity onPress={() => navigation.navigate("Maps", {post: data})}>
+                                <TouchableOpacity onPress={() => navigation.navigate("Maps", {post: data})}>
                                     <View style={{width: 0.1*screen.width, height: 0.02*screen.height, backgroundColor:"#B456F1", marginLeft: 0.05 * screen.width, borderRadius: 0.01 * screen.width, alignItems: "center", justifyContent: "center"}}>
                                         <FontAwesome5Icon name="map-marked-alt" size={10} solid color='white' style={{alignSelf: "center"}}></FontAwesome5Icon>
                                     </View>
@@ -349,7 +346,7 @@ const Profile = (props) => {
                                     <View style={{width: 0.1*screen.width, height: 0.02*screen.height, backgroundColor:"#B456F1", marginRight: 0.05 * screen.width, borderRadius: 0.01 * screen.width, alignItems: "center", justifyContent: "center"}}>
                                         <FontAwesome5Icon name="bookmark" size={10} solid color='white' style={{alignSelf: "center"}}></FontAwesome5Icon>
                                     </View>
-                                </TouchableOpacity> */}
+                                </TouchableOpacity>
                             </View>
                             <View style={{flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: 0.01 * screen.height}}>
                                 <Text style={{color: "#fff", textAlign: "left", marginLeft: 0.02 * screen.width}}>My score</Text>
@@ -431,7 +428,7 @@ const Profile = (props) => {
                             }
                         </View>
                     </View>
-                    <View style={{flexDirection: 'column', backgroundColor: "#3D3D4E", marginTop: 0.02 * screen.height, height: 0.175 * screen.height, width: 0.9 * screen.width, borderRadius: 0.02 * screen.width, alignSelf: "center"}}>
+                    {userId === user.id && <View style={{flexDirection: 'column', backgroundColor: "#3D3D4E", marginTop: 0.02 * screen.height, height: 0.175 * screen.height, width: 0.9 * screen.width, borderRadius: 0.02 * screen.width, alignSelf: "center"}}>
                         <TouchableOpacity style={{flexDirection: "row"}} onPress={() => {setPostModal(true); setBlurIntensity(0.5)}}>
                             <Image source={{uri: global.image_host_url + user.avatar}} style={{width: 50 * screen.width / figma_screen_w, height: 50 * screen.width / figma_screen_w, borderRadius: 0.1 * screen.width, margin: 0.015 * screen.height}}/>
                             <Text
@@ -472,14 +469,14 @@ const Profile = (props) => {
                                 <Text style={{color: "white", fontSize: 14}}>Tag</Text>
                             </TouchableOpacity>
                         </View>
-                    </View> 
+                    </View>} 
                     <View style={styles.containerPost}> 
                         {data != [] ? data.map((person) => {
                             return (
                                 <TrendingItems data={person} key={person.album_id}/>
                             )
                         }): <Text>Loading ...</Text>}
-                        {data.length == 0 && <View style={{backgroundColor: '#252A38', width: "100%", height: 0.18 * screen.height}}/>}
+                        {data.length == 0 && <View style={{backgroundColor: '#252A38', width: "100%", height: 0.4 * screen.height}}/>}
                         {!end && <TouchableOpacity style={styles.buttonLoad} onPress={() => setLoadingPosts(true)}>
                             <Text style={{textAlign: "center", alignItems: "center", justifyContent: "center", fontSize: 0.03 * screen.height, color: "white"}}> Load more </Text>
                         </TouchableOpacity>}

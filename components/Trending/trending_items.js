@@ -57,40 +57,373 @@ const TrendingItems = (props) => {
                     <View style={styles.content7}>
                         <TouchableOpacity onPress={() => {
                             if (reactIndex === 1) {
-                                setReactIndex(0);
-
+                                axios.post(global.back_end_url + '/react_album', {
+                                    "album_id": data.album_id,
+                                    "user_id": userId,
+                                    "emoji": 0,
+                                    "action": "remove react"
+                                }).then(async function(response) {
+                                    let json = response.data;
+                                    if (json.success) {
+                                        setReactIndex(0);
+                                        setNbReact(nbReact - 1);
+                                    }
+                                    else {
+                                        Alert.alert("Dream Real React Failed", json.message)
+                                    }
+                                }).catch(function(error){
+                                    Alert.alert("Dream Real React Error", error)
+                                })
                             }
-                            else setReactIndex(1);
+                            else {
+                                if (reactIndex != 0) {
+                                    axios.post(global.back_end_url + '/react_album', {
+                                        "album_id": data.album_id,
+                                        "user_id": userId,
+                                        "emoji": 1,
+                                        "action": "old react"
+                                    }).then(async function(response) {
+                                        let json = response.data;
+                                        if (json.success) {
+                                            setReactIndex(1);
+                                        }
+                                        else {
+                                            Alert.alert("Dream Real React Failed", json.message)
+                                        }
+                                    }).catch(function(error){
+                                        Alert.alert("Dream Real React Error", error)
+                                    })
+                                }
+                                else {
+                                    axios.post(global.back_end_url + '/react_album', {
+                                        "album_id": data.album_id,
+                                        "user_id": userId,
+                                        "emoji": 1,
+                                        "action": "new react"
+                                    }).then(async function(response) {
+                                        let json = response.data;
+                                        if (json.success) {
+                                            setReactIndex(1);
+                                            setNbReact(nbReact + 1);
+                                        }
+                                        else {
+                                            Alert.alert("Dream Real React Failed", json.message)
+                                        }
+                                    }).catch(function(error){
+                                        Alert.alert("Dream Real React Error", error)
+                                    })
+                                }
+                            };
                         }}>
                             <Image source={like} style={{...styles.item7, opacity:reactIndex != 1 || reactIndex === 0 ? 0.3 : 1}}></Image>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => {
-                            if (reactIndex === 2) setReactIndex(0);
-                            else setReactIndex(2);
+                            if (reactIndex === 2) {
+                                axios.post(global.back_end_url + '/react_album', {
+                                    "album_id": data.album_id,
+                                    "user_id": userId,
+                                    "emoji": 0,
+                                    "action": "remove react"
+                                }).then(async function(response) {
+                                    let json = response.data;
+                                    if (json.success) {
+                                        setReactIndex(0);
+                                        setNbReact(nbReact - 1);
+                                    }
+                                    else {
+                                        Alert.alert("Dream Real React Failed", json.message)
+                                    }
+                                }).catch(function(error){
+                                    Alert.alert("Dream Real React Error", error)
+                                })
+                            }
+                            else {
+                                if (reactIndex != 0) {
+                                    axios.post(global.back_end_url + '/react_album', {
+                                        "album_id": data.album_id,
+                                        "user_id": userId,
+                                        "emoji": 2,
+                                        "action": "old react"
+                                    }).then(async function(response) {
+                                        let json = response.data;
+                                        if (json.success) {
+                                            setReactIndex(2);
+                                        }
+                                        else {
+                                            Alert.alert("Dream Real React Failed", json.message)
+                                        }
+                                    }).catch(function(error){
+                                        Alert.alert("Dream Real React Error", error)
+                                    })
+                                }
+                                else {
+                                    axios.post(global.back_end_url + '/react_album', {
+                                        "album_id": data.album_id,
+                                        "user_id": userId,
+                                        "emoji": 2,
+                                        "action": "new react"
+                                    }).then(async function(response) {
+                                        let json = response.data;
+                                        if (json.success) {
+                                            setReactIndex(2);
+                                            setNbReact(nbReact + 1);
+                                        }
+                                        else {
+                                            Alert.alert("Dream Real React Failed", json.message)
+                                        }
+                                    }).catch(function(error){
+                                        Alert.alert("Dream Real React Error", error)
+                                    })
+                                }
+                            };
                         }}>
                             <Image source={love} style={{...styles.item7, opacity:reactIndex != 2 || reactIndex === 0 ? 0.3 : 1}}></Image>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => {
-                            if (reactIndex === 3) setReactIndex(0);
-                            else setReactIndex(3);
+                            if (reactIndex === 3) {
+                                axios.post(global.back_end_url + '/react_album', {
+                                    "album_id": data.album_id,
+                                    "user_id": userId,
+                                    "emoji": 0,
+                                    "action": "remove react"
+                                }).then(async function(response) {
+                                    let json = response.data;
+                                    if (json.success) {
+                                        setReactIndex(0);
+                                        setNbReact(nbReact - 1);
+                                    }
+                                    else {
+                                        Alert.alert("Dream Real React Failed", json.message)
+                                    }
+                                }).catch(function(error){
+                                    Alert.alert("Dream Real React Error", error)
+                                })
+                            }
+                            else {
+                                if (reactIndex != 0) {
+                                    axios.post(global.back_end_url + '/react_album', {
+                                        "album_id": data.album_id,
+                                        "user_id": userId,
+                                        "emoji": 3,
+                                        "action": "old react"
+                                    }).then(async function(response) {
+                                        let json = response.data;
+                                        if (json.success) {
+                                            setReactIndex(3);
+                                        }
+                                        else {
+                                            Alert.alert("Dream Real React Failed", json.message)
+                                        }
+                                    }).catch(function(error){
+                                        Alert.alert("Dream Real React Error", error)
+                                    })
+                                }
+                                else {
+                                    axios.post(global.back_end_url + '/react_album', {
+                                        "album_id": data.album_id,
+                                        "user_id": userId,
+                                        "emoji": 3,
+                                        "action": "new react"
+                                    }).then(async function(response) {
+                                        let json = response.data;
+                                        if (json.success) {
+                                            setReactIndex(3);
+                                            setNbReact(nbReact + 1);
+                                        }
+                                        else {
+                                            Alert.alert("Dream Real React Failed", json.message)
+                                        }
+                                    }).catch(function(error){
+                                        Alert.alert("Dream Real React Error", error)
+                                    })
+                                }
+                            };
                         }}>
                             <Image source={haha} style={{...styles.item7, opacity:reactIndex != 3 || reactIndex === 0 ? 0.3 : 1}}></Image>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => {
-                            if (reactIndex === 4) setReactIndex(0);
-                            else setReactIndex(4);
+                            if (reactIndex === 4) {
+                                axios.post(global.back_end_url + '/react_album', {
+                                    "album_id": data.album_id,
+                                    "user_id": userId,
+                                    "emoji": 0,
+                                    "action": "remove react"
+                                }).then(async function(response) {
+                                    let json = response.data;
+                                    if (json.success) {
+                                        setReactIndex(0);
+                                        setNbReact(nbReact - 1);
+                                    }
+                                    else {
+                                        Alert.alert("Dream Real React Failed", json.message)
+                                    }
+                                }).catch(function(error){
+                                    Alert.alert("Dream Real React Error", error)
+                                })
+                            }
+                            else {
+                                if (reactIndex != 0) {
+                                    axios.post(global.back_end_url + '/react_album', {
+                                        "album_id": data.album_id,
+                                        "user_id": userId,
+                                        "emoji": 4,
+                                        "action": "old react"
+                                    }).then(async function(response) {
+                                        let json = response.data;
+                                        if (json.success) {
+                                            setReactIndex(4);
+                                        }
+                                        else {
+                                            Alert.alert("Dream Real React Failed", json.message)
+                                        }
+                                    }).catch(function(error){
+                                        Alert.alert("Dream Real React Error", error)
+                                    })
+                                }
+                                else {
+                                    axios.post(global.back_end_url + '/react_album', {
+                                        "album_id": data.album_id,
+                                        "user_id": userId,
+                                        "emoji": 4,
+                                        "action": "new react"
+                                    }).then(async function(response) {
+                                        let json = response.data;
+                                        if (json.success) {
+                                            setReactIndex(4);
+                                            setNbReact(nbReact + 1);
+                                        }
+                                        else {
+                                            Alert.alert("Dream Real React Failed", json.message)
+                                        }
+                                    }).catch(function(error){
+                                        Alert.alert("Dream Real React Error", error)
+                                    })
+                                }
+                            };
                         }}>
                             <Image source={sad} style={{...styles.item7, opacity:reactIndex != 4 || reactIndex === 0 ? 0.3 : 1}}></Image>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => {
-                            if (reactIndex === 5) setReactIndex(0);
-                            else setReactIndex(5);
+                            if (reactIndex === 5) {
+                                axios.post(global.back_end_url + '/react_album', {
+                                    "album_id": data.album_id,
+                                    "user_id": userId,
+                                    "emoji": 0,
+                                    "action": "remove react"
+                                }).then(async function(response) {
+                                    let json = response.data;
+                                    if (json.success) {
+                                        setReactIndex(0);
+                                        setNbReact(nbReact - 1);
+                                    }
+                                    else {
+                                        Alert.alert("Dream Real React Failed", json.message)
+                                    }
+                                }).catch(function(error){
+                                    Alert.alert("Dream Real React Error", error)
+                                })
+                            }
+                            else {
+                                if (reactIndex != 0) {
+                                    axios.post(global.back_end_url + '/react_album', {
+                                        "album_id": data.album_id,
+                                        "user_id": userId,
+                                        "emoji": 5,
+                                        "action": "old react"
+                                    }).then(async function(response) {
+                                        let json = response.data;
+                                        if (json.success) {
+                                            setReactIndex(5);
+                                        }
+                                        else {
+                                            Alert.alert("Dream Real React Failed", json.message)
+                                        }
+                                    }).catch(function(error){
+                                        Alert.alert("Dream Real React Error", error)
+                                    })
+                                }
+                                else {
+                                    axios.post(global.back_end_url + '/react_album', {
+                                        "album_id": data.album_id,
+                                        "user_id": userId,
+                                        "emoji": 5,
+                                        "action": "new react"
+                                    }).then(async function(response) {
+                                        let json = response.data;
+                                        if (json.success) {
+                                            setReactIndex(5);
+                                            setNbReact(nbReact + 1);
+                                        }
+                                        else {
+                                            Alert.alert("Dream Real React Failed", json.message)
+                                        }
+                                    }).catch(function(error){
+                                        Alert.alert("Dream Real React Error", error)
+                                    })
+                                }
+                            };
                         }}>
                             <Image source={wow} style={{...styles.item7, opacity:reactIndex != 5 || reactIndex === 0 ? 0.3 : 1}}></Image>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => {
-                            if (reactIndex === 6) setReactIndex(0);
-                            else setReactIndex(6);
+                            if (reactIndex === 6) {
+                                axios.post(global.back_end_url + '/react_album', {
+                                    "album_id": data.album_id,
+                                    "user_id": userId,
+                                    "emoji": 0,
+                                    "action": "remove react"
+                                }).then(async function(response) {
+                                    let json = response.data;
+                                    if (json.success) {
+                                        setReactIndex(0);
+                                        setNbReact(nbReact - 1);
+                                    }
+                                    else {
+                                        Alert.alert("Dream Real React Failed", json.message)
+                                    }
+                                }).catch(function(error){
+                                    Alert.alert("Dream Real React Error", error)
+                                })
+                            }
+                            else {
+                                if (reactIndex != 0) {
+                                    axios.post(global.back_end_url + '/react_album', {
+                                        "album_id": data.album_id,
+                                        "user_id": userId,
+                                        "emoji": 6,
+                                        "action": "old react"
+                                    }).then(async function(response) {
+                                        let json = response.data;
+                                        if (json.success) {
+                                            setReactIndex(6);
+                                        }
+                                        else {
+                                            Alert.alert("Dream Real React Failed", json.message)
+                                        }
+                                    }).catch(function(error){
+                                        Alert.alert("Dream Real React Error", error)
+                                    })
+                                }
+                                else {
+                                    axios.post(global.back_end_url + '/react_album', {
+                                        "album_id": data.album_id,
+                                        "user_id": userId,
+                                        "emoji": 6,
+                                        "action": "new react"
+                                    }).then(async function(response) {
+                                        let json = response.data;
+                                        if (json.success) {
+                                            setReactIndex(6);
+                                            setNbReact(nbReact + 1);
+                                        }
+                                        else {
+                                            Alert.alert("Dream Real React Failed", json.message)
+                                        }
+                                    }).catch(function(error){
+                                        Alert.alert("Dream Real React Error", error)
+                                    })
+                                }
+                            };
                         }}>
                             <Image source={angry} style={{...styles.item7, opacity:reactIndex != 6 || reactIndex === 0 ? 0.3 : 1}}></Image>
                         </TouchableOpacity>

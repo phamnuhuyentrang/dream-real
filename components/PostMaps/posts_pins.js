@@ -8,45 +8,6 @@ import { useNavigation } from '@react-navigation/native';
 import logo from '../../static/img/dream-real-logo-nav.png'
 import TrendingItems from '../Trending/trending_items';
 
-const postLocation = [
-    {
-        latLng: {
-            latitude: 38.727805168037385,
-            longitude: -9.139949624585213
-        }
-    },
-    {
-        latLng: {
-            latitude: 3.1393316812370626,
-            longitude: 101.68838088443376
-        }
-    },
-    {
-        latLng: {
-            latitude: 47.22069233922117, 
-            longitude: -1.5535203250560288
-        }
-    },
-    {
-        latLng: {
-            latitude: 21.03283049674375, 
-            longitude: 105.833873069872
-        }
-    },
-    {
-        latLng: {
-            latitude: 40.75022860852176, 
-            longitude: -74.00855746690083
-        }
-    },
-    {
-        latLng: {
-            latitude: 46.772811324448014, 
-            longitude: 8.437770366918052
-        }
-    },
-]
-
 const screen = Dimensions.get("screen");
 const window = Dimensions.get("window")
 const figma_screen_w = 428;
@@ -70,6 +31,7 @@ const PostMaps = (props) => {
     const [initialRegion, setRegion] = React.useState(region)
     const [modalVisible, setModalVisible] = React.useState(false)
     const [ind, setIndex] = React.useState(0)
+
     const onRegionChange = (r) => setRegion(r)
     return (
         <View style={{flex: 1}}>
@@ -77,14 +39,15 @@ const PostMaps = (props) => {
                 initialRegion={initialRegion}
                 onRegionChange={onRegionChange}
                 style={styles.map}>
-                {postLocation.map((marker, index) => (
-                    // <TouchableOpacity onPress={}>
-                        <Marker
-                            key={index}
-                            coordinate={marker.latLng}
-                            onPress={() => {setModalVisible(true); setIndex(index)}}
-                        />
-                    // </TouchableOpacity>
+                {data.map((marker, index) => (
+                    <Marker
+                        key={index}
+                        coordinate={{
+                            latitude: parseInt(marker.latitude),
+                            longitude: parseInt(marker.longitude)
+                        }}
+                        onPress={() => {setModalVisible(true); setIndex(index)}}
+                    />
                 ))}
             </MapView>
             <CustomBar translucent backgroundColor="#3d3d4e" barStyle="light-content" />
