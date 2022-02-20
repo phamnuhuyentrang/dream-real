@@ -48,7 +48,7 @@ const StoryContent = (props) => {
     <View style={{flex: 1}}>
       <CustomBar backgroundColor="#252a38" barStyle="light-content" />
       <View style={{backgroundColor: "#252a38", height: screen.height}}>
-        <Carousel
+        {data.length > 0 && <Carousel
             layout="tinder"
             layoutCardOffset={9}
             ref={isCarousel}
@@ -67,7 +67,7 @@ const StoryContent = (props) => {
                 setLoading(true);
               }
             }}
-        />
+        />}
       </View>
     </View>
   )

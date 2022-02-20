@@ -4,7 +4,7 @@
     "slug": "dream-real",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/icon.jpeg",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -17,14 +17,20 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "co.dream.real",
+      "buildNumber": "1.0.0"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "dream.real"
+      "package": "co.dream.real",
+      "versionCode": 1,
+      "config": {
+        "googleMaps": { "apiKey": "AIzaSyBBkRlU71iBx0edNJz1TxHxdtuFZWCiAqg" }   
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"

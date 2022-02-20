@@ -1,5 +1,5 @@
 import React from "react";
-import { StatusBar, Modal, StyleSheet, Text, View, Dimensions, TouchableOpacity, Image, Platform, TextInput,Alert } from "react-native";
+import { StatusBar, Modal, StyleSheet, Text, View, Dimensions, TouchableOpacity, Image, Platform, TextInput,Alert, Button, Touchable } from "react-native";
 import { ScrollView } from "react-native";
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 import * as ImagePicker from 'expo-image-picker';
@@ -15,6 +15,20 @@ import TrendingItems from "../components/Trending/trending_items";
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { LogBox } from 'react-native';
 import { ListItem, Switch, Avatar } from 'react-native-elements'
+
+import feeling from "../static/img/icon-button/1f600.png"
+import traveling from "../static/img/icon-button/1f4ba.png"
+import getting from "../static/img/icon-button/1f4b5.png"
+import thinking from "../static/img/icon-button/1f4ad.png"
+import making from "../static/img/icon-button/1f4cf.png"
+import eating from "../static/img/icon-button/1f37d.png"
+import looking from "../static/img/icon-button/1f52d.png"
+import remembering from "../static/img/icon-button/1f56f.png"
+import celebrating from "../static/img/icon-button/1f389.png"
+import meeting from "../static/img/icon-button/1f454.png"
+import drinking from "../static/img/icon-button/1f943.png"
+import dream from "../static/img/icon-button/dream.png"
+import real from "../static/img/icon-button/real.png"
 
 const screen = Dimensions.get("screen");
 const window = Dimensions.get("window");
@@ -55,11 +69,13 @@ const Profile = (props) => {
     const [postText, setPostText] = React.useState("");
     // const [postTag, setPostTag] = React.useState(null);
     const [showPostModal, setPostModal] = React.useState(false);
+    const [showFeelingModal, setFeelingModal] = React.useState(false);
     const [blurIntensity, setBlurIntensity] = React.useState(1);
     const [loadingFriends, setLoadingFriends] = React.useState(true);
     const [offsetFriends, setOffsetFriends] = React.useState(0);
     const [friends, setFriends] = React.useState([]);
     const [nbFriends, setNbFriends] = React.useState(0);
+    const [dream_or_real, setDreamReal] = React.useState(true);
 
     const [loadingFollowers, setLoadingFollowers] = React.useState(true);
     const [offsetFollowers, setOffsetFollowers] = React.useState(0);
@@ -79,7 +95,10 @@ const Profile = (props) => {
     const [userId, setUserId] = React.useState(user.id);
     const userProfile = props.route.params.profile;
     const [userConsult, setUserConsult] = React.useState(null);
-
+    const [list2, setList2] = React.useState([]);
+    const [expanded, setExpanded] = React.useState(false);
+    const [travelingExpanded, setTravelingExpanded] = React.useState(false);
+    const [listTraveling, setListTraveling] = React.useState([]);
     React.useEffect(() => {
         LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
         if (Object.keys(userProfile).length) {
@@ -340,12 +359,12 @@ const Profile = (props) => {
                     <View style={styles.row}>
                         <View style={styles.col1}>
                             <View style={{flexDirection: "row", alignItems: "center", justifyContent: "space-around", marginTop: 0.015 * screen.height}}>
-                                <TouchableOpacity onPress={() => navigation.navigate("Maps", {post: data})}>
+                                <TouchableOpacity onPress={() => navigation.navigate("Maps", {post: data, userId: Object.keys(userProfile).length ? userProfile.user_id: user.id})}>
                                     <View style={{width: 0.1*screen.width, height: 0.02*screen.height, backgroundColor:"#B456F1", marginLeft: 0.05 * screen.width, borderRadius: 0.01 * screen.width, alignItems: "center", justifyContent: "center"}}>
                                         <FontAwesome5Icon name="map-marked-alt" size={10} solid color='white' style={{alignSelf: "center"}}></FontAwesome5Icon>
                                     </View>
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => navigation.navigate("Maps", {post: data})}>
+                                <TouchableOpacity onPress={() => navigation.navigate("Maps", {post: data, userId: Object.keys(userProfile).length ? userProfile.user_id: user.id})}>
                                     <View style={{width: 0.1*screen.width, height: 0.02*screen.height, backgroundColor:"#B456F1", marginRight: 0.05 * screen.width, borderRadius: 0.01 * screen.width, alignItems: "center", justifyContent: "center"}}>
                                         <FontAwesome5Icon name="bookmark" size={10} solid color='white' style={{alignSelf: "center"}}></FontAwesome5Icon>
                                     </View>
@@ -456,17 +475,12 @@ const Profile = (props) => {
                                 <FontAwesome5Icon name="image" size={16} solid color='#89ff69' style={{marginBottom: 0.005 * screen.height}}></FontAwesome5Icon> 
                                 <Text style={{color: "white", fontSize: 14}}>Photo</Text>
                             </TouchableOpacity>}
-                            {postPhoto == null && <View style={{borderRightColor: "#c4c4c4", borderRightWidth: 1}} />}
-                            <TouchableOpacity style={{justifyContent: "center", alignItems: "center"}} onPress={() => setPostFeeling("grin-tongue-wink")}>
-                                <FontAwesome5Icon name="smile-wink" size={16} regular color='#ffff69' style={{marginBottom: 0.005 * screen.height}}></FontAwesome5Icon> 
+                            {postFeeling == null && <View style={{borderRightColor: "#c4c4c4", borderRightWidth: 1}} />}
+                            <TouchableOpacity style={{justifyContent: "center", alignItems: "center"}} onPress={() => {setFeelingModal(true); setBlurIntensity(0.5)}}>
+                                <FontAwesome5Icon name="smile-wink" size={16} regular color='#ffff69' style={{marginBottom: 0.005 * screen.height}}></FontAwesome5Icon>
                                 <Text style={{color: "white", fontSize: 14}}>Feeling/Activity</Text>
                             </TouchableOpacity>
                             <View style={{borderRightColor: "#c4c4c4", borderRightWidth: 1}} />
-                            {/* {location == "" && <TouchableOpacity style={{justifyContent: "center", alignItems: "center"}} onPress={() => {setGoogle(true); setBlurIntensity(0.5)}}>
-                                <FontAwesome5Icon name="map-marker-alt" size={16} solid color='#80b0ff' style={{marginBottom: 0.005 * screen.height}}></FontAwesome5Icon> 
-                                <Text style={{color: "white", fontSize: 14}}>Location</Text>
-                            </TouchableOpacity>}
-                            {location == "" && <View style={{borderRightColor: "#c4c4c4", borderRightWidth: 1}} />} */}
                             <TouchableOpacity style={{justifyContent: "center", alignItems: "center"}}>
                                 <FontAwesome5Icon name="tag" size={16} solid color='#ff5c5c' style={{marginBottom: 0.005 * screen.height}}></FontAwesome5Icon> 
                                 <Text style={{color: "white", fontSize: 14}}>Tag</Text>
@@ -486,6 +500,190 @@ const Profile = (props) => {
                     </View> 
                 </View>
             </ScrollView>
+            <Modal 
+                animationType="fade"
+                transparent={true}
+                visible={showFeelingModal}
+                onRequestClose={() => {
+                    Alert.alert("Modal has been closed.");
+                    
+                }}
+            >
+                <TouchableOpacity 
+                    style={styles.centeredView} 
+                    activeOpacity={1} 
+                    onPressOut={() => {setFeelingModal(false); setBlurIntensity(1)}}
+                >
+                    <ScrollView showsVerticalScrollIndicator={false} style={{width: 0.9 * screen.width, marginBottom: 0.2 * screen.height, marginTop: 0.2 * screen.height, height: 0.6 * screen.height, flexDirection: "column", backgroundColor: "#3D3D4E", borderBottomLeftRadius: 0.02 * screen.width, borderBottomRightRadius: 0.02 * screen.width}}>
+                        <ListItem.Accordion
+                            content={
+                                <>
+                                    <Avatar title="Feeling" source={feeling} />
+                                    <ListItem.Content>                    
+                                        <ListItem.Title>Feeling </ListItem.Title>
+                                    </ListItem.Content>
+                                </>
+                            }
+                            isExpanded={expanded}
+                            onPress={() => {
+                                if (expanded && list2.length == 0) {
+                                    axios.get(global.back_end_url + "/tags", {
+                                        params: {slug: "feeling"}
+                                    }).then((response) => {
+                                        let json = JSON.parse(JSON.stringify(response.data))
+                                        if (json.success) {
+                                            setList2(JSON.parse(JSON.stringify(json.tags)))
+                                        }
+                                    }).catch((error) => {
+                                        Alert.alert("Dream Real Loading Tags Error", json.message)
+                                    })
+                                }
+                                setExpanded(!expanded);
+                            }}
+                            >
+                            {list2.length > 0 && list2.map((l, i) => (
+                                <ListItem key={i} onPress={() => {console.log("Selected: "+ l.id); setPostFeeling(l.id)}} bottomDivider>
+                                <Avatar title={l.title} source={{ uri: global.image_host_url + l.url }} />
+                                <ListItem.Content>
+                                    <ListItem.Title>{l.title}</ListItem.Title>
+                                </ListItem.Content>
+                                </ListItem>
+                            ))}
+                        </ListItem.Accordion>
+                        <ListItem.Accordion
+                            content={
+                                <>
+                                    <Avatar title="Traveling to" source={traveling} />
+                                    <ListItem.Content>                    
+                                        <ListItem.Title>Traveling to</ListItem.Title>
+                                    </ListItem.Content>
+                                </>
+                            }
+                            isExpanded={travelingExpanded}
+                            onPress={() => {
+                                if (travelingExpanded && listTraveling.length == 0) {
+                                    axios.get(global.back_end_url + "/tags", {
+                                        params: {slug: "traveling"}
+                                    }).then((response) => {
+                                        let json = JSON.parse(JSON.stringify(response.data))
+                                        if (json.success) {
+                                            setListTraveling(JSON.parse(JSON.stringify(json.tags)))
+                                        }
+                                    }).catch((error) => {
+                                        Alert.alert("Dream Real Loading Tags Error", json.message)
+                                    })
+                                }
+                                setTravelingExpanded(!travelingExpanded);
+                            }}
+                            >
+                            {listTraveling.length > 0 && listTraveling.map((l, i) => (
+                                <ListItem key={i} onPress={() => {console.log("Selected: "+ l.id); setPostFeeling(l.id)}} bottomDivider>
+                                <Avatar title={l.title} source={{ uri: global.image_host_url + l.url }} />
+                                <ListItem.Content>
+                                    <ListItem.Title>{l.title}</ListItem.Title>
+                                </ListItem.Content>
+                                </ListItem>
+                            ))}
+                        </ListItem.Accordion>
+                        <ListItem.Accordion
+                            content={
+                                <>
+                                    <Avatar title="Eating" source={eating} />
+                                    <ListItem.Content>                    
+                                        <ListItem.Title>Eating</ListItem.Title>
+                                    </ListItem.Content>
+                                </>
+                            }
+                            isExpanded={false}
+                        >
+                        </ListItem.Accordion>
+                        <ListItem.Accordion
+                            content={
+                                <>
+                                    <Avatar title="Drinking" source={drinking} />
+                                    <ListItem.Content>                    
+                                        <ListItem.Title>Drinking</ListItem.Title>
+                                    </ListItem.Content>
+                                </>
+                            }
+                            isExpanded={false}
+                        >
+                        </ListItem.Accordion>
+                        <ListItem.Accordion
+                            content={
+                                <>
+                                    <Avatar title="Looking for" source={looking} />
+                                    <ListItem.Content>                    
+                                        <ListItem.Title>Looking for</ListItem.Title>
+                                    </ListItem.Content>
+                                </>
+                            }
+                            isExpanded={false}
+                        >
+                        </ListItem.Accordion>
+                        <ListItem.Accordion
+                            content={
+                                <>
+                                    <Avatar title="Celebrating" source={celebrating} />
+                                    <ListItem.Content>                    
+                                        <ListItem.Title>Celebrating</ListItem.Title>
+                                    </ListItem.Content>
+                                </>
+                            }
+                            isExpanded={false}
+                        >
+                        </ListItem.Accordion>
+                        <ListItem.Accordion
+                            content={
+                                <>
+                                    <Avatar title="Meeting" source={meeting} />
+                                    <ListItem.Content>                    
+                                        <ListItem.Title>Meeting</ListItem.Title>
+                                    </ListItem.Content>
+                                </>
+                            }
+                            isExpanded={false}
+                        >
+                        </ListItem.Accordion>
+                        <ListItem.Accordion
+                            content={
+                                <>
+                                    <Avatar title="Getting" source={getting} />
+                                    <ListItem.Content>                    
+                                        <ListItem.Title>Getting</ListItem.Title>
+                                    </ListItem.Content>
+                                </>
+                            }
+                            isExpanded={false}
+                        >
+                        </ListItem.Accordion>
+                        <ListItem.Accordion
+                            content={
+                                <>
+                                    <Avatar title="Making" source={making} />
+                                    <ListItem.Content>                    
+                                        <ListItem.Title>Making</ListItem.Title>
+                                    </ListItem.Content>
+                                </>
+                            }
+                            isExpanded={false}
+                        >
+                        </ListItem.Accordion>
+                        <ListItem.Accordion
+                            content={
+                                <>
+                                    <Avatar title="Remembering" source={remembering} />
+                                    <ListItem.Content>                    
+                                        <ListItem.Title>Remembering</ListItem.Title>
+                                    </ListItem.Content>
+                                </>
+                            }
+                            isExpanded={false}
+                        >
+                        </ListItem.Accordion>
+                    </ScrollView>
+                </TouchableOpacity>
+            </Modal>
             <Modal 
                 animationType="fade"
                 transparent={true}
@@ -535,7 +733,7 @@ const Profile = (props) => {
                                         formData.append("user_id", user.id)
                                         formData.append("description", postText)
                                         formData.append("id_tag", 1)
-                                        formData.append("dream_real", 1)
+                                        formData.append("dream_real", dream_or_real == true? 1:0)
                                         try {
                                             const response = await fetch(global.back_end_url + "/new_album", {
                                                 "method": "POST",
@@ -567,8 +765,7 @@ const Profile = (props) => {
                         </View>
                         <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps={"handled"} style={{width: 0.9 * screen.width, flexDirection: "column", backgroundColor: "#3D3D4E", borderBottomLeftRadius: 0.02 * screen.width, borderBottomRightRadius: 0.02 * screen.width}}>
                             <View style={{flexDirection: "row", height: 0.08 * screen.height}}>
-                                <Image source={{uri: global.image_host_url + user.avatar}} style={{margin: 0.02 * screen.height, width: 40 * screen.width / figma_screen_w, height: 40 * screen.width / figma_screen_w, borderRadius: 0.1 * screen.width, 
-                                    margin: 0.015 * screen.width}}/>
+                                <Image source={{uri: global.image_host_url + user.avatar}} style={{margin: 0.02 * screen.height, width: 40 * screen.width / figma_screen_w, height: 40 * screen.width / figma_screen_w, borderRadius: 0.1 * screen.width, margin: 0.015 * screen.width}}/>
                                 <Text style={{color: "white", fontSize: 12, fontWeight: "bold", alignItems: "center", marginTop: 0.015 * screen.width + 10 * screen.width / figma_screen_w}}>{user.firstname + " " + user.lastname} </Text>
                                 {postFeeling != null && 
                                     <View style={{flexDirection: "row", marginTop: 0.015 * screen.width + 10 * screen.width / figma_screen_w}}>
@@ -630,19 +827,29 @@ const Profile = (props) => {
                                 value={postText}
                             />
                             <View style={{flexDirection: "row", justifyContent: "space-between", marginTop: 0.01 * screen.height, marginLeft: 0.02 * screen.height, marginRight: 0.02 * screen.height}}>
-                                {postPhoto == null &&<TouchableOpacity style={{justifyContent: "center", alignItems: "center"}} onPress={() => pickPhoto()}>
+                                {postPhoto == null &&<TouchableOpacity style={{justifyContent: "center", alignItems: "center", flexDirection: "row"}} onPress={() => pickPhoto()}>
                                     <FontAwesome5Icon name="image" size={16} solid color='#89ff69' style={{marginBottom: 0.005 * screen.height}}></FontAwesome5Icon> 
-                                    <Text style={{color: "white", fontSize: 14}}>Photo</Text>
+                                    <Text style={{color: "white", fontSize: 14}}>  Photo</Text>
                                 </TouchableOpacity>}
                                 {postPhoto == null && <View style={{borderRightColor: "#c4c4c4", borderRightWidth: 1}} />}
-                                {/* {location == "" && <TouchableOpacity style={{justifyContent: "center", alignItems: "center"}} onPress={() => setGoogleModal(!googleModal)}>
-                                    <FontAwesome5Icon name="map-marker-alt" size={16} solid color='#80b0ff' style={{marginBottom: 0.005 * screen.height}}></FontAwesome5Icon> 
-                                    <Text style={{color: "white", fontSize: 14}}>Location</Text>
-                                </TouchableOpacity>}
-                                {location == "" && <View style={{borderRightColor: "#c4c4c4", borderRightWidth: 1}} />} */}
-                                <TouchableOpacity style={{justifyContent: "center", alignItems: "center"}}>
+                                <TouchableOpacity style={{justifyContent: "center", alignItems: "center", flexDirection: "row"}}>
                                     <FontAwesome5Icon name="tag" size={16} solid color='#ff5c5c' style={{marginBottom: 0.005 * screen.height}}></FontAwesome5Icon> 
-                                    <Text style={{color: "white", fontSize: 14}}>Tag</Text>
+                                    <Text style={{color: "white", fontSize: 14}}>  Tag</Text>
+                                </TouchableOpacity>
+                                <View style={{borderRightColor: "#c4c4c4", borderRightWidth: 1}} />
+                                <TouchableOpacity style={{justifyContent: "center", alignItems: "center"}} onPress={() => {setDreamReal(!dream_or_real)}}>
+                                    {dream_or_real && 
+                                    <View style={{flexDirection: "row"}}>
+                                        <Image source={dream} style={{width: 25 * screen.width/ figma_screen_w, height: 25 * screen.width/ figma_screen_w, borderRadius: 50}}>
+                                        </Image>
+                                        <Text style={{color: "white", fontSize: 14}}>  Dream</Text>
+                                    </View>}
+                                    {!dream_or_real && 
+                                    <View style={{flexDirection: "row"}}>
+                                        <Image source={real} style={{width: 25 * screen.width/ figma_screen_w, height: 25 * screen.width/ figma_screen_w, borderRadius: 50}}>
+                                        </Image>
+                                        <Text style={{color: "white", fontSize: 14}}>  Real</Text>
+                                    </View>}
                                 </TouchableOpacity>
                             </View>
                         </ScrollView>

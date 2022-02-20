@@ -13,7 +13,7 @@ import TrendingItems from '../Trending/trending_items';
 import follows from "../../static/img/icon-button/follows.png"
 import friends from "../../static/img/icon-button/friends.png"
 import axios from 'axios';
-import userIdProvider from '../Context/user_id_provider';
+// import userIdProvider from '../Context/user_id_provider';
 
 const screen = Dimensions.get("screen");
 const window = Dimensions.get("window")
@@ -40,8 +40,8 @@ const PostMaps = (props) => {
     const [ind, setIndex] = React.useState(0)
     const [data, setData] = React.useState(d);
 
-    const user_item = React.useContext(userIdProvider);
-    const userId = user_item.id;
+    // const user_item = React.useContext(userIdProvider);
+    const userId = props.route.params.userId;
 
     const actions = [
         {
@@ -107,8 +107,12 @@ const PostMaps = (props) => {
                     onPressItem={name => {
                         switch(name) {
                             case "bt_only_follow":
+                                console.log(userId)
                                 axios.get(global.back_end_url + '/filter_album_by_following', {
-                                    user_id: userId
+                                    params: {
+                                        user_id: userId,
+                                        offset: 0
+                                    }
                                 }).then((response) => {
                                     let json = JSON.parse(JSON.stringify(response.data))
                                     if (json.success) {
@@ -122,7 +126,10 @@ const PostMaps = (props) => {
                                 break;
                             case "bt_only_friends":
                                 axios.get(global.back_end_url + '/filter_album_by_friend', {
-                                    user_id: userId
+                                    params: {
+                                        user_id: userId,
+                                        offset: 0
+                                    }
                                 }).then((response) => {
                                     let json = JSON.parse(JSON.stringify(response.data))
                                     if (json.success) {

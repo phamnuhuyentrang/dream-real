@@ -73,7 +73,11 @@ const Comment = (props) => {
                                     <Image source={{uri: global.image_host_url + album.avatar}} style={styles.avatar}></Image>
                                     <Text style={styles.item4}>{album.first_name + " " + album.last_name}</Text>
                                 </View>
-                                <Text style={styles.item3}>{album.title}</Text>
+                                <View style={styles.content4}>
+                                    <Text style={styles.item3}>is {album.slug}  </Text>
+                                    <Image source={{uri: global.image_host_url + album.url}} style={styles.emotion}></Image>
+                                    <Text style={styles.item3}>  {album.title}</Text>
+                                </View>
                             </View>
                             <FontAwesome5Icon color='red' name="map-marker-alt" regular size={10} style={styles.item2}>
                                 <Text style={[styles.item2, {color:'#FFF'}]}> {album.location_city + ", " + album.location_country}</Text>
@@ -151,6 +155,12 @@ const styles = StyleSheet.create({
     avatar: {
         width: 30 * screen.width / figma_screen_w,
         height: 30 * screen.width / figma_screen_w,
+        borderRadius: 50,
+        alignSelf: "flex-start"
+    },
+    emotion: {
+        width: 20 * screen.width / figma_screen_w,
+        height: 20 * screen.width / figma_screen_w,
         borderRadius: 50,
         alignSelf: "flex-start"
     },

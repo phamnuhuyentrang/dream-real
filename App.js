@@ -56,7 +56,7 @@ const App = () => {
 					<Stack.Screen name="DestinationDetails" component={DestinationDetails} />
 					<Stack.Screen name="StoryContent" component={StoryContent} />
 					<Stack.Screen name="Comment" component={Comment} />
-					<Stack.Screen name="Maps" component={PostMaps} />
+					<Stack.Screen name="Maps" component={PostMaps} initialParams={{"userId": userSettings.id}}/>
 					<Stack.Screen name="SignUp" component={SignUp} />
 					<Stack.Screen name="Profile" component={Profile} initialParams={{"profile": {}}}/>
 				</Stack.Navigator>

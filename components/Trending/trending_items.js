@@ -41,14 +41,17 @@ const TrendingItems = (props) => {
                         <Image source={{uri: global.image_host_url + data.avatar}} style={styles.avatar}></Image>
                         <Text style={styles.item4}>{data.first_name + " " + data.last_name}</Text>
                     </View>
-                    <Text style={styles.item3}>{data.title}</Text>
+                    <View style={styles.content4}>
+                        <Text style={styles.item3}>is {data.slug}  </Text>
+                        <Image source={{uri: global.image_host_url + data.url}} style={styles.emotion}></Image>
+                        <Text style={styles.item3}>  {data.title}</Text>
+                    </View>
                 </View>
                 <FontAwesome5Icon color='red' name="map-marker-alt" regular size={10} style={styles.item2}>
                     <Text style={[styles.item2, {color:'#FFF'}]}> {data.location_city + ", " + data.location_country}</Text>
                 </FontAwesome5Icon>
             </View>
-            {typeof(data.image) == "number" && <Image source={global.image_host_url + data.image} style={styles.place} />}
-            {typeof(data.image) == "string" && <Image source={{uri: global.image_host_url + data.image}} style={styles.place} />}
+            <Image source={{uri: global.image_host_url + data.image}} style={styles.place} />
             <View style={styles.content5}>
                 <TouchableOpacity>
                     <Text style={styles.item5}>{nbReact} reacts</Text>
@@ -450,6 +453,12 @@ const styles = StyleSheet.create({
     avatar: {
         width: 30 * screen.width / figma_screen_w,
         height: 30 * screen.width / figma_screen_w,
+        borderRadius: 50,
+        alignSelf: "flex-start"
+    },
+    emotion: {
+        width: 20 * screen.width / figma_screen_w,
+        height: 20 * screen.width / figma_screen_w,
         borderRadius: 50,
         alignSelf: "flex-start"
     },
