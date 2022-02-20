@@ -73,7 +73,6 @@ const SignUp = (props) => {
                     "body": formData
                 })
                 let json = await response.json();
-                console.log(json)
                 if (json.success) {
                     Alert.alert("Dream Real Register Success", "Welcome to Dream Real !")
                 }

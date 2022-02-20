@@ -8,7 +8,6 @@ import angry from "../../static/img/emoji/angry.png";
 import wow from "../../static/img/emoji/wow.png";
 import haha from "../../static/img/emoji/haha.png";
 import sendIcon from "../../static/img/icon-button/send.png";
-import raiden from "../../static/img/my_ava.jpeg";
 import CommentLayout from './comment_layout';
 import Header from '../header';
 import CustomBar from '../statusbar';

@@ -62,8 +62,8 @@ const TrendingItems = (props) => {
                                     "user_id": userId,
                                     "emoji": 0,
                                     "action": "remove react"
-                                }).then(async function(response) {
-                                    let json = response.data;
+                                }).then(function(response) {
+                                    let json = JSON.parse(JSON.stringify(response.data));
                                     if (json.success) {
                                         setReactIndex(0);
                                         setNbReact(nbReact - 1);
@@ -82,8 +82,8 @@ const TrendingItems = (props) => {
                                         "user_id": userId,
                                         "emoji": 1,
                                         "action": "old react"
-                                    }).then(async function(response) {
-                                        let json = response.data;
+                                    }).then(function(response) {
+                                        let json = JSON.parse(JSON.stringify(response.data));
                                         if (json.success) {
                                             setReactIndex(1);
                                         }
@@ -100,8 +100,8 @@ const TrendingItems = (props) => {
                                         "user_id": userId,
                                         "emoji": 1,
                                         "action": "new react"
-                                    }).then(async function(response) {
-                                        let json = response.data;
+                                    }).then(function(response) {
+                                        let json = JSON.parse(JSON.stringify(response.data));
                                         if (json.success) {
                                             setReactIndex(1);
                                             setNbReact(nbReact + 1);
@@ -124,8 +124,8 @@ const TrendingItems = (props) => {
                                     "user_id": userId,
                                     "emoji": 0,
                                     "action": "remove react"
-                                }).then(async function(response) {
-                                    let json = response.data;
+                                }).then(function(response) {
+                                    let json = JSON.parse(JSON.stringify(response.data));
                                     if (json.success) {
                                         setReactIndex(0);
                                         setNbReact(nbReact - 1);
@@ -144,8 +144,8 @@ const TrendingItems = (props) => {
                                         "user_id": userId,
                                         "emoji": 2,
                                         "action": "old react"
-                                    }).then(async function(response) {
-                                        let json = response.data;
+                                    }).then(function(response) {
+                                        let json = JSON.parse(JSON.stringify(response.data));
                                         if (json.success) {
                                             setReactIndex(2);
                                         }
@@ -162,8 +162,8 @@ const TrendingItems = (props) => {
                                         "user_id": userId,
                                         "emoji": 2,
                                         "action": "new react"
-                                    }).then(async function(response) {
-                                        let json = response.data;
+                                    }).then(function(response) {
+                                        let json = JSON.parse(JSON.stringify(response.data));
                                         if (json.success) {
                                             setReactIndex(2);
                                             setNbReact(nbReact + 1);
@@ -186,8 +186,8 @@ const TrendingItems = (props) => {
                                     "user_id": userId,
                                     "emoji": 0,
                                     "action": "remove react"
-                                }).then(async function(response) {
-                                    let json = response.data;
+                                }).then(function(response) {
+                                    let json = JSON.parse(JSON.stringify(response.data));
                                     if (json.success) {
                                         setReactIndex(0);
                                         setNbReact(nbReact - 1);
@@ -206,8 +206,8 @@ const TrendingItems = (props) => {
                                         "user_id": userId,
                                         "emoji": 3,
                                         "action": "old react"
-                                    }).then(async function(response) {
-                                        let json = response.data;
+                                    }).then(function(response) {
+                                        let json = JSON.parse(JSON.stringify(response.data));
                                         if (json.success) {
                                             setReactIndex(3);
                                         }
@@ -224,8 +224,8 @@ const TrendingItems = (props) => {
                                         "user_id": userId,
                                         "emoji": 3,
                                         "action": "new react"
-                                    }).then(async function(response) {
-                                        let json = response.data;
+                                    }).then(function(response) {
+                                        let json = JSON.parse(JSON.stringify(response.data));
                                         if (json.success) {
                                             setReactIndex(3);
                                             setNbReact(nbReact + 1);
@@ -248,8 +248,8 @@ const TrendingItems = (props) => {
                                     "user_id": userId,
                                     "emoji": 0,
                                     "action": "remove react"
-                                }).then(async function(response) {
-                                    let json = response.data;
+                                }).then(function(response) {
+                                    let json = JSON.parse(JSON.stringify(response.data));
                                     if (json.success) {
                                         setReactIndex(0);
                                         setNbReact(nbReact - 1);
@@ -268,8 +268,8 @@ const TrendingItems = (props) => {
                                         "user_id": userId,
                                         "emoji": 4,
                                         "action": "old react"
-                                    }).then(async function(response) {
-                                        let json = response.data;
+                                    }).then(function(response) {
+                                        let json = JSON.parse(JSON.stringify(response.data));
                                         if (json.success) {
                                             setReactIndex(4);
                                         }
@@ -286,8 +286,8 @@ const TrendingItems = (props) => {
                                         "user_id": userId,
                                         "emoji": 4,
                                         "action": "new react"
-                                    }).then(async function(response) {
-                                        let json = response.data;
+                                    }).then(function(response) {
+                                        let json = JSON.parse(JSON.stringify(response.data));
                                         if (json.success) {
                                             setReactIndex(4);
                                             setNbReact(nbReact + 1);
@@ -310,8 +310,8 @@ const TrendingItems = (props) => {
                                     "user_id": userId,
                                     "emoji": 0,
                                     "action": "remove react"
-                                }).then(async function(response) {
-                                    let json = response.data;
+                                }).then(function(response) {
+                                    let json = JSON.parse(JSON.stringify(response.data));
                                     if (json.success) {
                                         setReactIndex(0);
                                         setNbReact(nbReact - 1);
@@ -330,8 +330,8 @@ const TrendingItems = (props) => {
                                         "user_id": userId,
                                         "emoji": 5,
                                         "action": "old react"
-                                    }).then(async function(response) {
-                                        let json = response.data;
+                                    }).then(function(response) {
+                                        let json = JSON.parse(JSON.stringify(response.data));
                                         if (json.success) {
                                             setReactIndex(5);
                                         }
@@ -348,8 +348,8 @@ const TrendingItems = (props) => {
                                         "user_id": userId,
                                         "emoji": 5,
                                         "action": "new react"
-                                    }).then(async function(response) {
-                                        let json = response.data;
+                                    }).then(function(response) {
+                                        let json = JSON.parse(JSON.stringify(response.data));
                                         if (json.success) {
                                             setReactIndex(5);
                                             setNbReact(nbReact + 1);
@@ -372,8 +372,8 @@ const TrendingItems = (props) => {
                                     "user_id": userId,
                                     "emoji": 0,
                                     "action": "remove react"
-                                }).then(async function(response) {
-                                    let json = response.data;
+                                }).then(function(response) {
+                                    let json = JSON.parse(JSON.stringify(response.data));
                                     if (json.success) {
                                         setReactIndex(0);
                                         setNbReact(nbReact - 1);
@@ -392,8 +392,8 @@ const TrendingItems = (props) => {
                                         "user_id": userId,
                                         "emoji": 6,
                                         "action": "old react"
-                                    }).then(async function(response) {
-                                        let json = response.data;
+                                    }).then(function(response) {
+                                        let json = JSON.parse(JSON.stringify(response.data));
                                         if (json.success) {
                                             setReactIndex(6);
                                         }
@@ -410,8 +410,8 @@ const TrendingItems = (props) => {
                                         "user_id": userId,
                                         "emoji": 6,
                                         "action": "new react"
-                                    }).then(async function(response) {
-                                        let json = response.data;
+                                    }).then(function(response) {
+                                        let json = JSON.parse(JSON.stringify(response.data));
                                         if (json.success) {
                                             setReactIndex(6);
                                             setNbReact(nbReact + 1);

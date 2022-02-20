@@ -14,6 +14,7 @@ import moment from "moment";
 import TrendingItems from "../components/Trending/trending_items";
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { LogBox } from 'react-native';
+import { ListItem, Switch, Avatar } from 'react-native-elements'
 
 const screen = Dimensions.get("screen");
 const window = Dimensions.get("window");
@@ -542,7 +543,6 @@ const Profile = (props) => {
                                                 "body": formData
                                             })
                                             let json = await response.json();
-                                            console.log(json)
                                             if (json.success) {
                                                 Alert.alert("Dream Real Post Success", "Post to Dream Real !")
                                             }

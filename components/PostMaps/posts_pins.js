@@ -5,8 +5,15 @@ import { Svg, Ellipse } from 'react-native-svg'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
 import MapView, { Marker } from 'react-native-maps';
 import { useNavigation } from '@react-navigation/native';
+import { FloatingAction } from "react-native-floating-action";
+
 import logo from '../../static/img/dream-real-logo-nav.png'
 import TrendingItems from '../Trending/trending_items';
+
+import follows from "../../static/img/icon-button/follows.png"
+import friends from "../../static/img/icon-button/friends.png"
+import axios from 'axios';
+import userIdProvider from '../Context/user_id_provider';
 
 const screen = Dimensions.get("screen");
 const window = Dimensions.get("window")
@@ -16,7 +23,7 @@ const figma_screen_h = 926;
 const APPBAR_HEIGHT = 200 * screen.height / figma_screen_h;
 
 const PostMaps = (props) => {
-    const data = props.route.params.post;
+    const d = props.route.params.post;
     const config = {
         velocityThreshold: 0,
         directionalOffsetThreshold: 90
@@ -31,14 +38,38 @@ const PostMaps = (props) => {
     const [initialRegion, setRegion] = React.useState(region)
     const [modalVisible, setModalVisible] = React.useState(false)
     const [ind, setIndex] = React.useState(0)
+    const [data, setData] = React.useState(d);
+
+    const user_item = React.useContext(userIdProvider);
+    const userId = user_item.id;
+
+    const actions = [
+        {
+            text: "Only followings's posts",
+            icon: follows,
+            name: "bt_only_follow",
+            position: 2
+        },
+        {
+            text: "Only friends's posts",
+            icon: friends,
+            name: "bt_only_friends",
+            position: 1
+        }
+    ];
 
     const onRegionChange = (r) => setRegion(r)
+
+    React.useEffect(() => {
+        setData(data)
+    }, [d])
+
     return (
         <View style={{flex: 1}}>
             <MapView
                 initialRegion={initialRegion}
                 onRegionChange={onRegionChange}
-                style={styles.map}>
+                style={{...styles.map, flex: 1}}>
                 {data.map((marker, index) => (
                     <Marker
                         key={index}
@@ -69,6 +100,45 @@ const PostMaps = (props) => {
                         strokeWidth="2"
                     />
                 </Svg>
+            </View>
+            <View style={{justifyContent: 'flex-end', marginTop: 0.85 * screen.height, marginLeft: 0.85 * screen.width}}>
+                <FloatingAction
+                    actions={actions}
+                    onPressItem={name => {
+                        switch(name) {
+                            case "bt_only_follow":
+                                axios.get(global.back_end_url + '/filter_album_by_following', {
+                                    user_id: userId
+                                }).then((response) => {
+                                    let json = JSON.parse(JSON.stringify(response.data))
+                                    if (json.success) {
+                                        setData(json.album)
+                                    }else {
+                                        Alert.alert("Dream Real Load Failed", json.message)
+                                    }
+                                }).catch(function(error){
+                                    Alert.alert("Dream Real Load Error", error)
+                                })
+                                break;
+                            case "bt_only_friends":
+                                axios.get(global.back_end_url + '/filter_album_by_friend', {
+                                    user_id: userId
+                                }).then((response) => {
+                                    let json = JSON.parse(JSON.stringify(response.data))
+                                    if (json.success) {
+                                        setData(json.album)
+                                    }else {
+                                        Alert.alert("Dream Real Load Failed", json.message)
+                                    }
+                                }).catch(function(error){
+                                    Alert.alert("Dream Real Load Error", error)
+                                })
+                                break;
+                            default:
+                                break;
+                        }
+                    }}
+                />
             </View>
             <Modal 
                 animationType="slide"
