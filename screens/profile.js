@@ -78,6 +78,7 @@ const Profile = (props) => {
     const user = React.useContext(userIdProvider);
     const [userId, setUserId] = React.useState(user.id);
     const userProfile = props.route.params.profile;
+    const [userConsult, setUserConsult] = React.useState(null);
 
     React.useEffect(() => {
         LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
@@ -90,9 +91,10 @@ const Profile = (props) => {
                 withCredentials: true 
             })
             .then((response) => {
-                let json = response.data;
+                let json = JSON.parse(JSON.stringify(response.data));
                 if (json.success) {
-                    if (JSON.parse(JSON.stringify(json.albums)).length < 10 ) {
+                    setUserConsult(JSON.parse(JSON.stringify(json.user[0])))
+                    if (json.albums.length < 10 ) {
                         setEnd(true)
                     } 
                     setData([...data, ...JSON.parse(JSON.stringify(json.albums))])
@@ -351,11 +353,11 @@ const Profile = (props) => {
                             </View>
                             <View style={{flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: 0.01 * screen.height}}>
                                 <Text style={{color: "#fff", textAlign: "left", marginLeft: 0.02 * screen.width}}>My score</Text>
-                                <Text style={{color: "#fff", textAlign: "right", marginRight: 0.02 * screen.width}}>535</Text>
+                                <Text style={{color: "#fff", textAlign: "right", marginRight: 0.02 * screen.width}}>{userConsult === null ? 0: userConsult.score}</Text>
                             </View>
                             <View style={{flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: 0.005 * screen.height}}>
                                 <Text style={{color: "#fff", textAlign: "left", marginLeft: 0.02 * screen.width}}>Rank</Text>
-                                <Text style={{color: "#fff", textAlign: "right", marginRight: 0.02 * screen.width}}>N/A</Text>
+                                <Text style={{color: "#fff", textAlign: "right", marginRight: 0.02 * screen.width}}>{userConsult === null ? "N/A": userConsult.rank}</Text>
                             </View>
                         </View>
                         <View style={styles.col2}>
