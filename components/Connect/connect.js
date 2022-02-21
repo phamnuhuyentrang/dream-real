@@ -32,7 +32,7 @@ const Connect = () => {
     }, [loading])
 
     return (
-        <View style={{flexDirection: "row", flexWrap: "wrap"}}> 
+        <View style={{flexDirection: "row", flexWrap: "wrap", overflow: "hidden", marginLeft: 0.03 * screen.width}}> 
             {data.map((person, index) => {
                 return (
                     <ConnectItems data={person} key={index}/>
@@ -54,6 +54,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         borderRadius: 0.02 * screen.width,
         backgroundColor: "#3D3D4E",
+        marginLeft: 0.025 * screen.width
     },
     button: {
         textAlign: "center",

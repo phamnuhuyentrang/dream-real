@@ -62,8 +62,8 @@ const StoryContent = (props) => {
               setItemIndex(index);
             }}
             onScrollEndDrag={event => {
-              const { contentSize, targetContentOffset } = event.nativeEvent;
-              if (item_index === data.length-1 && targetContentOffset.x >= contentSize.width * ((data.length - 1) / data.length) && end == false) {
+              const { contentSize, contentOffset } = event.nativeEvent;
+              if (item_index === data.length-1 && contentOffset.x >= contentSize.width * ((data.length - 1) / data.length) && end == false) {
                 setLoading(true);
               }
             }}

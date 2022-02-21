@@ -69,7 +69,7 @@ const PostMaps = (props) => {
             <MapView
                 initialRegion={initialRegion}
                 onRegionChange={onRegionChange}
-                style={{...styles.map, flex: 1}}>
+                style={{...styles.map, flex: 1, zIndex:-1}}>
                 {data.map((marker, index) => (
                     <Marker
                         key={index}
@@ -101,52 +101,50 @@ const PostMaps = (props) => {
                     />
                 </Svg>
             </View>
-            <View style={{justifyContent: 'flex-end', marginTop: 0.85 * screen.height, marginLeft: 0.85 * screen.width}}>
-                <FloatingAction
-                    actions={actions}
-                    onPressItem={name => {
-                        switch(name) {
-                            case "bt_only_follow":
-                                console.log(userId)
-                                axios.get(global.back_end_url + '/filter_album_by_following', {
-                                    params: {
-                                        user_id: userId,
-                                        offset: 0
-                                    }
-                                }).then((response) => {
-                                    let json = JSON.parse(JSON.stringify(response.data))
-                                    if (json.success) {
-                                        setData(json.album)
-                                    }else {
-                                        Alert.alert("Dream Real Load Failed", json.message)
-                                    }
-                                }).catch(function(error){
-                                    Alert.alert("Dream Real Load Error", error)
-                                })
-                                break;
-                            case "bt_only_friends":
-                                axios.get(global.back_end_url + '/filter_album_by_friend', {
-                                    params: {
-                                        user_id: userId,
-                                        offset: 0
-                                    }
-                                }).then((response) => {
-                                    let json = JSON.parse(JSON.stringify(response.data))
-                                    if (json.success) {
-                                        setData(json.album)
-                                    }else {
-                                        Alert.alert("Dream Real Load Failed", json.message)
-                                    }
-                                }).catch(function(error){
-                                    Alert.alert("Dream Real Load Error", error)
-                                })
-                                break;
-                            default:
-                                break;
-                        }
-                    }}
-                />
-            </View>
+            <FloatingAction
+                actions={actions}
+                onPressItem={name => {
+                    switch(name) {
+                        case "bt_only_follow":
+                            axios.get(global.back_end_url + '/filter_album_by_following', {
+                                params: {
+                                    user_id: userId,
+                                    offset: 0
+                                }
+                            }).then((response) => {
+                                let json = JSON.parse(JSON.stringify(response.data))
+                                if (json.success) {
+                                    setData(json.album)
+                                }else {
+                                    Alert.alert("Dream Real Load Failed", json.message)
+                                }
+                            }).catch(function(error){
+                                Alert.alert("Dream Real Load Error", error)
+                            })
+                            break;
+                        case "bt_only_friends":
+                            axios.get(global.back_end_url + '/filter_album_by_friend', {
+                                params: {
+                                    user_id: userId,
+                                    offset: 0
+                                }
+                            }).then((response) => {
+                                let json = JSON.parse(JSON.stringify(response.data))
+                                if (json.success) {
+                                    setData(json.album)
+                                }else {
+                                    Alert.alert("Dream Real Load Failed", json.message)
+                                }
+                            }).catch(function(error){
+                                Alert.alert("Dream Real Load Error", error)
+                            })
+                            break;
+                        default:
+                            break;
+                    }
+                }}
+                style = {{position: 'absolute', bottom: 0, right: 0, width: 100 * screen.width / figma_screen_w, height: 100 * screen.width / figma_screen_w, backgroundColor: 'transparent'}}
+            />
             <Modal 
                 animationType="slide"
                 transparent={true}

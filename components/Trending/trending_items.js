@@ -20,6 +20,8 @@ const figma_screen_h = 926;
 
 const TrendingItems = (props) => {
     const data = props.data;
+    const score = props.score;
+    const setScore = props.setScore;
     const navigation = useNavigation()
     const user_item = React.useContext(userIdProvider);
     const userId = user_item.id;
@@ -70,6 +72,7 @@ const TrendingItems = (props) => {
                                     if (json.success) {
                                         setReactIndex(0);
                                         setNbReact(nbReact - 1);
+                                        setScore(score - 5)
                                     }
                                     else {
                                         Alert.alert("Dream Real React Failed", json.message)
@@ -108,6 +111,7 @@ const TrendingItems = (props) => {
                                         if (json.success) {
                                             setReactIndex(1);
                                             setNbReact(nbReact + 1);
+                                            setScore(score + 5)
                                         }
                                         else {
                                             Alert.alert("Dream Real React Failed", json.message)
@@ -132,6 +136,7 @@ const TrendingItems = (props) => {
                                     if (json.success) {
                                         setReactIndex(0);
                                         setNbReact(nbReact - 1);
+                                        setScore(score - 5);
                                     }
                                     else {
                                         Alert.alert("Dream Real React Failed", json.message)
@@ -170,6 +175,7 @@ const TrendingItems = (props) => {
                                         if (json.success) {
                                             setReactIndex(2);
                                             setNbReact(nbReact + 1);
+                                            setScore(score + 5)
                                         }
                                         else {
                                             Alert.alert("Dream Real React Failed", json.message)
@@ -194,6 +200,7 @@ const TrendingItems = (props) => {
                                     if (json.success) {
                                         setReactIndex(0);
                                         setNbReact(nbReact - 1);
+                                        setScore(score - 5)
                                     }
                                     else {
                                         Alert.alert("Dream Real React Failed", json.message)
@@ -232,6 +239,7 @@ const TrendingItems = (props) => {
                                         if (json.success) {
                                             setReactIndex(3);
                                             setNbReact(nbReact + 1);
+                                            setScore(score + 5)
                                         }
                                         else {
                                             Alert.alert("Dream Real React Failed", json.message)
@@ -256,6 +264,7 @@ const TrendingItems = (props) => {
                                     if (json.success) {
                                         setReactIndex(0);
                                         setNbReact(nbReact - 1);
+                                        setScore(score - 5)
                                     }
                                     else {
                                         Alert.alert("Dream Real React Failed", json.message)
@@ -294,6 +303,7 @@ const TrendingItems = (props) => {
                                         if (json.success) {
                                             setReactIndex(4);
                                             setNbReact(nbReact + 1);
+                                            setScore(score + 5)
                                         }
                                         else {
                                             Alert.alert("Dream Real React Failed", json.message)
@@ -318,6 +328,7 @@ const TrendingItems = (props) => {
                                     if (json.success) {
                                         setReactIndex(0);
                                         setNbReact(nbReact - 1);
+                                        setScore(score - 5)
                                     }
                                     else {
                                         Alert.alert("Dream Real React Failed", json.message)
@@ -356,6 +367,7 @@ const TrendingItems = (props) => {
                                         if (json.success) {
                                             setReactIndex(5);
                                             setNbReact(nbReact + 1);
+                                            setScore(score + 5)
                                         }
                                         else {
                                             Alert.alert("Dream Real React Failed", json.message)
@@ -380,6 +392,7 @@ const TrendingItems = (props) => {
                                     if (json.success) {
                                         setReactIndex(0);
                                         setNbReact(nbReact - 1);
+                                        setScore(score - 5)
                                     }
                                     else {
                                         Alert.alert("Dream Real React Failed", json.message)
@@ -418,6 +431,7 @@ const TrendingItems = (props) => {
                                         if (json.success) {
                                             setReactIndex(6);
                                             setNbReact(nbReact + 1);
+                                            setScore(score + 5)
                                         }
                                         else {
                                             Alert.alert("Dream Real React Failed", json.message)

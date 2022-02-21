@@ -32,20 +32,27 @@ const Destinations = () => {
     }, [loading])
 
     return (
-        <View> 
+        <View style={styles.container}> 
             {data != [] ? data.map((destination, index) => {
                 return (
                     <DestinationItems data={destination} key={index}/>
                 )
             }): <Text>Loading ...</Text>}
             {data != [] && <TouchableOpacity style={styles.buttonLoad} onPress={() => setLoading(true)}>
-                <Text style={{textAlign: "center", alignItems: "center", justifyContent: "center", fontSize: 0.03 * screen.height, color: "white"}}> Load more </Text>
+                <Text style={styles.button}> Load more </Text>
             </TouchableOpacity> }
         </View>
     )
 }
 
 const styles = StyleSheet.create({
+    container: {
+        marginTop: 0.02 * screen.height,
+        overflow: "hidden",
+        marginLeft: 0.05 * screen.width,
+        marginRight: 0.05 * screen.width,
+        marginBottom: 0.02 * screen.height,
+    },
     buttonLoad: {
         width: 0.9 * screen.width,
         height: 0.05 * screen.height,
@@ -54,6 +61,13 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         borderRadius: 0.02 * screen.width,
         backgroundColor: "#3D3D4E",
+    },
+    button: {
+        textAlign: "center",
+        alignItems: "center",
+        justifyContent: "center",
+        fontSize: 0.03 * screen.height,
+        color: "white"
     }
 })
 

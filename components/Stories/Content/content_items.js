@@ -29,7 +29,6 @@ const Item  = ({ item, index }) => {
     const [nbReact, setNbReact] = React.useState(item.react)
     const [reactIndex, setReactIndex] = React.useState(item.user_react === null ? 0 : item.user_react);
     const user = React.useContext(userIdProvider);
-
     const navigation = useNavigation()
     const showComments = (i) => {
         navigation.navigate('Comment', {comment: i})
@@ -50,7 +49,11 @@ const Item  = ({ item, index }) => {
                         <Image source={{uri : global.image_host_url + item.avatar}} style={styles.avatar}></Image>
                         <Text style={styles.item4}>{item.first_name + " " + item.last_name}</Text>
                     </View>
-                    <Text style={styles.item3}>{item.title}</Text>
+                    <View style={styles.content4}>
+                        <Text style={styles.item3}>is {item.slug}  </Text>
+                        <Image source={{uri: global.image_host_url + item.url}} style={styles.emotion}></Image>
+                        <Text style={styles.item3}>  {item.title}</Text>
+                    </View>
                 </View>
                 <FontAwesome5Icon color='red' name="map-marker-alt" regular size={12} style={styles.item2}>
                     <Text style={[styles.item2, {color:'#FFF'}]}> {item.location_city + ", " + item.location_country}</Text>
@@ -502,11 +505,10 @@ const styles = StyleSheet.create({
     item3: {
         fontStyle: "normal",
         fontWeight: "400",
-        fontSize: 12,
+        fontSize: 10,
         color: "#FFF",
         textAlign: "left",
-        marginTop: 0.01 * screen.height,
-        marginLeft: 0.01 * screen.width
+        marginLeft: 0.005 * screen.width
     },
     avatar: {
         width: 30 * screen.width / figma_screen_w,
@@ -536,7 +538,13 @@ const styles = StyleSheet.create({
     item8: {
         fontSize: 12,
         color: "#FFF",
-    }
+    },
+    emotion: {
+        width: 20 * screen.width / figma_screen_w,
+        height: 20 * screen.width / figma_screen_w,
+        borderRadius: 50,
+        alignSelf: "flex-start"
+    },
 })
 
 export default ContentItem

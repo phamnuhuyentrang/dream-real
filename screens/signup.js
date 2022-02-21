@@ -179,11 +179,11 @@ const SignUp = (props) => {
                                             setUsername(body.username)
                                         }
                                         else {
-                                            Alert.alert("Dream Real Register", "Email has been used")
+                                            Alert.alert("Dream Real Register", "Username has been used")
                                         }
                                     }
                                     catch(err) {
-                                        Alert.alert("Dream Real Error Check Email", "Error occured when trying to check email: " + err.message);
+                                        Alert.alert("Dream Real Error Check Email", "Error occured when trying to check username: " + err.message);
                                     }
                                 }}
                             />

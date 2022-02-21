@@ -99,6 +99,7 @@ const Profile = (props) => {
     const [expanded, setExpanded] = React.useState(false);
     const [travelingExpanded, setTravelingExpanded] = React.useState(false);
     const [listTraveling, setListTraveling] = React.useState([]);
+    const [score, setScore] = React.useState(null);
     React.useEffect(() => {
         LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
         if (Object.keys(userProfile).length) {
@@ -113,6 +114,7 @@ const Profile = (props) => {
                 let json = JSON.parse(JSON.stringify(response.data));
                 if (json.success) {
                     setUserConsult(JSON.parse(JSON.stringify(json.user[0])))
+                    setScore(JSON.parse(JSON.stringify(json.user[0])).score)
                     if (json.albums.length < 10 ) {
                         setEnd(true)
                     } 
@@ -199,7 +201,31 @@ const Profile = (props) => {
             })
             .catch((error) => Alert.alert("Dream Real Loading Following Error", error))
         }
-    }, [loadingPost, loadingFriends, loadingFollowers, loadingFollowing])
+        if (expanded && list2.length == 0) {
+            axios.get(global.back_end_url + "/tags", {
+                params: {slug: "feeling"}
+            }).then((response) => {
+                var json = JSON.parse(JSON.stringify(response.data))
+                if (json.success) {
+                    setList2(JSON.parse(JSON.stringify(json.tags)))
+                }
+            }).catch((error) => {
+                Alert.alert("Dream Real Loading Tags Error", json.message)
+            })
+        }
+        if (travelingExpanded && listTraveling.length == 0) {
+            axios.get(global.back_end_url + "/tags", {
+                params: {slug: "traveling"}
+            }).then((response) => {
+                let json = JSON.parse(JSON.stringify(response.data))
+                if (json.success) {
+                    setListTraveling(JSON.parse(JSON.stringify(json.tags)))
+                }
+            }).catch((error) => {
+                Alert.alert("Dream Real Loading Tags Error", json.message)
+            })
+        }
+    }, [loadingPost, loadingFriends, loadingFollowers, loadingFollowing, expanded, travelingExpanded])
 
     // React.useEffect(async () => {
     //     if (loadingFriends) {
@@ -372,7 +398,7 @@ const Profile = (props) => {
                             </View>
                             <View style={{flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: 0.01 * screen.height}}>
                                 <Text style={{color: "#fff", textAlign: "left", marginLeft: 0.02 * screen.width}}>My score</Text>
-                                <Text style={{color: "#fff", textAlign: "right", marginRight: 0.02 * screen.width}}>{userConsult === null ? 0: userConsult.score}</Text>
+                                <Text style={{color: "#fff", textAlign: "right", marginRight: 0.02 * screen.width}}>{score === null ? 0: score}</Text>
                             </View>
                             <View style={{flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: 0.005 * screen.height}}>
                                 <Text style={{color: "#fff", textAlign: "left", marginLeft: 0.02 * screen.width}}>Rank</Text>
@@ -490,12 +516,12 @@ const Profile = (props) => {
                     <View style={styles.containerPost}> 
                         {data != [] ? data.map((person) => {
                             return (
-                                <TrendingItems data={person} key={person.album_id}/>
+                                <TrendingItems data={person} key={person.album_id} score={score} setScore={setScore} />
                             )
                         }): <Text>Loading ...</Text>}
                         {data.length == 0 && <View style={{backgroundColor: '#252A38', width: "100%", height: 0.4 * screen.height}}/>}
                         {!end && <TouchableOpacity style={styles.buttonLoad} onPress={() => setLoadingPosts(true)}>
-                            <Text style={{textAlign: "center", alignItems: "center", justifyContent: "center", fontSize: 0.03 * screen.height, color: "white"}}> Load more </Text>
+                            <Text style={styles.button}> Load more </Text>
                         </TouchableOpacity>}
                     </View> 
                 </View>
@@ -514,173 +540,169 @@ const Profile = (props) => {
                     activeOpacity={1} 
                     onPressOut={() => {setFeelingModal(false); setBlurIntensity(1)}}
                 >
-                    <ScrollView showsVerticalScrollIndicator={false} style={{width: 0.9 * screen.width, marginBottom: 0.2 * screen.height, marginTop: 0.2 * screen.height, height: 0.6 * screen.height, flexDirection: "column", backgroundColor: "#3D3D4E", borderBottomLeftRadius: 0.02 * screen.width, borderBottomRightRadius: 0.02 * screen.width}}>
-                        <ListItem.Accordion
-                            content={
-                                <>
-                                    <Avatar title="Feeling" source={feeling} />
-                                    <ListItem.Content>                    
-                                        <ListItem.Title>Feeling </ListItem.Title>
-                                    </ListItem.Content>
-                                </>
-                            }
-                            isExpanded={expanded}
-                            onPress={() => {
-                                if (expanded && list2.length == 0) {
-                                    axios.get(global.back_end_url + "/tags", {
-                                        params: {slug: "feeling"}
-                                    }).then((response) => {
-                                        let json = JSON.parse(JSON.stringify(response.data))
-                                        if (json.success) {
-                                            setList2(JSON.parse(JSON.stringify(json.tags)))
-                                        }
-                                    }).catch((error) => {
-                                        Alert.alert("Dream Real Loading Tags Error", json.message)
-                                    })
+                    <ScrollView showsVerticalScrollIndicator={false} bounces={true} style={{width: 0.9 * screen.width, marginBottom: 0.2 * screen.height, marginTop: 0.2 * screen.height, height: 0.6 * screen.height, flexDirection: "column", backgroundColor: "#3D3D4E", borderBottomLeftRadius: 0.02 * screen.width, borderBottomRightRadius: 0.02 * screen.width}}>
+                        <View>
+                            <ListItem.Accordion
+                                content={
+                                    <>
+                                        <Avatar title="Feeling" source={feeling} />
+                                        <ListItem.Content>                    
+                                            <ListItem.Title>  Feeling </ListItem.Title>
+                                        </ListItem.Content>
+                                    </>
                                 }
-                                setExpanded(!expanded);
-                            }}
-                            >
-                            {list2.length > 0 && list2.map((l, i) => (
-                                <ListItem key={i} onPress={() => {console.log("Selected: "+ l.id); setPostFeeling(l.id)}} bottomDivider>
-                                <Avatar title={l.title} source={{ uri: global.image_host_url + l.url }} />
-                                <ListItem.Content>
-                                    <ListItem.Title>{l.title}</ListItem.Title>
-                                </ListItem.Content>
-                                </ListItem>
-                            ))}
-                        </ListItem.Accordion>
-                        <ListItem.Accordion
-                            content={
-                                <>
-                                    <Avatar title="Traveling to" source={traveling} />
-                                    <ListItem.Content>                    
-                                        <ListItem.Title>Traveling to</ListItem.Title>
+                                isExpanded={expanded}
+                                onPress={() => {
+                                    setExpanded(!expanded);
+                                }}
+                                >
+                                {list2.length > 0 && list2.map((l, i) => (
+                                    <ListItem key={i} onPress={() => {console.log("Selected: "+ l.id); setPostFeeling(l.id)}} bottomDivider>
+                                    <Avatar title={l.title} source={{ uri: global.image_host_url + l.url }} />
+                                    <ListItem.Content>
+                                        <ListItem.Title>{l.title}</ListItem.Title>
                                     </ListItem.Content>
-                                </>
-                            }
-                            isExpanded={travelingExpanded}
-                            onPress={() => {
-                                if (travelingExpanded && listTraveling.length == 0) {
-                                    axios.get(global.back_end_url + "/tags", {
-                                        params: {slug: "traveling"}
-                                    }).then((response) => {
-                                        let json = JSON.parse(JSON.stringify(response.data))
-                                        if (json.success) {
-                                            setListTraveling(JSON.parse(JSON.stringify(json.tags)))
-                                        }
-                                    }).catch((error) => {
-                                        Alert.alert("Dream Real Loading Tags Error", json.message)
-                                    })
+                                    </ListItem>
+                                ))}
+                            </ListItem.Accordion>
+                        </View>
+                        <View>
+                            <ListItem.Accordion
+                                content={
+                                    <>
+                                        <Avatar title="Traveling to" source={traveling} />
+                                        <ListItem.Content>                    
+                                            <ListItem.Title>  Traveling to</ListItem.Title>
+                                        </ListItem.Content>
+                                    </>
                                 }
-                                setTravelingExpanded(!travelingExpanded);
-                            }}
+                                isExpanded={travelingExpanded}
+                                onPress={() => {
+                                    setTravelingExpanded(!travelingExpanded);
+                                }}
+                                >
+                                {listTraveling.length > 0 && listTraveling.map((l, i) => (
+                                    <ListItem key={i} onPress={() => {console.log("Selected: "+ l.id); setPostFeeling(l.id)}} bottomDivider>
+                                    <Avatar title={l.title} source={{ uri: global.image_host_url + l.url }} />
+                                    <ListItem.Content>
+                                        <ListItem.Title>{l.title}</ListItem.Title>
+                                    </ListItem.Content>
+                                    </ListItem>
+                                ))}
+                            </ListItem.Accordion>
+                        </View>
+                        <View>
+                            <ListItem.Accordion
+                                content={
+                                    <>
+                                        <Avatar title="Eating" source={eating} />
+                                        <ListItem.Content>                    
+                                            <ListItem.Title>  Eating</ListItem.Title>
+                                        </ListItem.Content>
+                                    </>
+                                }
+                                isExpanded={false}
                             >
-                            {listTraveling.length > 0 && listTraveling.map((l, i) => (
-                                <ListItem key={i} onPress={() => {console.log("Selected: "+ l.id); setPostFeeling(l.id)}} bottomDivider>
-                                <Avatar title={l.title} source={{ uri: global.image_host_url + l.url }} />
-                                <ListItem.Content>
-                                    <ListItem.Title>{l.title}</ListItem.Title>
-                                </ListItem.Content>
-                                </ListItem>
-                            ))}
-                        </ListItem.Accordion>
-                        <ListItem.Accordion
-                            content={
-                                <>
-                                    <Avatar title="Eating" source={eating} />
-                                    <ListItem.Content>                    
-                                        <ListItem.Title>Eating</ListItem.Title>
-                                    </ListItem.Content>
-                                </>
-                            }
-                            isExpanded={false}
-                        >
-                        </ListItem.Accordion>
-                        <ListItem.Accordion
-                            content={
-                                <>
-                                    <Avatar title="Drinking" source={drinking} />
-                                    <ListItem.Content>                    
-                                        <ListItem.Title>Drinking</ListItem.Title>
-                                    </ListItem.Content>
-                                </>
-                            }
-                            isExpanded={false}
-                        >
-                        </ListItem.Accordion>
-                        <ListItem.Accordion
-                            content={
-                                <>
-                                    <Avatar title="Looking for" source={looking} />
-                                    <ListItem.Content>                    
-                                        <ListItem.Title>Looking for</ListItem.Title>
-                                    </ListItem.Content>
-                                </>
-                            }
-                            isExpanded={false}
-                        >
-                        </ListItem.Accordion>
-                        <ListItem.Accordion
-                            content={
-                                <>
-                                    <Avatar title="Celebrating" source={celebrating} />
-                                    <ListItem.Content>                    
-                                        <ListItem.Title>Celebrating</ListItem.Title>
-                                    </ListItem.Content>
-                                </>
-                            }
-                            isExpanded={false}
-                        >
-                        </ListItem.Accordion>
-                        <ListItem.Accordion
-                            content={
-                                <>
-                                    <Avatar title="Meeting" source={meeting} />
-                                    <ListItem.Content>                    
-                                        <ListItem.Title>Meeting</ListItem.Title>
-                                    </ListItem.Content>
-                                </>
-                            }
-                            isExpanded={false}
-                        >
-                        </ListItem.Accordion>
-                        <ListItem.Accordion
-                            content={
-                                <>
-                                    <Avatar title="Getting" source={getting} />
-                                    <ListItem.Content>                    
-                                        <ListItem.Title>Getting</ListItem.Title>
-                                    </ListItem.Content>
-                                </>
-                            }
-                            isExpanded={false}
-                        >
-                        </ListItem.Accordion>
-                        <ListItem.Accordion
-                            content={
-                                <>
-                                    <Avatar title="Making" source={making} />
-                                    <ListItem.Content>                    
-                                        <ListItem.Title>Making</ListItem.Title>
-                                    </ListItem.Content>
-                                </>
-                            }
-                            isExpanded={false}
-                        >
-                        </ListItem.Accordion>
-                        <ListItem.Accordion
-                            content={
-                                <>
-                                    <Avatar title="Remembering" source={remembering} />
-                                    <ListItem.Content>                    
-                                        <ListItem.Title>Remembering</ListItem.Title>
-                                    </ListItem.Content>
-                                </>
-                            }
-                            isExpanded={false}
-                        >
-                        </ListItem.Accordion>
+                            </ListItem.Accordion>
+                        </View>
+                        <View>
+                            <ListItem.Accordion
+                                content={
+                                    <>
+                                        <Avatar title="Drinking" source={drinking} />
+                                        <ListItem.Content>                    
+                                            <ListItem.Title>  Drinking</ListItem.Title>
+                                        </ListItem.Content>
+                                    </>
+                                }
+                                isExpanded={false}
+                            >
+                            </ListItem.Accordion>
+                        </View>
+                        <View>
+                            <ListItem.Accordion
+                                content={
+                                    <>
+                                        <Avatar title="Looking for" source={looking} />
+                                        <ListItem.Content>                    
+                                            <ListItem.Title>  Looking for</ListItem.Title>
+                                        </ListItem.Content>
+                                    </>
+                                }
+                                isExpanded={false}
+                            >
+                            </ListItem.Accordion>
+                        </View>
+                        <View>
+                            <ListItem.Accordion
+                                content={
+                                    <>
+                                        <Avatar title="Celebrating" source={celebrating} />
+                                        <ListItem.Content>                    
+                                            <ListItem.Title>  Celebrating</ListItem.Title>
+                                        </ListItem.Content>
+                                    </>
+                                }
+                                isExpanded={false}
+                            >
+                            </ListItem.Accordion>
+                        </View>
+                        <View>
+                            <ListItem.Accordion
+                                content={
+                                    <>
+                                        <Avatar title="Meeting" source={meeting} />
+                                        <ListItem.Content>                    
+                                            <ListItem.Title>  Meeting</ListItem.Title>
+                                        </ListItem.Content>
+                                    </>
+                                }
+                                isExpanded={false}
+                            >
+                            </ListItem.Accordion>
+                        </View>
+                        <View>
+                            <ListItem.Accordion
+                                content={
+                                    <>
+                                        <Avatar title="Getting" source={getting} />
+                                        <ListItem.Content>                    
+                                            <ListItem.Title>  Getting</ListItem.Title>
+                                        </ListItem.Content>
+                                    </>
+                                }
+                                isExpanded={false}
+                            >
+                            </ListItem.Accordion>
+                        </View>
+                        <View>
+                            <ListItem.Accordion
+                                content={
+                                    <>
+                                        <Avatar title="Making" source={making} />
+                                        <ListItem.Content>                    
+                                            <ListItem.Title>  Making</ListItem.Title>
+                                        </ListItem.Content>
+                                    </>
+                                }
+                                isExpanded={false}
+                            >
+                            </ListItem.Accordion>
+                        </View>
+                        <View>
+                            <ListItem.Accordion
+                                content={
+                                    <>
+                                        <Avatar title="Remembering" source={remembering} />
+                                        <ListItem.Content>                    
+                                            <ListItem.Title>  Remembering</ListItem.Title>
+                                        </ListItem.Content>
+                                    </>
+                                }
+                                isExpanded={false}
+                            >
+                            </ListItem.Accordion>
+                        </View>
                     </ScrollView>
                 </TouchableOpacity>
             </Modal>
