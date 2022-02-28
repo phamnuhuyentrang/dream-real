@@ -95,10 +95,26 @@ const Profile = (props) => {
     const [userId, setUserId] = React.useState(user.id);
     const userProfile = props.route.params.profile;
     const [userConsult, setUserConsult] = React.useState(null);
-    const [list2, setList2] = React.useState([]);
-    const [expanded, setExpanded] = React.useState(false);
+    const [listFeeling, setListFeeling] = React.useState([]);
+    const [feelingExpanded, setFeelingExpanded] = React.useState(false);
     const [travelingExpanded, setTravelingExpanded] = React.useState(false);
     const [listTraveling, setListTraveling] = React.useState([]);
+    const [listEating, setListEating] = React.useState([]);
+    const [eatingExpanded, setEatingExpanded] = React.useState(false);
+    const [listDrinking, setListDrinking] = React.useState([]);
+    const [drinkingExpanded, setDrinkingExpanded] = React.useState(false);
+    const [listLooking, setListLooking] = React.useState([]);
+    const [lookingExpanded, setLookingExpanded] = React.useState(false);
+    const [listMeeting, setListMeeting] = React.useState([]);
+    const [meetingExpanded, setMeetingExpanded] = React.useState(false);
+    const [listCelebrating, setListCelebrating] = React.useState([]);
+    const [celebratingExpanded, setCelebratingExpanded] = React.useState(false);
+    const [listGetting, setListGetting] = React.useState([]);
+    const [gettingExpanded, setGettingExpanded] = React.useState(false);
+    const [listMaking, setListMaking] = React.useState([]);
+    const [makingExpanded, setMakingExpanded] = React.useState(false);
+    const [listRemembering, setListRemembering] = React.useState([]);
+    const [rememberingExpanded, setRememberingExpanded] = React.useState(false);
     const [score, setScore] = React.useState(null);
     React.useEffect(() => {
         LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
@@ -113,14 +129,16 @@ const Profile = (props) => {
             .then((response) => {
                 let json = JSON.parse(JSON.stringify(response.data));
                 if (json.success) {
-                    setUserConsult(JSON.parse(JSON.stringify(json.user[0])))
-                    setScore(JSON.parse(JSON.stringify(json.user[0])).score)
-                    if (json.albums.length < 10 ) {
-                        setEnd(true)
-                    } 
-                    setData([...data, ...JSON.parse(JSON.stringify(json.albums))])
-                    setLoadingPosts(false)
-                    setOffset(offset + 10)
+                    if (json.albums.length > 0) {
+                        setUserConsult(JSON.parse(JSON.stringify(json.user[0])))
+                        setScore(JSON.parse(JSON.stringify(json.user[0])).score)
+                        if (json.albums.length < 10 ) {
+                            setEnd(true)
+                        } 
+                        setData([...data, ...JSON.parse(JSON.stringify(json.albums))])
+                        setLoadingPosts(false)
+                        setOffset(offset + 10)
+                    }
                 }
                 else {
                     Alert.alert("Dream Real Loading Posts Error", json.message)
@@ -136,7 +154,7 @@ const Profile = (props) => {
             .then((response) => {
                 let json = response.data;
                 if (json.success) {
-                    if (json.nb_friends > 0) {
+                    if (json.friends.length > 0) {
                         if (json.nb_friends < 10) {
                             setEndFriends(true)
                         }
@@ -160,7 +178,7 @@ const Profile = (props) => {
             .then((response) => {
                 let json = response.data;
                 if (json.success) {
-                    if (json.nb_followers > 0) {
+                    if (json.followers.length > 0) {
                         if (json.nb_followers < 10) {
                             setEndFollowers(true)
                         }
@@ -185,7 +203,7 @@ const Profile = (props) => {
             .then((response) => {
                 let json = response.data;
                 if (json.success) {
-                    if (json.nb_following > 0) {
+                    if (json.following.length > 0) {
                         if (json.nb_following < 10) {
                             setEndFollowing(true)
                         }
@@ -201,13 +219,13 @@ const Profile = (props) => {
             })
             .catch((error) => Alert.alert("Dream Real Loading Following Error", error))
         }
-        if (expanded && list2.length == 0) {
+        if (feelingExpanded && listFeeling.length == 0) {
             axios.get(global.back_end_url + "/tags", {
                 params: {slug: "feeling"}
             }).then((response) => {
                 var json = JSON.parse(JSON.stringify(response.data))
                 if (json.success) {
-                    setList2(JSON.parse(JSON.stringify(json.tags)))
+                    setListFeeling(JSON.parse(JSON.stringify(json.tags)))
                 }
             }).catch((error) => {
                 Alert.alert("Dream Real Loading Tags Error", json.message)
@@ -225,7 +243,7 @@ const Profile = (props) => {
                 Alert.alert("Dream Real Loading Tags Error", json.message)
             })
         }
-    }, [loadingPost, loadingFriends, loadingFollowers, loadingFollowing, expanded, travelingExpanded])
+    }, [loadingPost, loadingFriends, loadingFollowers, loadingFollowing, feelingExpanded, travelingExpanded, eatingExpanded, eatingExpanded, drinkingExpanded, lookingExpanded, celebratingExpanded, meetingExpanded, gettingExpanded, makingExpanded, rememberingExpanded])
 
     // React.useEffect(async () => {
     //     if (loadingFriends) {
@@ -540,9 +558,20 @@ const Profile = (props) => {
                     activeOpacity={1} 
                     onPressOut={() => {setFeelingModal(false); setBlurIntensity(1)}}
                 >
-                    <ScrollView showsVerticalScrollIndicator={false} bounces={true} style={{width: 0.9 * screen.width, marginBottom: 0.2 * screen.height, marginTop: 0.2 * screen.height, height: 0.6 * screen.height, flexDirection: "column", backgroundColor: "#3D3D4E", borderBottomLeftRadius: 0.02 * screen.width, borderBottomRightRadius: 0.02 * screen.width}}>
+                    <ScrollView showsVerticalScrollIndicator={false} 
+                                bounces={true} 
+                                style={{width: 0.9 * screen.width, 
+                                        marginBottom: 0.2 * screen.height, 
+                                        marginTop: 0.2 * screen.height, 
+                                        height: 0.6 * screen.height, 
+                                        flexDirection: "column", 
+                                        backgroundColor: "#3D3D4E", 
+                                        borderBottomLeftRadius: 0.02 * screen.width, 
+                                        borderBottomRightRadius: 0.02 * screen.width}}
+                                contentContainerStyle={{ flexGrow: 1, height: "auto"}}
+                    >
                         <View>
-                            <ListItem.Accordion
+                            <ListItem.Accordion style={{height: feelingExpanded ? "auto": 0.1 * screen.height}}
                                 content={
                                     <>
                                         <Avatar title="Feeling" source={feeling} />
@@ -551,23 +580,25 @@ const Profile = (props) => {
                                         </ListItem.Content>
                                     </>
                                 }
-                                isExpanded={expanded}
+                                isExpanded={feelingExpanded}
                                 onPress={() => {
-                                    setExpanded(!expanded);
+                                    setFeelingExpanded(!feelingExpanded);
                                 }}
                                 >
-                                {list2.length > 0 && list2.map((l, i) => (
-                                    <ListItem key={i} onPress={() => {console.log("Selected: "+ l.id); setPostFeeling(l.id)}} bottomDivider>
-                                    <Avatar title={l.title} source={{ uri: global.image_host_url + l.url }} />
-                                    <ListItem.Content>
-                                        <ListItem.Title>{l.title}</ListItem.Title>
-                                    </ListItem.Content>
-                                    </ListItem>
+                                {listFeeling.length > 0 && listFeeling.map((l, i) => (
+                                    <View key={l.id}>
+                                        <ListItem key={i} onPress={() => {console.log("Selected: "+ l.id); setPostFeeling(l.id)}} bottomDivider>
+                                        <Avatar title={l.title} source={{ uri: global.image_host_url + l.url }} />
+                                        <ListItem.Content>
+                                            <ListItem.Title>{l.title}</ListItem.Title>
+                                        </ListItem.Content>
+                                        </ListItem>
+                                    </View>
                                 ))}
                             </ListItem.Accordion>
                         </View>
                         <View>
-                            <ListItem.Accordion
+                            <ListItem.Accordion style={{height: travelingExpanded ? "auto": 0.1 * screen.height}}
                                 content={
                                     <>
                                         <Avatar title="Traveling to" source={traveling} />
@@ -582,17 +613,19 @@ const Profile = (props) => {
                                 }}
                                 >
                                 {listTraveling.length > 0 && listTraveling.map((l, i) => (
-                                    <ListItem key={i} onPress={() => {console.log("Selected: "+ l.id); setPostFeeling(l.id)}} bottomDivider>
-                                    <Avatar title={l.title} source={{ uri: global.image_host_url + l.url }} />
-                                    <ListItem.Content>
-                                        <ListItem.Title>{l.title}</ListItem.Title>
-                                    </ListItem.Content>
-                                    </ListItem>
+                                    <View>
+                                        <ListItem key={i} onPress={() => {console.log("Selected: "+ l.id); setPostFeeling(l.id)}} bottomDivider>
+                                        <Avatar title={l.title} source={{ uri: global.image_host_url + l.url }} />
+                                        <ListItem.Content>
+                                            <ListItem.Title>{l.title}</ListItem.Title>
+                                        </ListItem.Content>
+                                        </ListItem>
+                                    </View>
                                 ))}
                             </ListItem.Accordion>
                         </View>
                         <View>
-                            <ListItem.Accordion
+                            <ListItem.Accordion style={{height: eatingExpanded ? "auto": 0.1 * screen.height}}
                                 content={
                                     <>
                                         <Avatar title="Eating" source={eating} />
@@ -601,12 +634,15 @@ const Profile = (props) => {
                                         </ListItem.Content>
                                     </>
                                 }
-                                isExpanded={false}
+                                isExpanded={eatingExpanded}
+                                onPress={() => {
+                                    setEatingExpanded(!eatingExpanded);
+                                }}
                             >
                             </ListItem.Accordion>
                         </View>
                         <View>
-                            <ListItem.Accordion
+                            <ListItem.Accordion style={{height: drinkingExpanded ? "auto": 0.1 * screen.height}}
                                 content={
                                     <>
                                         <Avatar title="Drinking" source={drinking} />
@@ -615,12 +651,15 @@ const Profile = (props) => {
                                         </ListItem.Content>
                                     </>
                                 }
-                                isExpanded={false}
+                                isExpanded={drinkingExpanded}
+                                onPress={() => {
+                                    setDrinkingExpanded(!drinkingExpanded);
+                                }}
                             >
                             </ListItem.Accordion>
                         </View>
                         <View>
-                            <ListItem.Accordion
+                            <ListItem.Accordion style={{height: lookingExpanded ? "auto": 0.1 * screen.height}}
                                 content={
                                     <>
                                         <Avatar title="Looking for" source={looking} />
@@ -629,12 +668,15 @@ const Profile = (props) => {
                                         </ListItem.Content>
                                     </>
                                 }
-                                isExpanded={false}
+                                isExpanded={lookingExpanded}
+                                onPress={() => {
+                                    setLookingExpanded(!lookingExpanded);
+                                }}
                             >
                             </ListItem.Accordion>
                         </View>
                         <View>
-                            <ListItem.Accordion
+                            <ListItem.Accordion style={{height: celebratingExpanded ? "auto": 0.1 * screen.height}}
                                 content={
                                     <>
                                         <Avatar title="Celebrating" source={celebrating} />
@@ -643,12 +685,15 @@ const Profile = (props) => {
                                         </ListItem.Content>
                                     </>
                                 }
-                                isExpanded={false}
+                                isExpanded={celebratingExpanded}
+                                onPress={() => {
+                                    setCelebratingExpanded(!celebratingExpanded);
+                                }}
                             >
                             </ListItem.Accordion>
                         </View>
                         <View>
-                            <ListItem.Accordion
+                            <ListItem.Accordion style={{height: meetingExpanded ? "auto": 0.1 * screen.height}}
                                 content={
                                     <>
                                         <Avatar title="Meeting" source={meeting} />
@@ -657,12 +702,15 @@ const Profile = (props) => {
                                         </ListItem.Content>
                                     </>
                                 }
-                                isExpanded={false}
+                                isExpanded={meetingExpanded}
+                                onPress={() => {
+                                    setMeetingExpanded(!meetingExpanded);
+                                }}
                             >
                             </ListItem.Accordion>
                         </View>
                         <View>
-                            <ListItem.Accordion
+                            <ListItem.Accordion style={{height: gettingExpanded ? "auto": 0.1 * screen.height}}
                                 content={
                                     <>
                                         <Avatar title="Getting" source={getting} />
@@ -671,12 +719,15 @@ const Profile = (props) => {
                                         </ListItem.Content>
                                     </>
                                 }
-                                isExpanded={false}
+                                isExpanded={gettingExpanded}
+                                onPress={() => {
+                                    setGettingExpanded(!gettingExpanded);
+                                }}
                             >
                             </ListItem.Accordion>
                         </View>
                         <View>
-                            <ListItem.Accordion
+                            <ListItem.Accordion style={{height: makingExpanded ? "auto": 0.1 * screen.height}}
                                 content={
                                     <>
                                         <Avatar title="Making" source={making} />
@@ -685,12 +736,15 @@ const Profile = (props) => {
                                         </ListItem.Content>
                                     </>
                                 }
-                                isExpanded={false}
+                                isExpanded={makingExpanded}
+                                onPress={() => {
+                                    setMakingExpanded(!makingExpanded);
+                                }}
                             >
                             </ListItem.Accordion>
                         </View>
                         <View>
-                            <ListItem.Accordion
+                            <ListItem.Accordion style={{height: rememberingExpanded ? "auto": 0.1 * screen.height}}
                                 content={
                                     <>
                                         <Avatar title="Remembering" source={remembering} />
@@ -699,7 +753,10 @@ const Profile = (props) => {
                                         </ListItem.Content>
                                     </>
                                 }
-                                isExpanded={false}
+                                isExpanded={rememberingExpanded}
+                                onPress={() => {
+                                    setRememberingExpanded(!rememberingExpanded);
+                                }}
                             >
                             </ListItem.Accordion>
                         </View>

@@ -7,10 +7,12 @@ import * as ImagePicker from 'expo-image-picker';
 import logo from '../static/img/dream-real-logo-nav.png'
 import CustomBar from '../components/statusbar';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-
+import userIdProvider from "../components/Context/user_id_provider";
 import "../global"
 import { LogBox } from 'react-native';
-
+import { useNavigation } from '@react-navigation/native';
+import axios from "axios";
+import * as SecureStore from 'expo-secure-store';
 
 const screen = Dimensions.get("screen");
 const figma_screen_w = 428;
@@ -28,6 +30,9 @@ const SignUp = (props) => {
     const [cover, setCover] = React.useState(null);
     const [email, setEmail] = React.useState("");
     const [locationHash, setLocationHash] = React.useState(null);
+    const user_item = React.useContext(userIdProvider);
+    const navigation = useNavigation()
+
 
     React.useEffect(() => {
         LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
@@ -75,6 +80,30 @@ const SignUp = (props) => {
                 let json = await response.json();
                 if (json.success) {
                     Alert.alert("Dream Real Register Success", "Welcome to Dream Real !")
+                    axios.post(global.back_end_url + '/login', {
+                        "email": email,
+                        "password": password
+                    }).then(async function(response) {
+                        let json = response.data;
+                        if (json.success) {
+                            let cookie = response.headers["set-cookie"][0].split("; ")[0].split("=")[1];
+                            await SecureStore.setItemAsync("token", cookie);
+                            Alert.alert("Dream Real Login Success", "Welcome back !")
+                            user_item.setLoginned(!user_item.loggined)
+                            user_item.setUserId(json.id)
+                            user_item.setAvatar(json.avatar)
+                            user_item.setFirstname(json.first_name)
+                            user_item.setLastname(json.last_name)
+                            user_item.setUsername(json.username)
+                            user_item.setCover(json.cover)
+                            navigation.navigate("Home");
+                        }
+                        else {
+                            Alert.alert("Dream Real Login Failed", json.message)
+                        }
+                    }).catch(function(error){
+                        Alert.alert("Dream Real Login Error", "Error occured when trying to log in: " + error)
+                    })
                 }
                 else {
                     Alert.alert("Dream Real Register Failed")
