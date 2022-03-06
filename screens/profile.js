@@ -118,9 +118,7 @@ const Profile = (props) => {
     const [score, setScore] = React.useState(null);
     React.useEffect(() => {
         LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
-        if (Object.keys(userProfile).length) {
-            setUserId(userProfile.user_id);
-        }
+        
         if (loadingPost) {
             axios.get(global.back_end_url + '/album_user', {
                 params: { user_id: user.id, offset: offset, user_react_id: Object.keys(userProfile).length ? userProfile.user_id: user.id },
@@ -243,7 +241,15 @@ const Profile = (props) => {
                 Alert.alert("Dream Real Loading Tags Error", json.message)
             })
         }
-    }, [loadingPost, loadingFriends, loadingFollowers, loadingFollowing, feelingExpanded, travelingExpanded, eatingExpanded, eatingExpanded, drinkingExpanded, lookingExpanded, celebratingExpanded, meetingExpanded, gettingExpanded, makingExpanded, rememberingExpanded])
+        setLocation(location)
+        setLocationHash(locationHash)
+        return() => {
+            
+            if (Object.keys(userProfile).length) {
+                setUserId(userProfile.user_id);
+            }
+        }
+    }, [loadingPost, loadingFriends, loadingFollowers, loadingFollowing, feelingExpanded, travelingExpanded, eatingExpanded, eatingExpanded, drinkingExpanded, lookingExpanded, celebratingExpanded, meetingExpanded, gettingExpanded, makingExpanded, rememberingExpanded, location, locationHash])
 
     // React.useEffect(async () => {
     //     if (loadingFriends) {
@@ -570,7 +576,7 @@ const Profile = (props) => {
                                         borderBottomRightRadius: 0.02 * screen.width}}
                                 contentContainerStyle={{ flexGrow: 1, height: "auto"}}
                     >
-                        <View>
+                        <View key="Feeling">
                             <ListItem.Accordion style={{height: feelingExpanded ? "auto": 0.1 * screen.height}}
                                 content={
                                     <>
@@ -587,7 +593,7 @@ const Profile = (props) => {
                                 >
                                 {listFeeling.length > 0 && listFeeling.map((l, i) => (
                                     <View key={l.id}>
-                                        <ListItem key={i} onPress={() => {console.log("Selected: "+ l.id); setPostFeeling(l.id)}} bottomDivider>
+                                        <ListItem key={i} onPress={() => {setPostFeeling(l); setFeelingModal(false); setBlurIntensity(1)}} bottomDivider>
                                         <Avatar title={l.title} source={{ uri: global.image_host_url + l.url }} />
                                         <ListItem.Content>
                                             <ListItem.Title>{l.title}</ListItem.Title>
@@ -597,7 +603,7 @@ const Profile = (props) => {
                                 ))}
                             </ListItem.Accordion>
                         </View>
-                        <View>
+                        <View key="Traveling">
                             <ListItem.Accordion style={{height: travelingExpanded ? "auto": 0.1 * screen.height}}
                                 content={
                                     <>
@@ -614,7 +620,7 @@ const Profile = (props) => {
                                 >
                                 {listTraveling.length > 0 && listTraveling.map((l, i) => (
                                     <View>
-                                        <ListItem key={i} onPress={() => {console.log("Selected: "+ l.id); setPostFeeling(l.id)}} bottomDivider>
+                                        <ListItem key={i} onPress={() => {setPostFeeling(l); ; setFeelingModal(false); setBlurIntensity(1)}} bottomDivider>
                                         <Avatar title={l.title} source={{ uri: global.image_host_url + l.url }} />
                                         <ListItem.Content>
                                             <ListItem.Title>{l.title}</ListItem.Title>
@@ -624,7 +630,7 @@ const Profile = (props) => {
                                 ))}
                             </ListItem.Accordion>
                         </View>
-                        <View>
+                        <View key="Eating">
                             <ListItem.Accordion style={{height: eatingExpanded ? "auto": 0.1 * screen.height}}
                                 content={
                                     <>
@@ -641,7 +647,7 @@ const Profile = (props) => {
                             >
                             </ListItem.Accordion>
                         </View>
-                        <View>
+                        <View key="Drinking">
                             <ListItem.Accordion style={{height: drinkingExpanded ? "auto": 0.1 * screen.height}}
                                 content={
                                     <>
@@ -658,7 +664,7 @@ const Profile = (props) => {
                             >
                             </ListItem.Accordion>
                         </View>
-                        <View>
+                        <View key="Looking">
                             <ListItem.Accordion style={{height: lookingExpanded ? "auto": 0.1 * screen.height}}
                                 content={
                                     <>
@@ -675,7 +681,7 @@ const Profile = (props) => {
                             >
                             </ListItem.Accordion>
                         </View>
-                        <View>
+                        <View key="Celebrating">
                             <ListItem.Accordion style={{height: celebratingExpanded ? "auto": 0.1 * screen.height}}
                                 content={
                                     <>
@@ -692,7 +698,7 @@ const Profile = (props) => {
                             >
                             </ListItem.Accordion>
                         </View>
-                        <View>
+                        <View key="Meeting">
                             <ListItem.Accordion style={{height: meetingExpanded ? "auto": 0.1 * screen.height}}
                                 content={
                                     <>
@@ -709,7 +715,7 @@ const Profile = (props) => {
                             >
                             </ListItem.Accordion>
                         </View>
-                        <View>
+                        <View key="Getting">
                             <ListItem.Accordion style={{height: gettingExpanded ? "auto": 0.1 * screen.height}}
                                 content={
                                     <>
@@ -726,7 +732,7 @@ const Profile = (props) => {
                             >
                             </ListItem.Accordion>
                         </View>
-                        <View>
+                        <View key="Making">
                             <ListItem.Accordion style={{height: makingExpanded ? "auto": 0.1 * screen.height}}
                                 content={
                                     <>
@@ -743,7 +749,7 @@ const Profile = (props) => {
                             >
                             </ListItem.Accordion>
                         </View>
-                        <View>
+                        <View key="Remembering">
                             <ListItem.Accordion style={{height: rememberingExpanded ? "auto": 0.1 * screen.height}}
                                 content={
                                     <>
@@ -811,7 +817,7 @@ const Profile = (props) => {
                                         formData.append("location_hash", locationHash)
                                         formData.append("user_id", user.id)
                                         formData.append("description", postText)
-                                        formData.append("id_tag", 1)
+                                        formData.append("id_tag", postFeeling.id)
                                         formData.append("dream_real", dream_or_real == true? 1:0)
                                         try {
                                             const response = await fetch(global.back_end_url + "/new_album", {
@@ -823,6 +829,8 @@ const Profile = (props) => {
                                             })
                                             let json = await response.json();
                                             if (json.success) {
+                                                setData([JSON.parse(JSON.stringify(json)).album[0], ...data])
+                                                user.setPostTrending([JSON.parse(JSON.stringify(json)).album[0], ...user.posts])
                                                 Alert.alert("Dream Real Post Success", "Post to Dream Real !")
                                             }
                                             else {
@@ -848,18 +856,18 @@ const Profile = (props) => {
                                 <Text style={{color: "white", fontSize: 12, fontWeight: "bold", alignItems: "center", marginTop: 0.015 * screen.width + 10 * screen.width / figma_screen_w}}>{user.firstname + " " + user.lastname} </Text>
                                 {postFeeling != null && 
                                     <View style={{flexDirection: "row", marginTop: 0.015 * screen.width + 10 * screen.width / figma_screen_w}}>
-                                        <Text style={{color: "white", fontSize: 12, fontWeight: "normal", alignItems: "center"}}>is feeling </Text>
-                                        <FontAwesome5Icon name={postFeeling} size={12} solid color='#ffff69' style={{alignItems: "center"}}></FontAwesome5Icon>  
-                                        <Text style={{color: "white", fontSize: 12, fontWeight: "normal", alignItems: "center"}}> funny</Text>
+                                        <Text style={{color: "white", fontSize: 12, fontWeight: "normal", alignItems: "center"}}>is {postFeeling.slug} </Text>
+                                        <Image source={{uri: global.image_host_url + postFeeling.url}} style={styles.emotion}></Image> 
+                                        <Text style={{color: "white", fontSize: 12, fontWeight: "normal", alignItems: "center"}}> {postFeeling.title}</Text>
                                     </View>
                                 }
-                                {postFeeling == null && 
+                                {/* {postFeeling == null && 
                                     <TouchableOpacity onPress={() => setPostFeeling("grin-tongue-wink")} style={{flexDirection: "row", marginTop: 0.015 * screen.width + 10 * screen.width / figma_screen_w}}>
                                         <Text style={{color: "white", fontSize: 12, fontWeight: "normal", alignItems: "center"}}>is adding </Text>
                                         <FontAwesome5Icon name="smile-wink" size={12} regular color='#ffff69' style={{alignItems: "center"}}></FontAwesome5Icon>  
                                         <Text style={{color: "white", fontSize: 12, fontWeight: "normal", alignItems: "center"}}> a Feeling/Activity</Text>
                                     </TouchableOpacity>
-                                }
+                                } */}
                             </View>
                         
                             <GooglePlacesAutocomplete
@@ -1085,6 +1093,12 @@ const styles = StyleSheet.create({
     inputView: {
         height: 0.06 * screen.height, 
         width: 0.9 * screen.width
+    },
+    emotion: {
+        width: 20 * screen.width / figma_screen_w,
+        height: 20 * screen.width / figma_screen_w,
+        borderRadius: 50,
+        alignSelf: "flex-start"
     },
 })
 const locationStyles = StyleSheet.create({

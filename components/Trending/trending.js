@@ -14,25 +14,20 @@ const isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
     return layoutMeasurement.width + contentOffset.x >= contentSize.width - paddingToRight;
 };
 const Trending = () => {
-    const [data, setData] = React.useState([]);
     const [offset, setOffset] = React.useState(0);
     const [loading, setLoading] = React.useState(true);
     const [end, setEnd] = React.useState(false);
     const user_item = React.useContext(userIdProvider);
     const userId = user_item.id;
     const oldId = user_item.oldId;
-
+    
     React.useEffect(() => {
         if (userId != oldId) {
             setLoading(true);
             setOffset(0);
-            setData([]);
             user_item.setPostTrending([]);
             user_item.setOldId(userId);
         }
-    }, [userId, oldId])
-    
-    React.useEffect(() => {
         if (loading) {
             axios.get(global.back_end_url + `/album_trending`, {
                 params: { user_id: userId, offset: offset } 
@@ -40,7 +35,6 @@ const Trending = () => {
                 if (JSON.parse(JSON.stringify(response.data.albums)).length < 10) {    
                     setEnd(true)
                 }
-                setData([...data, ...JSON.parse(JSON.stringify(response.data.albums))])
                 user_item.setPostTrending([...user_item.posts, ...JSON.parse(JSON.stringify(response.data.albums))]);
                 setLoading(false)
                 setOffset(offset + 10)
@@ -48,11 +42,11 @@ const Trending = () => {
             .catch((error) => Alert.alert("Dream Real Loading Error", "Error occured when trying to load posts: " + error))
         }
         
-    }, [loading])
+    }, [loading, userId, oldId])
     
     return (
         <View style={styles.container}> 
-            {data != [] ? data.map((person) => {
+            {user_item.posts != [] ? user_item.posts.map((person) => {
                 return (
                     <TrendingItems data={person} key={person.album_id}/>
                 )
