@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Image, StyleSheet, Dimensions, TouchableOpacity, Text } from 'react-native';
+import { View, Image, StyleSheet, Dimensions, TouchableOpacity, Text, Alert} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import like from "../../static/img/emoji/like.png";
 import love from "../../static/img/emoji/love.png";
@@ -11,6 +11,8 @@ import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
 import userIdProvider from "../Context/user_id_provider" 
 import LoginPage from '../login_page';
 import axios from 'axios';
+import dream from "../../static/img/icon-button/dream.png"
+import real from "../../static/img/icon-button/real.png"
 
 const screen = Dimensions.get("screen");
 const window = Dimensions.get("window");
@@ -22,7 +24,8 @@ const TrendingItems = (props) => {
     const data = props.data;
     const score = props.score;
     const setScore = props.setScore;
-    const navigation = useNavigation()
+    const navigation = useNavigation();
+    const [favorite, setFavorite] = React.useState(data.favorite);
     const user_item = React.useContext(userIdProvider);
     const userId = user_item.id;
     const [nbReact, setNbReact] = React.useState(data.react)
@@ -49,14 +52,77 @@ const TrendingItems = (props) => {
                         <Text style={styles.item3}>  {data.title}</Text>
                     </View>
                 </View>
-                <FontAwesome5Icon color='red' name="map-marker-alt" regular size={10} style={styles.item2}>
-                    <Text style={[styles.item2, {color:'#FFF'}]}> {data.location_city + ", " + data.location_country}</Text>
-                </FontAwesome5Icon>
+                <View style={{maxWidth: 0.4 * screen.width, alignItems: "flex-end", height: 0.05 * screen.height}}>
+                    <View style={{...styles.item2, overflow: "scroll"}}>
+                        <FontAwesome5Icon color='red' name="map-marker-alt" regular size={10}>
+                            <Text style={{...styles.item2, color:'#FFF', overflow: "scroll", height: 0.05 * screen.height}}> {data.location_city + ", " + data.location_country}</Text>
+                        </FontAwesome5Icon>
+                    </View>
+                    <View style={{alignItems: "flex-end", marginRight: 0.02 * screen.width}}>
+                        {data.dream_real == 1 && 
+                        <View style={{flexDirection: "row"}}>
+                            <Image source={dream} style={{width: 15 * screen.width/ figma_screen_w, height: 15 * screen.width/ figma_screen_w, borderRadius: 50}}>
+                            </Image>
+                            <Text style={{color: "white", fontSize: 10}}>  Dream</Text>
+                        </View>}
+                        {data.dream_real == 0 && 
+                        <View style={{flexDirection: "row"}}>
+                            <Image source={real} style={{width: 15 * screen.width/ figma_screen_w, height: 15 * screen.width/ figma_screen_w, borderRadius: 50}}>
+                            </Image>
+                            <Text style={{color: "white", fontSize: 10}}>  Real</Text>
+                        </View>}
+                    </View>
+                </View>
             </View>
             <Image source={{uri: global.image_host_url + data.image}} style={styles.place} />
             <View style={styles.content5}>
                 <TouchableOpacity>
                     <Text style={styles.item5}>{nbReact} reacts</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => {
+                    if (favorite === 1) {
+                        axios.post(global.back_end_url + '/add_to_favorite', {
+                            "album_id": data.album_id,
+                            "user_id": userId,
+                            "action": "unfavorite"
+                        }).then(function(response) {
+                            let json = JSON.parse(JSON.stringify(response.data));
+                            if (json.success) {
+                                setFavorite(0)
+                                if (score != undefined) {
+                                     setScore(score - 5)
+                                }
+                            }
+                            else {
+                                Alert.alert("Dream Real React Failed", json.message)
+                            }
+                        }).catch(function(error){
+                            Alert.alert("Dream Real React Error", error)
+                        })
+                    }
+                    if (favorite === 0) {
+                        axios.post(global.back_end_url + '/add_to_favorite', {
+                            "album_id": data.album_id,
+                            "user_id": userId,
+                            "action": "favorite"
+                        }).then(function(response) {
+                            let json = JSON.parse(JSON.stringify(response.data));
+                            if (json.success) {
+                                setFavorite(1)
+                                if (score != undefined) {
+                                    setScore(score + 5)
+                                }
+                            }
+                            else {
+                                Alert.alert("Dream Real React Failed", json.message)
+                            }
+                        }).catch(function(error){
+                            Alert.alert("Dream Real React Error", error)
+                        })
+                    }
+                }}>
+                    {favorite === 0 && <FontAwesome5Icon color="white" name="bookmark" regular size={10} style={styles.item7} />}
+                    {favorite === 1 && <FontAwesome5Icon color="red" name="bookmark" regular size={10} style={styles.item7} />}
                 </TouchableOpacity>
                 <View>
                     <View style={styles.content7}>
@@ -72,7 +138,9 @@ const TrendingItems = (props) => {
                                     if (json.success) {
                                         setReactIndex(0);
                                         setNbReact(nbReact - 1);
-                                        setScore(score - 5)
+                                        if (score != undefined) {
+                                            setScore(score - 5)
+                                        }
                                     }
                                     else {
                                         Alert.alert("Dream Real React Failed", json.message)
@@ -111,7 +179,9 @@ const TrendingItems = (props) => {
                                         if (json.success) {
                                             setReactIndex(1);
                                             setNbReact(nbReact + 1);
-                                            setScore(score + 5)
+                                            if (score != undefined) {
+                                                setScore(score + 5)
+                                            }
                                         }
                                         else {
                                             Alert.alert("Dream Real React Failed", json.message)
@@ -136,7 +206,9 @@ const TrendingItems = (props) => {
                                     if (json.success) {
                                         setReactIndex(0);
                                         setNbReact(nbReact - 1);
-                                        setScore(score - 5);
+                                        if (score != undefined) {
+                                            setScore(score - 5)
+                                        }
                                     }
                                     else {
                                         Alert.alert("Dream Real React Failed", json.message)
@@ -175,7 +247,9 @@ const TrendingItems = (props) => {
                                         if (json.success) {
                                             setReactIndex(2);
                                             setNbReact(nbReact + 1);
-                                            setScore(score + 5)
+                                            if (score != undefined) {
+                                                setScore(score + 5)
+                                            }
                                         }
                                         else {
                                             Alert.alert("Dream Real React Failed", json.message)
@@ -200,7 +274,9 @@ const TrendingItems = (props) => {
                                     if (json.success) {
                                         setReactIndex(0);
                                         setNbReact(nbReact - 1);
-                                        setScore(score - 5)
+                                        if (score != undefined) {
+                                            setScore(score - 5)
+                                        }
                                     }
                                     else {
                                         Alert.alert("Dream Real React Failed", json.message)
@@ -239,7 +315,9 @@ const TrendingItems = (props) => {
                                         if (json.success) {
                                             setReactIndex(3);
                                             setNbReact(nbReact + 1);
-                                            setScore(score + 5)
+                                            if (score != undefined) {
+                                                setScore(score + 5)
+                                            }
                                         }
                                         else {
                                             Alert.alert("Dream Real React Failed", json.message)
@@ -264,7 +342,9 @@ const TrendingItems = (props) => {
                                     if (json.success) {
                                         setReactIndex(0);
                                         setNbReact(nbReact - 1);
-                                        setScore(score - 5)
+                                        if (score != undefined) {
+                                            setScore(score - 5)
+                                        }
                                     }
                                     else {
                                         Alert.alert("Dream Real React Failed", json.message)
@@ -303,7 +383,9 @@ const TrendingItems = (props) => {
                                         if (json.success) {
                                             setReactIndex(4);
                                             setNbReact(nbReact + 1);
-                                            setScore(score + 5)
+                                            if (score != undefined) {
+                                                setScore(score + 5)
+                                            }
                                         }
                                         else {
                                             Alert.alert("Dream Real React Failed", json.message)
@@ -328,7 +410,9 @@ const TrendingItems = (props) => {
                                     if (json.success) {
                                         setReactIndex(0);
                                         setNbReact(nbReact - 1);
-                                        setScore(score - 5)
+                                        if (score != undefined) {
+                                            setScore(score - 5)
+                                        }
                                     }
                                     else {
                                         Alert.alert("Dream Real React Failed", json.message)
@@ -367,7 +451,9 @@ const TrendingItems = (props) => {
                                         if (json.success) {
                                             setReactIndex(5);
                                             setNbReact(nbReact + 1);
-                                            setScore(score + 5)
+                                            if (score != undefined) {
+                                                setScore(score + 5)
+                                            }
                                         }
                                         else {
                                             Alert.alert("Dream Real React Failed", json.message)
@@ -392,7 +478,9 @@ const TrendingItems = (props) => {
                                     if (json.success) {
                                         setReactIndex(0);
                                         setNbReact(nbReact - 1);
-                                        setScore(score - 5)
+                                        if (score != undefined) {
+                                            setScore(score - 5)
+                                        }
                                     }
                                     else {
                                         Alert.alert("Dream Real React Failed", json.message)
@@ -431,7 +519,9 @@ const TrendingItems = (props) => {
                                         if (json.success) {
                                             setReactIndex(6);
                                             setNbReact(nbReact + 1);
-                                            setScore(score + 5)
+                                            if (score != undefined) {
+                                                setScore(score + 5)
+                                            }
                                         }
                                         else {
                                             Alert.alert("Dream Real React Failed", json.message)
@@ -489,11 +579,11 @@ const styles = StyleSheet.create({
         marginBottom: 0.01 * screen.height, 
     },
     item2: {
-        marginBottom: 0.05 * screen.height,
+        marginBottom: 0.022 * screen.height,
         fontStyle: "normal",
         fontWeight: "400",
         fontSize: 10,
-        marginRight: 0.05 * screen.width,
+        marginRight: 0.02 * screen.width,
         marginTop: 0.01 * screen.height
     },
     item3: {
