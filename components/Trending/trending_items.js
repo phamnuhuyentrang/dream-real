@@ -100,7 +100,7 @@ const TrendingItems = (props) => {
                             Alert.alert("Dream Real React Error", error)
                         })
                     }
-                    if (favorite === 0) {
+                    if (favorite === 0 && userId != 0) {
                         axios.post(global.back_end_url + '/add_to_favorite', {
                             "album_id": data.album_id,
                             "user_id": userId,
