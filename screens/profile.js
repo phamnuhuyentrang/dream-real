@@ -192,7 +192,6 @@ const Profile = (props) => {
             })
             .catch((error) => Alert.alert("Dream Real Loading Followers Error", error.message))
         }
-        let tkn = SecureStore.getItemAsync("token")
         if (loadingFollowing) {
             axios.get(global.back_end_url + `/get_following`, {
                 withCredentials: true,
@@ -830,7 +829,9 @@ const Profile = (props) => {
                                             let json = await response.json();
                                             if (json.success) {
                                                 setData([JSON.parse(JSON.stringify(json)).album[0], ...data])
-                                                user.setPostTrending([JSON.parse(JSON.stringify(json)).album[0], ...user.posts])
+                                                user.setPostTrending([])
+                                                user.setPostOffset(0)
+                                                user.setPostLoading(true)
                                                 Alert.alert("Dream Real Post Success", "Post to Dream Real !")
                                             }
                                             else {

@@ -26,6 +26,8 @@ const App = () => {
 	const [username, setUsername] = React.useState("");
 	const [oldId, setOldId] = React.useState(0);
 	const [postTrending, setPostTrending] = React.useState([]);
+	const [postOffset, setPostOffset] = React.useState(0);
+	const [postLoading, setPostLoading] = React.useState(true);
 	const userSettings = {
 		id: userId,
 		setUserId,
@@ -46,7 +48,11 @@ const App = () => {
 		oldId: oldId,
 		setOldId,
 		posts: postTrending,
-		setPostTrending
+		setPostTrending,
+		postOffset: postOffset,
+		setPostOffset,
+		postLoading: postLoading,
+		setPostLoading
 	}
 	return (
 		<userIdProvider.Provider value={userSettings}>
