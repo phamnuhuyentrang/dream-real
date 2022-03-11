@@ -32,7 +32,7 @@ const Connect = () => {
     }, [loading])
 
     return (
-        <View style={{flexDirection: "row", flexWrap: "wrap", overflow: "hidden", marginLeft: 0.03 * screen.width}}> 
+        <View style={{flexDirection: "row", flexWrap: "wrap", overflow: "hidden", marginLeft: 0.03 * screen.width, marginBottom: 0.03 * screen.height}}> 
             {data.map((person, index) => {
                 return (
                     <ConnectItems data={person} key={index}/>

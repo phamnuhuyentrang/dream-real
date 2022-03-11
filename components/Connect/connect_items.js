@@ -92,9 +92,11 @@ const ConnectItems = (props) => {
                     <View style={styles.content4}>
                         <Image source={{uri: global.image_host_url + data.avatar}} style={styles.avatar}></Image>
                         <Text style={styles.item4}>{name.length <= 15 ? name : nameReplace}</Text>
+                        <View style={{height: 0.05 * screen.height}}>
                         {data.location_city != null ? <FontAwesome5Icon color='red' name="map-marker-alt" regular size={10} style={styles.item3}>
-                            <Text style={[styles.item3, {color:'#FFF'}]}> {location.length <= 20 ? location: location.substring(0, 20) + "..."}</Text>
+                            <Text style={[styles.item3, {color:'#FFF'}]}> {location.length <= 20 ? location: location.substring(0, 20).trim() + "..."}</Text>
                         </FontAwesome5Icon>: <View style={{height: 0.015 * screen.height}}></View>}
+                        </View>
                     </View>                   
                 </View>
             </View>
@@ -201,7 +203,7 @@ const styles = StyleSheet.create({
     content: {
         backgroundColor: "#3D3D4E",
         width: wp(40),
-        height: wp(60),
+        height: wp(65),
         borderRadius: 0.02 * screen.width,
         marginBottom: 0.03 * screen.height,
         margin: 0.02 * screen.height
@@ -221,23 +223,23 @@ const styles = StyleSheet.create({
     item2: {
         fontStyle: "normal",
         fontWeight: "400",
-        fontSize: 18,
+        fontSize: 0.05 * screen.height,
         marginRight: 0.05 * screen.width,
-        marginTop: 0.01 * screen.height,
+        marginTop: 0.02 * screen.height,
         marginLeft: "auto",
         left: 0
     },
     item3: {
         fontStyle: "normal",
         fontWeight: "400",
-        fontSize: 10,
+        fontSize: 0.02 * screen.height,
         textAlign: "center"    
     },
     item4: {
         marginBottom: 0.01 * screen.height,
         fontStyle: "normal",
         fontWeight: "900",
-        fontSize: 15,
+        fontSize: 0.02 * screen.height,
         color: "#FFF",
         alignSelf: "center"
     }, 
@@ -252,12 +254,13 @@ const styles = StyleSheet.create({
         borderRadius: 0.02 * screen.width,
         width: screen.width / 2 - 0.12 * screen.width,
         alignSelf: "center",
-        marginTop: 0.015 * screen.width
+        marginTop: 0.015 * screen.width,
+        height: wp(5)
     },
     buttonlabel: {
         color: '#fff',
         textAlign: 'center',
-        fontSize: 16,
+        fontSize: 0.02 * screen.height,
         fontWeight: "bold" 
     }
 });
