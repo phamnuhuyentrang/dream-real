@@ -32,7 +32,6 @@ import custom from "../static/img/icon-button/1f485-1f3fc.png"
 import dream from "../static/img/icon-button/dream.png"
 import real from "../static/img/icon-button/real.png"
 import EmojiBoard from 'react-native-emoji-board'
-import { LogBox } from 'react-native';
 
 LogBox.ignoreLogs([
   'ReactNativeFiberHostComponent: Calling getNode() on the ref of an Animated component is no longer necessary. You can now directly use the ref instead. This method will be removed in a future release.',
@@ -869,7 +868,7 @@ const Profile = (props) => {
                                         <TouchableOpacity onPress={() => setShow(!show)}>
                                             <FontAwesome5Icon name="smile" size={0.06 * screen.height} style={{top: 0}}></FontAwesome5Icon>
                                         </TouchableOpacity>
-                                        <EmojiBoard showBoard={show} emojiSize={16} numRows={7} numCols={5} containerStyle={{width: 0.95 * screen.width}} onClick={(emoji) => {setCustomText(customText + " " + emoji.code);setShow(!show)}} tabBarStyle={{width: 0.95 * screen.width}}/>
+                                        <EmojiBoard showBoard={show} emojiSize={16} numRows={7} numCols={5} containerStyle={{width: 0.95 * screen.width}} onClick={(emoji) => {setCustomText(customText + " " + emoji.code); setShow(!show)}} tabBarStyle={{width: 0.95 * screen.width}}/>
                                         <TouchableOpacity style={{width: 0.1 * screen.width}} onPress={() => {setFeelingModal(false); setBlurIntensity(1); setPostFeeling({
                                             title: "custom",
                                             slug: customText,
