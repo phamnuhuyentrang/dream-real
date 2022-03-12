@@ -32,6 +32,11 @@ import custom from "../static/img/icon-button/1f485-1f3fc.png"
 import dream from "../static/img/icon-button/dream.png"
 import real from "../static/img/icon-button/real.png"
 import EmojiBoard from 'react-native-emoji-board'
+import { LogBox } from 'react-native';
+
+LogBox.ignoreLogs([
+  'ReactNativeFiberHostComponent: Calling getNode() on the ref of an Animated component is no longer necessary. You can now directly use the ref instead. This method will be removed in a future release.',
+]);
 
 const screen = Dimensions.get("screen");
 const window = Dimensions.get("window");
@@ -441,7 +446,7 @@ const Profile = (props) => {
                     </TouchableOpacity>
                     <Image source={logo} style={styles.logo} />
                 </View>
-                <TouchableOpacity onPress={() => console.log("Clicked")} style={{position: "absolute", left: 0.42 * screen.width, top: 0.21 * screen.height, zIndex: 1}}>
+                <TouchableOpacity style={{position: "absolute", left: 0.42 * screen.width, top: 0.21 * screen.height, zIndex: 1}}>
                     <Image source={{uri: user.id === userId? global.image_host_url + user.avatar : global.image_host_url + userProfile.avatar}} style={styles.avatar}/>
                 </TouchableOpacity>
                 <Svg height={APPBAR_HEIGHT * 0.8} width={screen.width} overflow="hidden" style={styles.svg1} >
@@ -455,7 +460,7 @@ const Profile = (props) => {
                         strokeWidth="2"
                     />
                 </Svg>
-                <TouchableOpacity onPress={() => console.log("Clicked")} style={styles.cover}>
+                <TouchableOpacity style={styles.cover}>
                     <Image source={{uri: user.id === userId? global.image_host_url + user.cover : global.image_host_url + userProfile.cover_image}} style={styles.coverImage}/>
                 </TouchableOpacity>
                 <View style={{top: 0.06 * screen.height, zIndex: 3}}>
@@ -930,7 +935,6 @@ const Profile = (props) => {
                                                         name: user.username + "_" + moment().format("YYYYMMDDhhmmss") + ".jpg" 
                                                     })
                                                 }
-                                                console.log(json)
                                                 formData.append("id_tag", json.id_tag)
                                                 formData.append("location", location)
                                                 formData.append("location_hash", locationHash)

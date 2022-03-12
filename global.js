@@ -1,5 +1,5 @@
-global.back_end_url = "http://192.168.1.9:5000"
-// global.back_end_url = "http://192.168.1.12:5000"
+// global.back_end_url = "http://192.168.1.9:5000"
+global.back_end_url = "http://192.168.1.12:5000"
 // global.back_end_url = "https://limitless-fjord-04126.herokuapp.com"
 global.image_host_url = "https://dream-real.s3.eu-west-3.amazonaws.com/"
 
