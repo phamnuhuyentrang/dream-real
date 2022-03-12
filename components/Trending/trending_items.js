@@ -47,9 +47,9 @@ const TrendingItems = (props) => {
                         <Text style={styles.item4}>{data.first_name + " " + data.last_name}</Text>
                     </View>
                     <View style={styles.content4}>
-                        <Text style={styles.item3}>is {data.slug}  </Text>
+                        <Text style={styles.item3}>{data.title != "custom"? "is" : ""} {data.slug + " "}</Text>
                         <Image source={{uri: global.image_host_url + data.url}} style={styles.emotion}></Image>
-                        <Text style={styles.item3}>  {data.title}</Text>
+                        <Text style={styles.item3}>{data.title != "custom"? " " + data.title : " "}</Text>
                     </View>
                 </View>
                 <View style={{maxWidth: 0.4 * screen.width, alignItems: "flex-end", height: 0.05 * screen.height}}>

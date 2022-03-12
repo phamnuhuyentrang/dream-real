@@ -1,5 +1,5 @@
 import React from "react";
-import { StatusBar, Modal, StyleSheet, Text, View, Dimensions, TouchableOpacity, Image, Platform, TextInput,Alert, Button, Touchable } from "react-native";
+import { StatusBar, Modal, StyleSheet, Text, View, Dimensions, TouchableOpacity, Image, Platform, TextInput,Alert, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback, Button, Touchable } from "react-native";
 import { ScrollView } from "react-native";
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 import * as ImagePicker from 'expo-image-picker';
@@ -27,8 +27,11 @@ import remembering from "../static/img/icon-button/1f56f.png"
 import celebrating from "../static/img/icon-button/1f389.png"
 import meeting from "../static/img/icon-button/1f454.png"
 import drinking from "../static/img/icon-button/1f943.png"
+import custom from "../static/img/icon-button/1f485-1f3fc.png"
+
 import dream from "../static/img/icon-button/dream.png"
 import real from "../static/img/icon-button/real.png"
+import EmojiBoard from 'react-native-emoji-board'
 
 const screen = Dimensions.get("screen");
 const window = Dimensions.get("window");
@@ -113,9 +116,15 @@ const Profile = (props) => {
     const [gettingExpanded, setGettingExpanded] = React.useState(false);
     const [listMaking, setListMaking] = React.useState([]);
     const [makingExpanded, setMakingExpanded] = React.useState(false);
+    const [listThinking, setListThinking] = React.useState([]);
+    const [thinkingExpanded, setThinkingExpanded] = React.useState(false);
     const [listRemembering, setListRemembering] = React.useState([]);
     const [rememberingExpanded, setRememberingExpanded] = React.useState(false);
+    const [listCustom, setListCustom] = React.useState([]);
+    const [customExpanded, setCustomExpanded] = React.useState(false);
     const [score, setScore] = React.useState(null);
+    const [show, setShow] = React.useState(false);
+    const [customText, setCustomText] = React.useState("")
     React.useEffect(() => {
         LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
         
@@ -242,8 +251,7 @@ const Profile = (props) => {
         }
         setLocation(location)
         setLocationHash(locationHash)
-        return() => {
-            
+        return() => {      
             if (Object.keys(userProfile).length) {
                 setUserId(userProfile.user_id);
             }
@@ -563,209 +571,263 @@ const Profile = (props) => {
                     activeOpacity={1} 
                     onPressOut={() => {setFeelingModal(false); setBlurIntensity(1)}}
                 >
-                    <ScrollView showsVerticalScrollIndicator={false} 
-                                bounces={true} 
-                                style={{width: 0.9 * screen.width, 
-                                        marginBottom: 0.2 * screen.height, 
-                                        marginTop: 0.2 * screen.height, 
-                                        height: 0.6 * screen.height, 
-                                        flexDirection: "column", 
-                                        backgroundColor: "#3D3D4E", 
-                                        borderBottomLeftRadius: 0.02 * screen.width, 
-                                        borderBottomRightRadius: 0.02 * screen.width}}
-                                contentContainerStyle={{ flexGrow: 1, height: "auto"}}
+                    <KeyboardAvoidingView
+                        behavior={Platform.OS === "ios" ? "padding" : "height"}
                     >
-                        <View key="Feeling">
-                            <ListItem.Accordion style={{height: feelingExpanded ? "auto": 0.1 * screen.height}}
-                                content={
-                                    <>
-                                        <Avatar title="Feeling" source={feeling} />
-                                        <ListItem.Content>                    
-                                            <ListItem.Title>  Feeling </ListItem.Title>
-                                        </ListItem.Content>
-                                    </>
-                                }
-                                isExpanded={feelingExpanded}
-                                onPress={() => {
-                                    setFeelingExpanded(!feelingExpanded);
-                                }}
+                        <ScrollView showsVerticalScrollIndicator={false} 
+                                    bounces={true} 
+                                    style={{width: 0.9 * screen.width, 
+                                            marginBottom: 0.2 * screen.height, 
+                                            marginTop: 0.2 * screen.height, 
+                                            height: 0.6 * screen.height, 
+                                            flexDirection: "column", 
+                                            backgroundColor: "#3D3D4E", 
+                                            borderBottomLeftRadius: 0.02 * screen.width, 
+                                            borderBottomRightRadius: 0.02 * screen.width}}
+                                    contentContainerStyle={{ flexGrow: 1, height: "auto"}}
+                        >
+                            <View key="Feeling">
+                                <ListItem.Accordion style={{height: feelingExpanded ? "auto": 0.1 * screen.height}}
+                                    content={
+                                        <>
+                                            <Avatar title="Feeling" source={feeling} />
+                                            <ListItem.Content>                    
+                                                <ListItem.Title>  Feeling </ListItem.Title>
+                                            </ListItem.Content>
+                                        </>
+                                    }
+                                    isExpanded={feelingExpanded}
+                                    onPress={() => {
+                                        setFeelingExpanded(!feelingExpanded);
+                                    }}
+                                    >
+                                    {listFeeling.length > 0 && listFeeling.map((l, i) => (
+                                        <View key={l.id}>
+                                            <ListItem key={i} onPress={() => {setPostFeeling(l); setFeelingModal(false); setBlurIntensity(1)}} bottomDivider>
+                                                <Avatar title={l.title} source={{ uri: global.image_host_url + l.url }} />
+                                                <ListItem.Content>
+                                                    <ListItem.Title>{l.title}</ListItem.Title>
+                                                </ListItem.Content>
+                                            </ListItem>
+                                        </View>
+                                    ))}
+                                </ListItem.Accordion>
+                            </View>
+                            <View key="Traveling">
+                                <ListItem.Accordion style={{height: travelingExpanded ? "auto": 0.1 * screen.height}}
+                                    content={
+                                        <>
+                                            <Avatar title="Traveling to" source={traveling} />
+                                            <ListItem.Content>                    
+                                                <ListItem.Title>  Traveling to</ListItem.Title>
+                                            </ListItem.Content>
+                                        </>
+                                    }
+                                    isExpanded={travelingExpanded}
+                                    onPress={() => {
+                                        setTravelingExpanded(!travelingExpanded);
+                                    }}
+                                    >
+                                    {listTraveling.length > 0 && listTraveling.map((l, i) => (
+                                        <View key={l.id}>
+                                            <ListItem key={i} onPress={() => {setPostFeeling(l); ; setFeelingModal(false); setBlurIntensity(1)}} bottomDivider>
+                                            <Avatar title={l.title} source={{ uri: global.image_host_url + l.url }} />
+                                            <ListItem.Content>
+                                                <ListItem.Title>{l.title}</ListItem.Title>
+                                            </ListItem.Content>
+                                            </ListItem>
+                                        </View>
+                                    ))}
+                                </ListItem.Accordion>
+                            </View>
+                            <View key="Eating">
+                                <ListItem.Accordion style={{height: eatingExpanded ? "auto": 0.1 * screen.height}}
+                                    content={
+                                        <>
+                                            <Avatar title="Eating" source={eating} />
+                                            <ListItem.Content>                    
+                                                <ListItem.Title>  Eating</ListItem.Title>
+                                            </ListItem.Content>
+                                        </>
+                                    }
+                                    isExpanded={eatingExpanded}
+                                    onPress={() => {
+                                        setEatingExpanded(!eatingExpanded);
+                                    }}
                                 >
-                                {listFeeling.length > 0 && listFeeling.map((l, i) => (
-                                    <View key={l.id}>
-                                        <ListItem key={i} onPress={() => {setPostFeeling(l); setFeelingModal(false); setBlurIntensity(1)}} bottomDivider>
-                                        <Avatar title={l.title} source={{ uri: global.image_host_url + l.url }} />
-                                        <ListItem.Content>
-                                            <ListItem.Title>{l.title}</ListItem.Title>
-                                        </ListItem.Content>
-                                        </ListItem>
-                                    </View>
-                                ))}
-                            </ListItem.Accordion>
-                        </View>
-                        <View key="Traveling">
-                            <ListItem.Accordion style={{height: travelingExpanded ? "auto": 0.1 * screen.height}}
-                                content={
-                                    <>
-                                        <Avatar title="Traveling to" source={traveling} />
-                                        <ListItem.Content>                    
-                                            <ListItem.Title>  Traveling to</ListItem.Title>
-                                        </ListItem.Content>
-                                    </>
-                                }
-                                isExpanded={travelingExpanded}
-                                onPress={() => {
-                                    setTravelingExpanded(!travelingExpanded);
-                                }}
+                                </ListItem.Accordion>
+                            </View>
+                            <View key="Drinking">
+                                <ListItem.Accordion style={{height: drinkingExpanded ? "auto": 0.1 * screen.height}}
+                                    content={
+                                        <>
+                                            <Avatar title="Drinking" source={drinking} />
+                                            <ListItem.Content>                    
+                                                <ListItem.Title>  Drinking</ListItem.Title>
+                                            </ListItem.Content>
+                                        </>
+                                    }
+                                    isExpanded={drinkingExpanded}
+                                    onPress={() => {
+                                        setDrinkingExpanded(!drinkingExpanded);
+                                    }}
                                 >
-                                {listTraveling.length > 0 && listTraveling.map((l, i) => (
-                                    <View>
-                                        <ListItem key={i} onPress={() => {setPostFeeling(l); ; setFeelingModal(false); setBlurIntensity(1)}} bottomDivider>
-                                        <Avatar title={l.title} source={{ uri: global.image_host_url + l.url }} />
-                                        <ListItem.Content>
-                                            <ListItem.Title>{l.title}</ListItem.Title>
-                                        </ListItem.Content>
-                                        </ListItem>
-                                    </View>
-                                ))}
-                            </ListItem.Accordion>
-                        </View>
-                        <View key="Eating">
-                            <ListItem.Accordion style={{height: eatingExpanded ? "auto": 0.1 * screen.height}}
-                                content={
-                                    <>
-                                        <Avatar title="Eating" source={eating} />
-                                        <ListItem.Content>                    
-                                            <ListItem.Title>  Eating</ListItem.Title>
-                                        </ListItem.Content>
-                                    </>
-                                }
-                                isExpanded={eatingExpanded}
-                                onPress={() => {
-                                    setEatingExpanded(!eatingExpanded);
-                                }}
-                            >
-                            </ListItem.Accordion>
-                        </View>
-                        <View key="Drinking">
-                            <ListItem.Accordion style={{height: drinkingExpanded ? "auto": 0.1 * screen.height}}
-                                content={
-                                    <>
-                                        <Avatar title="Drinking" source={drinking} />
-                                        <ListItem.Content>                    
-                                            <ListItem.Title>  Drinking</ListItem.Title>
-                                        </ListItem.Content>
-                                    </>
-                                }
-                                isExpanded={drinkingExpanded}
-                                onPress={() => {
-                                    setDrinkingExpanded(!drinkingExpanded);
-                                }}
-                            >
-                            </ListItem.Accordion>
-                        </View>
-                        <View key="Looking">
-                            <ListItem.Accordion style={{height: lookingExpanded ? "auto": 0.1 * screen.height}}
-                                content={
-                                    <>
-                                        <Avatar title="Looking for" source={looking} />
-                                        <ListItem.Content>                    
-                                            <ListItem.Title>  Looking for</ListItem.Title>
-                                        </ListItem.Content>
-                                    </>
-                                }
-                                isExpanded={lookingExpanded}
-                                onPress={() => {
-                                    setLookingExpanded(!lookingExpanded);
-                                }}
-                            >
-                            </ListItem.Accordion>
-                        </View>
-                        <View key="Celebrating">
-                            <ListItem.Accordion style={{height: celebratingExpanded ? "auto": 0.1 * screen.height}}
-                                content={
-                                    <>
-                                        <Avatar title="Celebrating" source={celebrating} />
-                                        <ListItem.Content>                    
-                                            <ListItem.Title>  Celebrating</ListItem.Title>
-                                        </ListItem.Content>
-                                    </>
-                                }
-                                isExpanded={celebratingExpanded}
-                                onPress={() => {
-                                    setCelebratingExpanded(!celebratingExpanded);
-                                }}
-                            >
-                            </ListItem.Accordion>
-                        </View>
-                        <View key="Meeting">
-                            <ListItem.Accordion style={{height: meetingExpanded ? "auto": 0.1 * screen.height}}
-                                content={
-                                    <>
-                                        <Avatar title="Meeting" source={meeting} />
-                                        <ListItem.Content>                    
-                                            <ListItem.Title>  Meeting</ListItem.Title>
-                                        </ListItem.Content>
-                                    </>
-                                }
-                                isExpanded={meetingExpanded}
-                                onPress={() => {
-                                    setMeetingExpanded(!meetingExpanded);
-                                }}
-                            >
-                            </ListItem.Accordion>
-                        </View>
-                        <View key="Getting">
-                            <ListItem.Accordion style={{height: gettingExpanded ? "auto": 0.1 * screen.height}}
-                                content={
-                                    <>
-                                        <Avatar title="Getting" source={getting} />
-                                        <ListItem.Content>                    
-                                            <ListItem.Title>  Getting</ListItem.Title>
-                                        </ListItem.Content>
-                                    </>
-                                }
-                                isExpanded={gettingExpanded}
-                                onPress={() => {
-                                    setGettingExpanded(!gettingExpanded);
-                                }}
-                            >
-                            </ListItem.Accordion>
-                        </View>
-                        <View key="Making">
-                            <ListItem.Accordion style={{height: makingExpanded ? "auto": 0.1 * screen.height}}
-                                content={
-                                    <>
-                                        <Avatar title="Making" source={making} />
-                                        <ListItem.Content>                    
-                                            <ListItem.Title>  Making</ListItem.Title>
-                                        </ListItem.Content>
-                                    </>
-                                }
-                                isExpanded={makingExpanded}
-                                onPress={() => {
-                                    setMakingExpanded(!makingExpanded);
-                                }}
-                            >
-                            </ListItem.Accordion>
-                        </View>
-                        <View key="Remembering">
-                            <ListItem.Accordion style={{height: rememberingExpanded ? "auto": 0.1 * screen.height}}
-                                content={
-                                    <>
-                                        <Avatar title="Remembering" source={remembering} />
-                                        <ListItem.Content>                    
-                                            <ListItem.Title>  Remembering</ListItem.Title>
-                                        </ListItem.Content>
-                                    </>
-                                }
-                                isExpanded={rememberingExpanded}
-                                onPress={() => {
-                                    setRememberingExpanded(!rememberingExpanded);
-                                }}
-                            >
-                            </ListItem.Accordion>
-                        </View>
-                    </ScrollView>
+                                </ListItem.Accordion>
+                            </View>
+                            <View key="Looking">
+                                <ListItem.Accordion style={{height: lookingExpanded ? "auto": 0.1 * screen.height}}
+                                    content={
+                                        <>
+                                            <Avatar title="Looking for" source={looking} />
+                                            <ListItem.Content>                    
+                                                <ListItem.Title>  Looking for</ListItem.Title>
+                                            </ListItem.Content>
+                                        </>
+                                    }
+                                    isExpanded={lookingExpanded}
+                                    onPress={() => {
+                                        setLookingExpanded(!lookingExpanded);
+                                    }}
+                                >
+                                </ListItem.Accordion>
+                            </View>
+                            <View key="Celebrating">
+                                <ListItem.Accordion style={{height: celebratingExpanded ? "auto": 0.1 * screen.height}}
+                                    content={
+                                        <>
+                                            <Avatar title="Celebrating" source={celebrating} />
+                                            <ListItem.Content>                    
+                                                <ListItem.Title>  Celebrating</ListItem.Title>
+                                            </ListItem.Content>
+                                        </>
+                                    }
+                                    isExpanded={celebratingExpanded}
+                                    onPress={() => {
+                                        setCelebratingExpanded(!celebratingExpanded);
+                                    }}
+                                >
+                                </ListItem.Accordion>
+                            </View>
+                            <View key="Meeting">
+                                <ListItem.Accordion style={{height: meetingExpanded ? "auto": 0.1 * screen.height}}
+                                    content={
+                                        <>
+                                            <Avatar title="Meeting" source={meeting} />
+                                            <ListItem.Content>                    
+                                                <ListItem.Title>  Meeting</ListItem.Title>
+                                            </ListItem.Content>
+                                        </>
+                                    }
+                                    isExpanded={meetingExpanded}
+                                    onPress={() => {
+                                        setMeetingExpanded(!meetingExpanded);
+                                    }}
+                                >
+                                </ListItem.Accordion>
+                            </View>
+                            <View key="Getting">
+                                <ListItem.Accordion style={{height: gettingExpanded ? "auto": 0.1 * screen.height}}
+                                    content={
+                                        <>
+                                            <Avatar title="Getting" source={getting} />
+                                            <ListItem.Content>                    
+                                                <ListItem.Title>  Getting</ListItem.Title>
+                                            </ListItem.Content>
+                                        </>
+                                    }
+                                    isExpanded={gettingExpanded}
+                                    onPress={() => {
+                                        setGettingExpanded(!gettingExpanded);
+                                    }}
+                                >
+                                </ListItem.Accordion>
+                            </View>
+                            <View key="Making">
+                                <ListItem.Accordion style={{height: makingExpanded ? "auto": 0.1 * screen.height}}
+                                    content={
+                                        <>
+                                            <Avatar title="Making" source={making} />
+                                            <ListItem.Content>                    
+                                                <ListItem.Title>  Making</ListItem.Title>
+                                            </ListItem.Content>
+                                        </>
+                                    }
+                                    isExpanded={makingExpanded}
+                                    onPress={() => {
+                                        setMakingExpanded(!makingExpanded);
+                                    }}
+                                >
+                                </ListItem.Accordion>
+                            </View>
+                            <View key="Thinking">
+                                <ListItem.Accordion style={{height: rememberingExpanded ? "auto": 0.1 * screen.height}}
+                                    content={
+                                        <>
+                                            <Avatar title="Thinking" source={thinking} />
+                                            <ListItem.Content>                    
+                                                <ListItem.Title>  Thinking about</ListItem.Title>
+                                            </ListItem.Content>
+                                        </>
+                                    }
+                                    isExpanded={thinkingExpanded}
+                                    onPress={() => {
+                                        setThinkingExpanded(!thinkingExpanded);
+                                    }}
+                                >
+                                </ListItem.Accordion>
+                            </View>
+                            <View key="Remembering">
+                                <ListItem.Accordion style={{height: rememberingExpanded ? "auto": 0.1 * screen.height}}
+                                    content={
+                                        <>
+                                            <Avatar title="Remembering" source={remembering} />
+                                            <ListItem.Content>                    
+                                                <ListItem.Title>  Remembering</ListItem.Title>
+                                            </ListItem.Content>
+                                        </>
+                                    }
+                                    isExpanded={rememberingExpanded}
+                                    onPress={() => {
+                                        setRememberingExpanded(!rememberingExpanded);
+                                    }}
+                                >
+                                </ListItem.Accordion>
+                            </View>
+                            <View key="Custom">
+                                <ListItem.Accordion style={{height: customExpanded ? "auto": 0.06 * screen.height, maxHeight: customExpanded ? "auto": 0.1 * screen.height}}
+                                    content={
+                                        <>
+                                            <Avatar title="Custom" source={custom} />
+                                            <ListItem.Content>                    
+                                                <ListItem.Title>  Custom</ListItem.Title>
+                                            </ListItem.Content>
+                                        </>
+                                    }
+                                    isExpanded={customExpanded}
+                                    onPress={() => {
+                                        setCustomExpanded(!customExpanded);
+                                    }}
+                                >  
+                                    <View key="custom_item" style={{flexDirection: "row", backgroundColor: "grey", alignItems: "center", justifyContent: "center"}}>
+                                        <ListItem.Input onChangeText={newText => setCustomText(newText)}
+                                            defaultValue={customText} onPress={Keyboard.dismiss} style={{height: 0.06 * screen.height, marginRight: 0.05 * screen.width}}>
+                                        </ListItem.Input>
+                                        <TouchableOpacity onPress={() => setShow(!show)}>
+                                            <FontAwesome5Icon name="smile" size={0.06 * screen.height} style={{top: 0}}></FontAwesome5Icon>
+                                        </TouchableOpacity>
+                                        <EmojiBoard showBoard={show} emojiSize={16} numRows={7} numCols={5} containerStyle={{width: 0.95 * screen.width}} onClick={(emoji) => {setCustomText(customText + " " + emoji.code);setShow(!show)}} tabBarStyle={{width: 0.95 * screen.width}}/>
+                                        <TouchableOpacity style={{width: 0.1 * screen.width}} onPress={() => {setFeelingModal(false); setBlurIntensity(1); setPostFeeling({
+                                            title: "custom",
+                                            slug: customText,
+                                            url: ""
+                                        })}}>
+                                            <Text> ok </Text>
+                                        </TouchableOpacity>
+                                    </View>   
+                                </ListItem.Accordion>
+                            </View>
+                        </ScrollView>
+                    </KeyboardAvoidingView> 
                 </TouchableOpacity>
             </Modal>
             <Modal 
@@ -802,22 +864,33 @@ const Profile = (props) => {
                                         borderRadius: 0.02 * screen.width}}
                                     onPress={async () => {
                                         const formData = new FormData()
-                                        formData.append("first_name", user.firstname)
-                                        formData.append("last_name", user.lastname)
-                                        formData.append("username", user.username)
-                                        if (postPhoto != null) {
-                                            formData.append("image", {
-                                                uri: postPhoto,
-                                                type: "image/jpg",
-                                                name: user.username + "_" + moment().format("YYYYMMDDhhmmss") + ".jpg" 
-                                            })
-                                        }
-                                        formData.append("location", location)
-                                        formData.append("location_hash", locationHash)
-                                        formData.append("user_id", user.id)
-                                        formData.append("description", postText)
-                                        formData.append("id_tag", postFeeling.id)
-                                        formData.append("dream_real", dream_or_real == true? 1:0)
+                                        await axios.post(global.back_end_url + "/add_feeling", {
+                                            "title": postFeeling.title,
+                                            "slug": postFeeling.slug,
+                                            "url": postFeeling.url
+                                        }).then((response) => {
+                                            let json = response.data;
+                                            if (json.success) {
+                                                formData.append("first_name", user.firstname)
+                                                formData.append("last_name", user.lastname)
+                                                formData.append("username", user.username)
+                                                if (postPhoto != null) {
+                                                    formData.append("image", {
+                                                        uri: postPhoto,
+                                                        type: "image/jpg",
+                                                        name: user.username + "_" + moment().format("YYYYMMDDhhmmss") + ".jpg" 
+                                                    })
+                                                }
+                                                console.log(json)
+                                                formData.append("id_tag", json.id_tag)
+                                                formData.append("location", location)
+                                                formData.append("location_hash", locationHash)
+                                                formData.append("user_id", user.id)
+                                                formData.append("description", postText)
+                                                formData.append("dream_real", dream_or_real == true? 1:0)
+                                            }
+                                        }).catch((error) => console.log(error))
+                                        
                                         try {
                                             const response = await fetch(global.back_end_url + "/new_album", {
                                                 "method": "POST",
@@ -857,9 +930,9 @@ const Profile = (props) => {
                                 <Text style={{color: "white", fontSize: 12, fontWeight: "bold", alignItems: "center", marginTop: 0.015 * screen.width + 10 * screen.width / figma_screen_w}}>{user.firstname + " " + user.lastname} </Text>
                                 {postFeeling != null && 
                                     <View style={{flexDirection: "row", marginTop: 0.015 * screen.width + 10 * screen.width / figma_screen_w}}>
-                                        <Text style={{color: "white", fontSize: 12, fontWeight: "normal", alignItems: "center"}}>is {postFeeling.slug} </Text>
+                                        <Text style={{color: "white", fontSize: 12, fontWeight: "normal", alignItems: "center"}}>{postFeeling.title != "custom"? "is" : ""} {postFeeling.slug} </Text>
                                         <Image source={{uri: global.image_host_url + postFeeling.url}} style={styles.emotion}></Image> 
-                                        <Text style={{color: "white", fontSize: 12, fontWeight: "normal", alignItems: "center"}}> {postFeeling.title}</Text>
+                                        <Text style={{color: "white", fontSize: 12, fontWeight: "normal", alignItems: "center"}}> {postFeeling.title != "custom"? postFeeling.title: ""}</Text>
                                     </View>
                                 }
                                 {/* {postFeeling == null && 
