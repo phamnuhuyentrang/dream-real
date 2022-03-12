@@ -93,6 +93,7 @@ const Profile = (props) => {
     const [loadingPost, setLoadingPosts] = React.useState(true);
     const [offset, setOffset] = React.useState(0);
     const [data, setData] = React.useState([]);
+    const [favoriteData, setFavoriteData] = React.useState([]);
 
     const user = React.useContext(userIdProvider);
     const [userId, setUserId] = React.useState(user.id);
@@ -129,6 +130,25 @@ const Profile = (props) => {
         LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
         
         if (loadingPost) {
+            // Loading favorite posts at the same time
+            axios.get(global.back_end_url + '/album_favorite', {
+                params: { user_id: user.id, offset: offset },
+                withCredentials: true 
+            })
+            .then((response) => {
+                let json = JSON.parse(JSON.stringify(response.data));
+                if (json.success) {
+                    if (json.albums.length > 0) {
+                        setFavoriteData([...favoriteData, ...JSON.parse(JSON.stringify(json.albums))])
+                    }
+                }
+                else {
+                    Alert.alert("Dream Real Loading Favorite Posts Error", json.message)
+                }
+            })
+            .catch((error) => Alert.alert("Dream Real Loading Favorite Posts Error", error.message))
+
+            // Loading posts for maps and new feeds
             axios.get(global.back_end_url + '/album_user', {
                 params: { user_id: user.id, offset: offset, user_react_id: Object.keys(userProfile).length ? userProfile.user_id: user.id },
                 withCredentials: true 
@@ -380,6 +400,30 @@ const Profile = (props) => {
     //     }
     // };
 
+    const logOut = () => {
+        axios.get(global.back_end_url + `/logout`, {
+            withCredentials: true        
+        })
+        .then((response) => {
+            let json = response.data;
+            if (json.success) {
+                user.setLoginned(false)
+                user.setUserId(0)
+                user.setAvatar("")
+                user.setFirstname("")
+                user.setLastname("")
+                user.setUsername("")
+                user.setCover("N/A")
+                Alert.alert("Dream Real Logout", json.message)
+                navigation.navigate("Home");
+            }
+            else {
+                Alert.alert("Dream Real Logout Error")
+            }
+        })
+        .catch((error) => Alert.alert("Dream Real Logout Error", error.message))
+    }
+
     return (
         <View>
             <CustomBar backgroundColor="#3d3d4e" barStyle="light-content" />
@@ -387,7 +431,12 @@ const Profile = (props) => {
                 <View style={styles.content}>
                     <TouchableOpacity onPress={() => navigation.navigate("Home")}>
                         <View style={styles.backButton} >
-                            <FontAwesome5Icon name="chevron-left" size={25} solid color='white'></FontAwesome5Icon>
+                            <FontAwesome5Icon name="arrow-alt-circle-left" size={25} solid color='white'></FontAwesome5Icon>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => logOut()}>
+                        <View style={styles.backButton} >
+                            <FontAwesome5Icon name="user-alt-slash" size={25} solid color='white'></FontAwesome5Icon>
                         </View>
                     </TouchableOpacity>
                     <Image source={logo} style={styles.logo} />
@@ -421,7 +470,7 @@ const Profile = (props) => {
                                         <FontAwesome5Icon name="map-marked-alt" size={10} solid color='white' style={{alignSelf: "center"}}></FontAwesome5Icon>
                                     </View>
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => navigation.navigate("Maps", {post: data, userId: Object.keys(userProfile).length ? userProfile.user_id: user.id})}>
+                                <TouchableOpacity onPress={() => navigation.navigate("Maps", {post: favoriteData, userId: Object.keys(userProfile).length ? userProfile.user_id: user.id})}>
                                     <View style={{width: 0.1*screen.width, height: 0.02*screen.height, backgroundColor:"#B456F1", marginRight: 0.05 * screen.width, borderRadius: 0.01 * screen.width, alignItems: "center", justifyContent: "center"}}>
                                         <FontAwesome5Icon name="bookmark" size={10} solid color='white' style={{alignSelf: "center"}}></FontAwesome5Icon>
                                     </View>
