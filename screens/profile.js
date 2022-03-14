@@ -261,6 +261,7 @@ const Profile = (props) => {
                 Alert.alert("Dream Real Loading Tags Error", json.message)
             })
         }
+
         if (travelingExpanded && listTraveling.length == 0) {
             axios.get(global.back_end_url + "/tags", {
                 params: {slug: "traveling"}
@@ -273,6 +274,124 @@ const Profile = (props) => {
                 Alert.alert("Dream Real Loading Tags Error", json.message)
             })
         }
+
+        if (eatingExpanded && listEating.length == 0) {
+            axios.get(global.back_end_url + "/tags", {
+                params: {slug: "eating"}
+            }).then((response) => {
+                let json = JSON.parse(JSON.stringify(response.data))
+                if (json.success) {
+                    setListEating(JSON.parse(JSON.stringify(json.tags)))
+                }
+            }).catch((error) => {
+                Alert.alert("Dream Real Loading Tags Error", json.message)
+            })
+        }
+
+        if (drinkingExpanded && listDrinking.length == 0) {
+            axios.get(global.back_end_url + "/tags", {
+                params: {slug: "drinking"}
+            }).then((response) => {
+                let json = JSON.parse(JSON.stringify(response.data))
+                if (json.success) {
+                    setListDrinking(JSON.parse(JSON.stringify(json.tags)))
+                }
+            }).catch((error) => {
+                Alert.alert("Dream Real Loading Tags Error", json.message)
+            })
+        }
+
+        if (lookingExpanded && listLooking.length == 0) {
+            axios.get(global.back_end_url + "/tags", {
+                params: {slug: "looking"}
+            }).then((response) => {
+                let json = JSON.parse(JSON.stringify(response.data))
+                if (json.success) {
+                    setListLooking(JSON.parse(JSON.stringify(json.tags)))
+                }
+            }).catch((error) => {
+                Alert.alert("Dream Real Loading Tags Error", json.message)
+            })
+        }
+
+        if (meetingExpanded && listMeeting.length == 0) {
+            axios.get(global.back_end_url + "/tags", {
+                params: {slug: "meeting"}
+            }).then((response) => {
+                let json = JSON.parse(JSON.stringify(response.data))
+                if (json.success) {
+                    setListMeeting(JSON.parse(JSON.stringify(json.tags)))
+                }
+            }).catch((error) => {
+                Alert.alert("Dream Real Loading Tags Error", json.message)
+            })
+        }
+
+        if (celebratingExpanded && listCelebrating.length == 0) {
+            axios.get(global.back_end_url + "/tags", {
+                params: {slug: "celebrating"}
+            }).then((response) => {
+                let json = JSON.parse(JSON.stringify(response.data))
+                if (json.success) {
+                    setListCelebrating(JSON.parse(JSON.stringify(json.tags)))
+                }
+            }).catch((error) => {
+                Alert.alert("Dream Real Loading Tags Error", json.message)
+            })
+        }
+
+        if (gettingExpanded && listGetting.length == 0) {
+            axios.get(global.back_end_url + "/tags", {
+                params: {slug: "getting"}
+            }).then((response) => {
+                let json = JSON.parse(JSON.stringify(response.data))
+                if (json.success) {
+                    setListGetting(JSON.parse(JSON.stringify(json.tags)))
+                }
+            }).catch((error) => {
+                Alert.alert("Dream Real Loading Tags Error", json.message)
+            })
+        }
+
+        if (makingExpanded && listMaking.length == 0) {
+            axios.get(global.back_end_url + "/tags", {
+                params: {slug: "making"}
+            }).then((response) => {
+                let json = JSON.parse(JSON.stringify(response.data))
+                if (json.success) {
+                    setListMaking(JSON.parse(JSON.stringify(json.tags)))
+                }
+            }).catch((error) => {
+                Alert.alert("Dream Real Loading Tags Error", json.message)
+            })
+        }
+
+        if (thinkingExpanded && listThinking.length == 0) {
+            axios.get(global.back_end_url + "/tags", {
+                params: {slug: "thinking"}
+            }).then((response) => {
+                let json = JSON.parse(JSON.stringify(response.data))
+                if (json.success) {
+                    setListThinking(JSON.parse(JSON.stringify(json.tags)))
+                }
+            }).catch((error) => {
+                Alert.alert("Dream Real Loading Tags Error", json.message)
+            })
+        }
+
+        if (rememberingExpanded && listRemembering.length == 0) {
+            axios.get(global.back_end_url + "/tags", {
+                params: {slug: "remembering"}
+            }).then((response) => {
+                let json = JSON.parse(JSON.stringify(response.data))
+                if (json.success) {
+                    setListRemembering(JSON.parse(JSON.stringify(json.tags)))
+                }
+            }).catch((error) => {
+                Alert.alert("Dream Real Loading Tags Error", json.message)
+            })
+        }
+
         setLocation(location)
         setLocationHash(locationHash)
         return() => {      
@@ -280,7 +399,7 @@ const Profile = (props) => {
                 setUserId(userProfile.user_id);
             }
         }
-    }, [loadingPost, loadingFriends, loadingFollowers, loadingFollowing, feelingExpanded, travelingExpanded, eatingExpanded, eatingExpanded, drinkingExpanded, lookingExpanded, celebratingExpanded, meetingExpanded, gettingExpanded, makingExpanded, rememberingExpanded, location, locationHash])
+    }, [loadingPost, loadingFriends, loadingFollowers, loadingFollowing, feelingExpanded, travelingExpanded, eatingExpanded, eatingExpanded, drinkingExpanded, lookingExpanded, celebratingExpanded, meetingExpanded, gettingExpanded, makingExpanded, rememberingExpanded, thinkingExpanded, listThinking, location, locationHash])
 
     // React.useEffect(async () => {
     //     if (loadingFriends) {
@@ -708,6 +827,16 @@ const Profile = (props) => {
                                         setEatingExpanded(!eatingExpanded);
                                     }}
                                 >
+                                    {listEating.length > 0 && listEating.map((l, i) => (
+                                        <View key={l.id}>
+                                            <ListItem key={i} onPress={() => {setPostFeeling(l); ; setFeelingModal(false); setBlurIntensity(1)}} bottomDivider>
+                                            <Avatar title={l.title} source={{ uri: global.image_host_url + l.url }} />
+                                            <ListItem.Content>
+                                                <ListItem.Title>{l.title}</ListItem.Title>
+                                            </ListItem.Content>
+                                            </ListItem>
+                                        </View>
+                                    ))}
                                 </ListItem.Accordion>
                             </View>
                             <View key="Drinking">
@@ -725,6 +854,16 @@ const Profile = (props) => {
                                         setDrinkingExpanded(!drinkingExpanded);
                                     }}
                                 >
+                                    {listDrinking.length > 0 && listDrinking.map((l, i) => (
+                                        <View key={l.id}>
+                                            <ListItem key={i} onPress={() => {setPostFeeling(l); ; setFeelingModal(false); setBlurIntensity(1)}} bottomDivider>
+                                            <Avatar title={l.title} source={{ uri: global.image_host_url + l.url }} />
+                                            <ListItem.Content>
+                                                <ListItem.Title>{l.title}</ListItem.Title>
+                                            </ListItem.Content>
+                                            </ListItem>
+                                        </View>
+                                    ))}
                                 </ListItem.Accordion>
                             </View>
                             <View key="Looking">
@@ -742,6 +881,16 @@ const Profile = (props) => {
                                         setLookingExpanded(!lookingExpanded);
                                     }}
                                 >
+                                    {listLooking.length > 0 && listLooking.map((l, i) => (
+                                        <View key={l.id}>
+                                            <ListItem key={i} onPress={() => {setPostFeeling(l); ; setFeelingModal(false); setBlurIntensity(1)}} bottomDivider>
+                                            <Avatar title={l.title} source={{ uri: global.image_host_url + l.url }} />
+                                            <ListItem.Content>
+                                                <ListItem.Title>{l.title}</ListItem.Title>
+                                            </ListItem.Content>
+                                            </ListItem>
+                                        </View>
+                                    ))}
                                 </ListItem.Accordion>
                             </View>
                             <View key="Celebrating">
@@ -759,6 +908,16 @@ const Profile = (props) => {
                                         setCelebratingExpanded(!celebratingExpanded);
                                     }}
                                 >
+                                    {listCelebrating.length > 0 && listCelebrating.map((l, i) => (
+                                        <View key={l.id}>
+                                            <ListItem key={i} onPress={() => {setPostFeeling(l); ; setFeelingModal(false); setBlurIntensity(1)}} bottomDivider>
+                                            <Avatar title={l.title} source={{ uri: global.image_host_url + l.url }} />
+                                            <ListItem.Content>
+                                                <ListItem.Title>{l.title}</ListItem.Title>
+                                            </ListItem.Content>
+                                            </ListItem>
+                                        </View>
+                                    ))}
                                 </ListItem.Accordion>
                             </View>
                             <View key="Meeting">
@@ -776,6 +935,16 @@ const Profile = (props) => {
                                         setMeetingExpanded(!meetingExpanded);
                                     }}
                                 >
+                                    {listMeeting.length > 0 && listMeeting.map((l, i) => (
+                                        <View key={l.id}>
+                                            <ListItem key={i} onPress={() => {setPostFeeling(l); ; setFeelingModal(false); setBlurIntensity(1)}} bottomDivider>
+                                            <Avatar title={l.title} source={{ uri: global.image_host_url + l.url }} />
+                                            <ListItem.Content>
+                                                <ListItem.Title>{l.title}</ListItem.Title>
+                                            </ListItem.Content>
+                                            </ListItem>
+                                        </View>
+                                    ))}
                                 </ListItem.Accordion>
                             </View>
                             <View key="Getting">
@@ -793,6 +962,16 @@ const Profile = (props) => {
                                         setGettingExpanded(!gettingExpanded);
                                     }}
                                 >
+                                    {listGetting.length > 0 && listGetting.map((l, i) => (
+                                        <View key={l.id}>
+                                            <ListItem key={i} onPress={() => {setPostFeeling(l); ; setFeelingModal(false); setBlurIntensity(1)}} bottomDivider>
+                                            <Avatar title={l.title} source={{ uri: global.image_host_url + l.url }} />
+                                            <ListItem.Content>
+                                                <ListItem.Title>{l.title}</ListItem.Title>
+                                            </ListItem.Content>
+                                            </ListItem>
+                                        </View>
+                                    ))}
                                 </ListItem.Accordion>
                             </View>
                             <View key="Making">
@@ -810,6 +989,16 @@ const Profile = (props) => {
                                         setMakingExpanded(!makingExpanded);
                                     }}
                                 >
+                                    {listMaking.length > 0 && listMaking.map((l, i) => (
+                                        <View key={l.id}>
+                                            <ListItem key={i} onPress={() => {setPostFeeling(l); ; setFeelingModal(false); setBlurIntensity(1)}} bottomDivider>
+                                            <Avatar title={l.title} source={{ uri: global.image_host_url + l.url }} />
+                                            <ListItem.Content>
+                                                <ListItem.Title>{l.title}</ListItem.Title>
+                                            </ListItem.Content>
+                                            </ListItem>
+                                        </View>
+                                    ))}
                                 </ListItem.Accordion>
                             </View>
                             <View key="Thinking">
@@ -827,6 +1016,16 @@ const Profile = (props) => {
                                         setThinkingExpanded(!thinkingExpanded);
                                     }}
                                 >
+                                    {listThinking.length > 0 && listThinking.map((l, i) => (
+                                        <View key={l.id}>
+                                            <ListItem key={i} onPress={() => {setPostFeeling(l); ; setFeelingModal(false); setBlurIntensity(1)}} bottomDivider>
+                                            <Avatar title={l.title} source={{ uri: global.image_host_url + l.url }} />
+                                            <ListItem.Content>
+                                                <ListItem.Title>{l.title}</ListItem.Title>
+                                            </ListItem.Content>
+                                            </ListItem>
+                                        </View>
+                                    ))}
                                 </ListItem.Accordion>
                             </View>
                             <View key="Remembering">
@@ -844,6 +1043,16 @@ const Profile = (props) => {
                                         setRememberingExpanded(!rememberingExpanded);
                                     }}
                                 >
+                                    {listRemembering.length > 0 && listRemembering.map((l, i) => (
+                                        <View key={l.id}>
+                                            <ListItem key={i} onPress={() => {setPostFeeling(l); ; setFeelingModal(false); setBlurIntensity(1)}} bottomDivider>
+                                            <Avatar title={l.title} source={{ uri: global.image_host_url + l.url }} />
+                                            <ListItem.Content>
+                                                <ListItem.Title>{l.title}</ListItem.Title>
+                                            </ListItem.Content>
+                                            </ListItem>
+                                        </View>
+                                    ))}
                                 </ListItem.Accordion>
                             </View>
                             <View key="Custom">
@@ -870,8 +1079,8 @@ const Profile = (props) => {
                                         </TouchableOpacity>
                                         <EmojiBoard showBoard={show} emojiSize={16} numRows={7} numCols={5} containerStyle={{width: 0.95 * screen.width}} onClick={(emoji) => {setCustomText(customText + " " + emoji.code); setShow(!show)}} tabBarStyle={{width: 0.95 * screen.width}}/>
                                         <TouchableOpacity style={{width: 0.1 * screen.width}} onPress={() => {setFeelingModal(false); setBlurIntensity(1); setPostFeeling({
-                                            title: "custom",
-                                            slug: customText,
+                                            title: customText,
+                                            slug: "custom",
                                             url: ""
                                         })}}>
                                             <Text> ok </Text>
@@ -982,9 +1191,9 @@ const Profile = (props) => {
                                 <Text style={{color: "white", fontSize: 12, fontWeight: "bold", alignItems: "center", marginTop: 0.015 * screen.width + 10 * screen.width / figma_screen_w}}>{user.firstname + " " + user.lastname} </Text>
                                 {postFeeling != null && 
                                     <View style={{flexDirection: "row", marginTop: 0.015 * screen.width + 10 * screen.width / figma_screen_w}}>
-                                        <Text style={{color: "white", fontSize: 12, fontWeight: "normal", alignItems: "center"}}>{postFeeling.title != "custom"? "is" : ""} {postFeeling.slug} </Text>
+                                        <Text style={{color: "white", fontSize: 12, fontWeight: "normal", alignItems: "center"}}>{postFeeling.slug != "custom"? "is" : ""} {postFeeling.slug} </Text>
                                         <Image source={{uri: global.image_host_url + postFeeling.url}} style={styles.emotion}></Image> 
-                                        <Text style={{color: "white", fontSize: 12, fontWeight: "normal", alignItems: "center"}}> {postFeeling.title != "custom"? postFeeling.title: ""}</Text>
+                                        <Text style={{color: "white", fontSize: 12, fontWeight: "normal", alignItems: "center"}}> {postFeeling.slug != "custom"? postFeeling.title: ""}</Text>
                                     </View>
                                 }
                                 {/* {postFeeling == null && 
