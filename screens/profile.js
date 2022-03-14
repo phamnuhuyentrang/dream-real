@@ -748,7 +748,9 @@ const Profile = (props) => {
                     >
                         <ScrollView showsVerticalScrollIndicator={false} 
                                     bounces={true} 
-                                    style={{width: 0.9 * screen.width, 
+                                    vertical={true}
+                                    style={{flexGrow:0,
+                                            width: 0.9 * screen.width, 
                                             marginBottom: 0.2 * screen.height, 
                                             marginTop: 0.2 * screen.height, 
                                             height: 0.6 * screen.height, 
@@ -1191,9 +1193,9 @@ const Profile = (props) => {
                                 <Text style={{color: "white", fontSize: 12, fontWeight: "bold", alignItems: "center", marginTop: 0.015 * screen.width + 10 * screen.width / figma_screen_w}}>{user.firstname + " " + user.lastname} </Text>
                                 {postFeeling != null && 
                                     <View style={{flexDirection: "row", marginTop: 0.015 * screen.width + 10 * screen.width / figma_screen_w}}>
-                                        <Text style={{color: "white", fontSize: 12, fontWeight: "normal", alignItems: "center"}}>{postFeeling.slug != "custom"? "is" : ""} {postFeeling.slug} </Text>
+                                        <Text style={{color: "white", fontSize: 12, fontWeight: "normal", alignItems: "center"}}>{postFeeling.slug != "custom"? "is " + postFeeling.slug : ""} </Text>
                                         <Image source={{uri: global.image_host_url + postFeeling.url}} style={styles.emotion}></Image> 
-                                        <Text style={{color: "white", fontSize: 12, fontWeight: "normal", alignItems: "center"}}> {postFeeling.slug != "custom"? postFeeling.title: ""}</Text>
+                                        <Text style={{color: "white", fontSize: 12, fontWeight: "normal", alignItems: "center"}}> {postFeeling.title}</Text>
                                     </View>
                                 }
                                 {/* {postFeeling == null && 

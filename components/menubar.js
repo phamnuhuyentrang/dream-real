@@ -15,9 +15,9 @@ const MenuBar = () => {
     const loadContent = (click) => {
         switch(click) {
             case 0:
-                return <Trending />
-            case 1:
                 return <Destinations />
+            case 1:
+                return <Trending />
             case 2:
                 return <Messages />
             default:
@@ -29,11 +29,11 @@ const MenuBar = () => {
         <View style={styles.container}>
             <View style={styles.content}>
                 <TouchableOpacity onPress={() => toogleClick(0)}>
-                    <Text style={styles.text}>Trending</Text>
+                    <Text style={styles.text}>Destinations</Text>
                     <View style={click === 0 ? {...styles.underline, backgroundColor: "#B456F1"} : {...styles.underline}}></View>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => toogleClick(1)}>
-                    <Text style={styles.text}>Destinations</Text>
+                    <Text style={styles.text}>Trending</Text>
                     <View style={click === 1 ? {...styles.underline, backgroundColor: "#B456F1"} : {...styles.underline}}></View>
                 </TouchableOpacity>
                 {user_item.id != 0 && <TouchableOpacity onPress={() => toogleClick(2)}>

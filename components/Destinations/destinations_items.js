@@ -13,7 +13,8 @@ const DestinationItems = (props) => {
     const data = props.data;
     const navigation = useNavigation();
     const showImage = () => {
-        navigation.navigate('DestinationDetails', {place: global.image_host_url + data.image})
+        // navigation.navigate('DestinationDetails', {place: global.image_host_url + data.image})
+        navigation.navigate('DestinationDetails', {place: data.image})
     }
 
     return (
@@ -24,7 +25,8 @@ const DestinationItems = (props) => {
                 </FontAwesome5Icon>
             </View>
             <TouchableOpacity onPress={showImage}>
-                <Image source={{uri: global.image_host_url + data.image}} style={styles.place}></Image>
+                {/* <Image source={{uri: global.image_host_url + data.image}} style={styles.place}></Image> */}
+                <Image source={data.image} style={styles.place}></Image>
             </TouchableOpacity>
         </View>
     )

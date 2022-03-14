@@ -7,7 +7,8 @@ class DestinationDetails extends PureComponent  {
     render() {
         return (
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <ImageBackground source={{uri: this.props.route.params.place}} style={{
+                {/* <ImageBackground source={{uri: this.props.route.params.place}} style={{ */}
+                <ImageBackground source={this.props.route.params.place} style={{
                     height: window.width, 
                     width: window.height, 
                     transform: [
