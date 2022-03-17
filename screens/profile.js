@@ -5,7 +5,6 @@ import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 import * as ImagePicker from 'expo-image-picker';
 import logo from '../static/img/dream-real-logo-nav.png'
 import CustomBar from '../components/statusbar';
-import * as SecureStore from 'expo-secure-store';
 import { Svg, Ellipse } from 'react-native-svg'
 import { useNavigation } from '@react-navigation/native';
 import userIdProvider from "../components/Context/user_id_provider"

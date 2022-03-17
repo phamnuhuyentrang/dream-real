@@ -11,46 +11,29 @@ import NewYork from '../../static/img/destination/NewYork.jpg'
 const screen = Dimensions.get("screen");
 
 const Destinations = () => {
-    const [data, setData] = React.useState([
-        {
-            "location_formatted": "BangKok, Thailand",
-            "image": BangKok
-        },
-        {
-            "location_formatted": "Havana, Cuba",
-            "image": Havana
-        },
-        {
-            "location_formatted": "New York, United States",
-            "image": NewYork
-        },
-        {
-            "location_formatted": "London, United Kingdom",
-            "image": London
-        },
-    ]);
+    const [data, setData] = React.useState([]);
     const [offset, setOffset] = React.useState(0);
     const [loading, setLoading] = React.useState(true);
 
-    // React.useEffect(() => {
-    //     if (loading) {
-    //         axios.get(global.back_end_url + `/destination`, {
-    //             params: { offset: offset } 
-    //         })
-    //         .then((response) => {
-    //             let json = response.data
-    //             if (json.success) {
-    //                 setData([...data, ...JSON.parse(JSON.stringify(json.destinations))])
-    //                 setLoading(false)
-    //                 setOffset(offset + 10)
-    //             }
-    //             else {
-    //                 Alert.alert("Dream Real Loading Error", "Error occured when trying to load destinations: " + json.message)
-    //             }
-    //         })
-    //         .catch((error) => Alert.alert("Dream Real Loading Error", "Error occured when trying to load destinations: " + error))
-    //     }
-    // }, [loading])
+    React.useEffect(() => {
+        if (loading) {
+            axios.get(global.back_end_url + `/destination`, {
+                params: { offset: offset } 
+            })
+            .then((response) => {
+                let json = response.data
+                if (json.success) {
+                    setData([...data, ...JSON.parse(JSON.stringify(json.destinations))])
+                    setLoading(false)
+                    setOffset(offset + 10)
+                }
+                else {
+                    Alert.alert("Dream Real Loading Error", "Error occured when trying to load destinations: " + json.message)
+                }
+            })
+            .catch((error) => Alert.alert("Dream Real Loading Error", "Error occured when trying to load destinations: " + error))
+        }
+    }, [loading])
 
     return (
         <View style={styles.container}> 

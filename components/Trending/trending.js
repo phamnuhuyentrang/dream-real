@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Dimensions, TouchableOpacity, Text, Alert } from 'react-native';
 import axios from 'axios';
+import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 import userIdProvider from "../Context/user_id_provider"
 import TrendingItems from './trending_items';
 
@@ -45,11 +46,44 @@ const Trending = () => {
     }, [user_item.postLoading, userId, oldId])
     
     return (
-        <View style={styles.container}> 
+        <View style={styles.container}>
+            <TouchableOpacity style={{
+                width: 0.4 * screen.width,
+                height: 0.05 * screen.height,
+                marginBottom: 0.02 * screen.height,
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: 0.02 * screen.width,
+                backgroundColor: "#3D3D4E"}}
+                onPress={() => {
+                    user_item.selectDestination("")
+                    user_item.setPostTrending([])
+                    user_item.setPostOffset(0)
+                    user_item.setPostLoading(true)
+                    Alert.alert("Dream Real", "Destination filter deleted !")
+                }}
+            >
+                {/* <FontAwesome5Icon name="filter-circle-xmark" size={25} solid color='white'></FontAwesome5Icon> */}
+                <Text style={{
+                    textAlign: "center",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: 0.015 * screen.height,
+                    color: "white"}}
+                > Clear Destination Filter </Text>
+            </TouchableOpacity>
             {user_item.posts != [] ? user_item.posts.map((person) => {
-                return (
-                    <TrendingItems data={person} key={person.album_id}/>
-                )
+                if (user_item.destination != "") {
+                    if (user_item.destination.includes(person.location_city)) 
+                    return (
+                        <TrendingItems data={person} key={person.album_id}/>
+                    )
+                }
+                else {
+                    return (
+                        <TrendingItems data={person} key={person.album_id}/>
+                    )
+                }
             }): <Text>Loading ...</Text>}
             {!end && <TouchableOpacity style={styles.buttonLoad} onPress={() => user_item.setPostLoading(true)}>
                 <Text style={styles.button}> Load more </Text>

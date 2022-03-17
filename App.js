@@ -32,6 +32,7 @@ const App = () => {
 	const [postTrending, setPostTrending] = React.useState([]);
 	const [postOffset, setPostOffset] = React.useState(0);
 	const [postLoading, setPostLoading] = React.useState(true);
+	const [selectedDestination, selectDestination] = React.useState("");
 	const userSettings = {
 		id: userId,
 		setUserId,
@@ -56,7 +57,9 @@ const App = () => {
 		postOffset: postOffset,
 		setPostOffset,
 		postLoading: postLoading,
-		setPostLoading
+		setPostLoading,
+		destination: selectedDestination,
+		selectDestination,
 	}
 	return (
 		<userIdProvider.Provider value={userSettings}>

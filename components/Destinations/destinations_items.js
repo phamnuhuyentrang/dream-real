@@ -1,34 +1,37 @@
 import React from 'react';
-import { View, Image, StyleSheet, Dimensions, TouchableOpacity, Text } from 'react-native';
+import { View, Image, StyleSheet, Dimensions, TouchableOpacity, Text, Alert } from 'react-native';
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
 import { useNavigation } from '@react-navigation/native';
+import userIdProvider from "../../components/Context/user_id_provider"
 
 const screen = Dimensions.get("screen");
-const window = Dimensions.get("window");
-const figma_screen_w = 428;
-const figma_screen_h = 926;
-
 
 const DestinationItems = (props) => {
+    const user = React.useContext(userIdProvider);
     const data = props.data;
     const navigation = useNavigation();
     const showImage = () => {
-        // navigation.navigate('DestinationDetails', {place: global.image_host_url + data.image})
-        navigation.navigate('DestinationDetails', {place: data.image})
+        navigation.navigate('DestinationDetails', {place: global.image_host_url + data.image})
     }
 
     return (
-        <View style={styles.content}>
+        <TouchableOpacity style={styles.content} onPress={() => {
+            user.selectDestination(data.location_formatted)
+            user.setPostTrending([])
+            user.setPostOffset(0)
+            user.setPostLoading(true)
+            Alert.alert("Dream Real Destination", "Filter posts by selected destination !")
+        }}>
             <View style={styles.content2}>
                 <FontAwesome5Icon color='red' name="map-marker-alt" regular size={10} style={styles.item2}>
                     <Text style={[styles.item2, {color:'#FFF'}]}> {data.location_formatted}</Text>
                 </FontAwesome5Icon>
             </View>
             <TouchableOpacity onPress={showImage}>
-                {/* <Image source={{uri: global.image_host_url + data.image}} style={styles.place}></Image> */}
-                <Image source={data.image} style={styles.place}></Image>
+                <Image source={{uri: global.image_host_url + data.image}} style={styles.place}></Image>
+                {/* <Image source={data.image} style={styles.place}></Image> */}
             </TouchableOpacity>
-        </View>
+        </TouchableOpacity>
     )
 }
 
