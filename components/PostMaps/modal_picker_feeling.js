@@ -13,12 +13,13 @@ const ModalPickerFeeling = (props) => {
                 params: {
                     user_id: props.userId,
                     offset: 0,
+                    limit: 10
                 }
             }).then((response) => {
                 let json = JSON.parse(JSON.stringify(response.data))
                 if (json.success) {
                     props.changeModalVisibility(false)
-                    props.setSelectedFeeling(option.label.toString())
+                    props.setSelectedFeeling({label: option.label.toString(), value: option.value.toString()})
                     props.setData(JSON.parse(JSON.stringify(json.albums)))
                 }else {
                     Alert.alert("Dream Real Load Failed", json.message)
@@ -26,6 +27,7 @@ const ModalPickerFeeling = (props) => {
             }).catch(function(error){
                 Alert.alert("Dream Real Load Error", error)
             })
+            props.setListActivity({label: "All Activities", value: "allActivities"})
         }
         else {
             axios.get(global.back_end_url + "/filter_album_by_feeling", {
@@ -37,8 +39,23 @@ const ModalPickerFeeling = (props) => {
                 let json = JSON.parse(JSON.stringify(response.data))
                 if (json.success) {
                     props.changeModalVisibility(false)
-                    props.setSelectedFeeling(option.label.toString())
-                    props.setData(json.album.slice(1, 10))
+                    props.setSelectedFeeling({label: option.label.toString(), value: option.value.toString()})
+                    props.setData(json.album)
+                }else {
+                    Alert.alert("Dream Real Load Failed", json.message)
+                }
+            }).catch(function(error){
+                Alert.alert("Dream Real Load Error", error)
+            })
+
+            axios.get(global.back_end_url + "/tags", {
+                params: {
+                    slug: option.value
+                }
+            }).then((response) => {
+                let json = JSON.parse(JSON.stringify(response.data))
+                if (json.success) {
+                    props.setListActivity([{label: "All activities", value: "allActivity"}, ...json.tags.map((tag) => {return {label: tag.title, value: tag.title, url: tag.url}})])
                 }else {
                     Alert.alert("Dream Real Load Failed", json.message)
                 }

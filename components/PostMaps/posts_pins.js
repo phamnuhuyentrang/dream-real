@@ -25,6 +25,7 @@ import celebrating from "../../static/img/icon-button/1f389.png"
 import meeting from "../../static/img/icon-button/1f454.png"
 import drinking from "../../static/img/icon-button/1f943.png"
 import custom from "../../static/img/icon-button/1f485-1f3fc.png"
+import ModalPickerActivity from './modal_picker_activity';
 
 const screen = Dimensions.get("screen");
 const window = Dimensions.get("window")
@@ -33,7 +34,7 @@ const figma_screen_h = 926;
 const listFeeling = [
     {label: 'All Feelings', value: 'allFeeling',},
     {label: 'Feeling', value: 'feeling', url: feeling},
-    {label: 'Eating', value: 'earing', url: eating},
+    {label: 'Eating', value: 'eating', url: eating},
     {label: 'Drinking', value: 'drinking', url: drinking},
     {label: 'Traveling To', value: 'traveling', url: traveling},
     {label: 'Looking For', value: 'looking', url: looking},
@@ -50,16 +51,20 @@ const listFeeling = [
 const APPBAR_HEIGHT = 200 * screen.height / figma_screen_h; 
 const PostMaps = (props) => {
     const d = props.route.params.post;
-    const [selectedFeeling, setSelectedFeeling] = React.useState("All Feelings")
-    const [selectedActivity, setSelectedActivity] = React.useState("All Activity")
+    const [selectedFeeling, setSelectedFeeling] = React.useState({label: "All Feelings", value: "allFeeling"})
+    const [selectedActivity, setSelectedActivity] = React.useState({label: "All Activities", value: "allActivity"})
     const [listActivity, setListActivity] = React.useState([]);
     const config = {
         velocityThreshold: 0,
         directionalOffsetThreshold: 90
     };
     const [isModalVisible1, setIsModalVisible1] = React.useState(false)
+    const [isModalVisible2, setIsModalVisible2] = React.useState(false)
     const changeModalVisibility1 = (bool) => {
         setIsModalVisible1(bool)
+    }
+    const changeModalVisibility2 = (bool) => {
+        setIsModalVisible2(bool)
     }
     const navigation = useNavigation()
     const region = {
@@ -180,30 +185,32 @@ const PostMaps = (props) => {
                 }}
                 style = {{position: 'absolute', bottom: 0, right: 0, width: 100 * screen.width / figma_screen_w, height: 100 * screen.width / figma_screen_w, backgroundColor: 'transparent'}}
             /> */}
-            <View style={{flexDirection: "row", justifyContent: "space-around"}}>
-                <SafeAreaView>
-                    <TouchableOpacity onPress={()=> changeModalVisibility1(true)}>
-                        <Text>{selectedFeeling}</Text>
-                    </TouchableOpacity>
-                    <Modal transparent={true} 
-                        animationType='fade' 
-                        visible={isModalVisible1}
-                        nRequestClose={()=> changeModalVisibility1(false)}>
-                        <ModalPickerFeeling changeModalVisibility={changeModalVisibility1} listValue={listFeeling} setData={setData} userId={userId} setSelectedFeeling={setSelectedFeeling}></ModalPickerFeeling>
-                    </Modal>
-                </SafeAreaView>
+            <View style={{position: 'absolute', bottom: 0, right: 0, left: 0, backgroundColor: "#3d3d4e", alignItems: "center"}}>
+                <View style={{flexDirection: "row", justifyContent: "space-around"}}> 
+                    <SafeAreaView style={{marginRight: 0.2 * screen.width}}>
+                        <TouchableOpacity onPress={()=> changeModalVisibility1(true)}>
+                            <Text style={{color: "white", fontSize: 0.03 * screen.height}}>{selectedFeeling.label}</Text>
+                        </TouchableOpacity>
+                        <Modal transparent={true} 
+                            animationType='fade' 
+                            visible={isModalVisible1}
+                            nRequestClose={()=> changeModalVisibility1(false)}>
+                            <ModalPickerFeeling changeModalVisibility={changeModalVisibility1} listValue={listFeeling} setData={setData} userId={userId} setSelectedFeeling={setSelectedFeeling} setListActivity={setListActivity}></ModalPickerFeeling>
+                        </Modal>
+                    </SafeAreaView>
 
-                <SafeAreaView>
-                    <TouchableOpacity onPress={()=> changeModalVisibility1(true)}>
-                        <Text>All Feelings</Text>
-                    </TouchableOpacity>
-                    <Modal transparent={true} 
-                        animationType='fade' 
-                        visible={isModalVisible1}
-                        nRequestClose={()=> changeModalVisibility1(false)}>
-                        <ModalPickerFeeling changeModalVisibility={changeModalVisibility1} listValue={listFeeling} setData={setData} userId={userId} setSelectedFeeling={setSelectedFeeling}></ModalPickerFeeling>
-                    </Modal>
-                </SafeAreaView>
+                    <SafeAreaView style={{marginLeft: 0.2 * screen.width}}>
+                        <TouchableOpacity onPress={()=> changeModalVisibility2(true)}>
+                            <Text style={{color: "white", fontSize: 0.03 * screen.height}}>{selectedActivity.label}</Text>
+                        </TouchableOpacity>
+                        <Modal transparent={true} 
+                            animationType='fade' 
+                            visible={isModalVisible2}
+                            nRequestClose={()=> changeModalVisibility2(false)}>
+                            <ModalPickerActivity changeModalVisibility={changeModalVisibility2} listValue={listActivity} setData={setData} userId={userId} setSelectedActivity={setSelectedActivity} selectedFeeling={selectedFeeling}></ModalPickerActivity>
+                        </Modal>
+                    </SafeAreaView>
+                </View>
             </View>
             <Modal 
                 animationType="slide"
