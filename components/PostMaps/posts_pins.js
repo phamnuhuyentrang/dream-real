@@ -1,33 +1,66 @@
 import React from 'react';
-import { View, Image, StyleSheet, Dimensions, TouchableOpacity, Alert, Modal } from 'react-native';
+import { View, Image, StyleSheet, Dimensions, TouchableOpacity, Alert, Modal, SafeAreaView, Text, } from 'react-native';
 import CustomBar from '../statusbar';
 import { Svg, Ellipse } from 'react-native-svg'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
 import MapView, { Marker } from 'react-native-maps';
 import { useNavigation } from '@react-navigation/native';
 import { FloatingAction } from "react-native-floating-action";
-
 import logo from '../../static/img/dream-real-logo-nav.png'
 import TrendingItems from '../Trending/trending_items';
-
+import ModalPickerFeeling from './modal_picker_feeling';
 import follows from "../../static/img/icon-button/follows.png"
 import friends from "../../static/img/icon-button/friends.png"
 import axios from 'axios';
 // import userIdProvider from '../Context/user_id_provider';
+import feeling from "../../static/img/icon-button/1f600.png"
+import traveling from "../../static/img/icon-button/1f4ba.png"
+import getting from "../../static/img/icon-button/1f4b5.png"
+import thinking from "../../static/img/icon-button/1f4ad.png"
+import making from "../../static/img/icon-button/1f4cf.png"
+import eating from "../../static/img/icon-button/1f37d.png"
+import looking from "../../static/img/icon-button/1f52d.png"
+import remembering from "../../static/img/icon-button/1f56f.png"
+import celebrating from "../../static/img/icon-button/1f389.png"
+import meeting from "../../static/img/icon-button/1f454.png"
+import drinking from "../../static/img/icon-button/1f943.png"
+import custom from "../../static/img/icon-button/1f485-1f3fc.png"
 
 const screen = Dimensions.get("screen");
 const window = Dimensions.get("window")
 const figma_screen_w = 428;
 const figma_screen_h = 926;
+const listFeeling = [
+    {label: 'All Feelings', value: 'allFeeling',},
+    {label: 'Feeling', value: 'feeling', url: feeling},
+    {label: 'Eating', value: 'earing', url: eating},
+    {label: 'Drinking', value: 'drinking', url: drinking},
+    {label: 'Traveling To', value: 'traveling', url: traveling},
+    {label: 'Looking For', value: 'looking', url: looking},
+    {label: 'Celebrating', value: 'celebrating', url: celebrating},
+    {label: 'Meeting', value: 'meeting', url: meeting},
+    {label: 'Getting', value: 'getting', url: getting},
+    {label: 'Making', value: 'making', url: making},
+    {label: 'Thinking About', value: 'thinking', url: thinking},
+    {label: 'Remembering', value: 'remembering', url: remembering},
+    {label: 'Custom', value: 'custom', url: custom},
+]
 
-const APPBAR_HEIGHT = 200 * screen.height / figma_screen_h;
 
+const APPBAR_HEIGHT = 200 * screen.height / figma_screen_h; 
 const PostMaps = (props) => {
     const d = props.route.params.post;
+    const [selectedFeeling, setSelectedFeeling] = React.useState("All Feelings")
+    const [selectedActivity, setSelectedActivity] = React.useState("All Activity")
+    const [listActivity, setListActivity] = React.useState([]);
     const config = {
         velocityThreshold: 0,
         directionalOffsetThreshold: 90
     };
+    const [isModalVisible1, setIsModalVisible1] = React.useState(false)
+    const changeModalVisibility1 = (bool) => {
+        setIsModalVisible1(bool)
+    }
     const navigation = useNavigation()
     const region = {
         latitude: 48.73201736668025, 
@@ -40,6 +73,7 @@ const PostMaps = (props) => {
     const [ind, setIndex] = React.useState(0)
     const [data, setData] = React.useState(d);
 
+    // console.log(data)
     // const user_item = React.useContext(userIdProvider);
     const userId = props.route.params.userId;
 
@@ -55,14 +89,15 @@ const PostMaps = (props) => {
             icon: friends,
             name: "bt_only_friends",
             position: 1
-        }
+        },
+        
     ];
 
     const onRegionChange = (r) => setRegion(r)
 
     React.useEffect(() => {
         setData(data)
-    }, [d])
+    }, [data])
 
     return (
         <View style={{flex: 1}}>
@@ -101,7 +136,7 @@ const PostMaps = (props) => {
                     />
                 </Svg>
             </View>
-            <FloatingAction
+            {/* <FloatingAction
                 actions={actions}
                 onPressItem={name => {
                     switch(name) {
@@ -144,7 +179,32 @@ const PostMaps = (props) => {
                     }
                 }}
                 style = {{position: 'absolute', bottom: 0, right: 0, width: 100 * screen.width / figma_screen_w, height: 100 * screen.width / figma_screen_w, backgroundColor: 'transparent'}}
-            />
+            /> */}
+            <View style={{flexDirection: "row", justifyContent: "space-around"}}>
+                <SafeAreaView>
+                    <TouchableOpacity onPress={()=> changeModalVisibility1(true)}>
+                        <Text>{selectedFeeling}</Text>
+                    </TouchableOpacity>
+                    <Modal transparent={true} 
+                        animationType='fade' 
+                        visible={isModalVisible1}
+                        nRequestClose={()=> changeModalVisibility1(false)}>
+                        <ModalPickerFeeling changeModalVisibility={changeModalVisibility1} listValue={listFeeling} setData={setData} userId={userId} setSelectedFeeling={setSelectedFeeling}></ModalPickerFeeling>
+                    </Modal>
+                </SafeAreaView>
+
+                <SafeAreaView>
+                    <TouchableOpacity onPress={()=> changeModalVisibility1(true)}>
+                        <Text>All Feelings</Text>
+                    </TouchableOpacity>
+                    <Modal transparent={true} 
+                        animationType='fade' 
+                        visible={isModalVisible1}
+                        nRequestClose={()=> changeModalVisibility1(false)}>
+                        <ModalPickerFeeling changeModalVisibility={changeModalVisibility1} listValue={listFeeling} setData={setData} userId={userId} setSelectedFeeling={setSelectedFeeling}></ModalPickerFeeling>
+                    </Modal>
+                </SafeAreaView>
+            </View>
             <Modal 
                 animationType="slide"
                 transparent={true}
@@ -158,7 +218,7 @@ const PostMaps = (props) => {
                     activeOpacity={1} 
                     onPressOut={() => {setModalVisible(false)}}
                 >
-                    <TrendingItems data={data[ind]} key={ind} />
+                    <TrendingItems data={data[ind]} key={ind}/>
                 </TouchableOpacity>
             </Modal>
         </View>
