@@ -74,10 +74,11 @@ const Trending = () => {
             </TouchableOpacity>
             {user_item.posts != [] ? user_item.posts.map((person) => {
                 if (user_item.destination != "") {
-                    if (user_item.destination.includes(person.location_city)) 
-                    return (
-                        <TrendingItems data={person} key={person.album_id}/>
-                    )
+                    if (user_item.destination == person.location_formatted) {
+                        return (
+                            <TrendingItems data={person} key={person.album_id}/>
+                        )
+                    }
                 }
                 else {
                     return (

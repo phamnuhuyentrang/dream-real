@@ -30,7 +30,7 @@ import custom from "../static/img/icon-button/1f485-1f3fc.png"
 
 import dream from "../static/img/icon-button/dream.png"
 import real from "../static/img/icon-button/real.png"
-import EmojiBoard from 'react-native-emoji-board'
+import EmojiSelector from 'react-native-emoji-selector'
 
 LogBox.ignoreLogs([
   'ReactNativeFiberHostComponent: Calling getNode() on the ref of an Animated component is no longer necessary. You can now directly use the ref instead. This method will be removed in a future release.',
@@ -135,7 +135,7 @@ const Profile = (props) => {
         if (loadingPost) {
             // Loading favorite posts at the same time
             axios.get(global.back_end_url + '/album_favorite', {
-                params: { user_id: user.id, offset: offset },
+                params: { user_id: Object.keys(userProfile).length ? userProfile.user_id: user.id, offset: offset },
                 withCredentials: true 
             })
             .then((response) => {
@@ -760,7 +760,7 @@ const Profile = (props) => {
                                     contentContainerStyle={{ flexGrow: 1, height: "auto"}}
                         >
                             <View key="Feeling">
-                                <ListItem.Accordion style={{height: feelingExpanded ? "auto": 0.1 * screen.height}}
+                                <ListItem.Accordion style={{height: feelingExpanded ? "auto": 0.075 * screen.height}}
                                     content={
                                         <>
                                             <Avatar title="Feeling" source={feeling} />
@@ -787,7 +787,7 @@ const Profile = (props) => {
                                 </ListItem.Accordion>
                             </View>
                             <View key="Traveling">
-                                <ListItem.Accordion style={{height: travelingExpanded ? "auto": 0.1 * screen.height}}
+                                <ListItem.Accordion style={{height: travelingExpanded ? "auto": 0.075 * screen.height}}
                                     content={
                                         <>
                                             <Avatar title="Traveling to" source={traveling} />
@@ -814,7 +814,7 @@ const Profile = (props) => {
                                 </ListItem.Accordion>
                             </View>
                             <View key="Eating">
-                                <ListItem.Accordion style={{height: eatingExpanded ? "auto": 0.1 * screen.height}}
+                                <ListItem.Accordion style={{height: eatingExpanded ? "auto": 0.075 * screen.height}}
                                     content={
                                         <>
                                             <Avatar title="Eating" source={eating} />
@@ -841,7 +841,7 @@ const Profile = (props) => {
                                 </ListItem.Accordion>
                             </View>
                             <View key="Drinking">
-                                <ListItem.Accordion style={{height: drinkingExpanded ? "auto": 0.1 * screen.height}}
+                                <ListItem.Accordion style={{height: drinkingExpanded ? "auto": 0.075 * screen.height}}
                                     content={
                                         <>
                                             <Avatar title="Drinking" source={drinking} />
@@ -868,7 +868,7 @@ const Profile = (props) => {
                                 </ListItem.Accordion>
                             </View>
                             <View key="Looking">
-                                <ListItem.Accordion style={{height: lookingExpanded ? "auto": 0.1 * screen.height}}
+                                <ListItem.Accordion style={{height: lookingExpanded ? "auto": 0.075 * screen.height}}
                                     content={
                                         <>
                                             <Avatar title="Looking for" source={looking} />
@@ -895,7 +895,7 @@ const Profile = (props) => {
                                 </ListItem.Accordion>
                             </View>
                             <View key="Celebrating">
-                                <ListItem.Accordion style={{height: celebratingExpanded ? "auto": 0.1 * screen.height}}
+                                <ListItem.Accordion style={{height: celebratingExpanded ? "auto": 0.075 * screen.height}}
                                     content={
                                         <>
                                             <Avatar title="Celebrating" source={celebrating} />
@@ -922,7 +922,7 @@ const Profile = (props) => {
                                 </ListItem.Accordion>
                             </View>
                             <View key="Meeting">
-                                <ListItem.Accordion style={{height: meetingExpanded ? "auto": 0.1 * screen.height}}
+                                <ListItem.Accordion style={{height: meetingExpanded ? "auto": 0.075 * screen.height}}
                                     content={
                                         <>
                                             <Avatar title="Meeting" source={meeting} />
@@ -949,7 +949,7 @@ const Profile = (props) => {
                                 </ListItem.Accordion>
                             </View>
                             <View key="Getting">
-                                <ListItem.Accordion style={{height: gettingExpanded ? "auto": 0.1 * screen.height}}
+                                <ListItem.Accordion style={{height: gettingExpanded ? "auto": 0.075 * screen.height}}
                                     content={
                                         <>
                                             <Avatar title="Getting" source={getting} />
@@ -976,7 +976,7 @@ const Profile = (props) => {
                                 </ListItem.Accordion>
                             </View>
                             <View key="Making">
-                                <ListItem.Accordion style={{height: makingExpanded ? "auto": 0.1 * screen.height}}
+                                <ListItem.Accordion style={{height: makingExpanded ? "auto": 0.075 * screen.height}}
                                     content={
                                         <>
                                             <Avatar title="Making" source={making} />
@@ -1003,7 +1003,7 @@ const Profile = (props) => {
                                 </ListItem.Accordion>
                             </View>
                             <View key="Thinking">
-                                <ListItem.Accordion style={{height: rememberingExpanded ? "auto": 0.1 * screen.height}}
+                                <ListItem.Accordion style={{height: rememberingExpanded ? "auto": 0.075 * screen.height}}
                                     content={
                                         <>
                                             <Avatar title="Thinking" source={thinking} />
@@ -1030,7 +1030,7 @@ const Profile = (props) => {
                                 </ListItem.Accordion>
                             </View>
                             <View key="Remembering">
-                                <ListItem.Accordion style={{height: rememberingExpanded ? "auto": 0.1 * screen.height}}
+                                <ListItem.Accordion style={{height: rememberingExpanded ? "auto": 0.075 * screen.height}}
                                     content={
                                         <>
                                             <Avatar title="Remembering" source={remembering} />
@@ -1057,41 +1057,49 @@ const Profile = (props) => {
                                 </ListItem.Accordion>
                             </View>
                             <View key="Custom">
-                                <ListItem.Accordion style={{height: customExpanded ? "auto": 0.06 * screen.height, maxHeight: customExpanded ? "auto": 0.1 * screen.height}}
-                                    content={
-                                        <>
-                                            <Avatar title="Custom" source={custom} />
-                                            <ListItem.Content>                    
-                                                <ListItem.Title>  Custom</ListItem.Title>
-                                            </ListItem.Content>
-                                        </>
-                                    }
-                                    isExpanded={customExpanded}
+                                <ListItem 
+                                    style={{height: 0.06 * screen.height, maxHeight: 0.075 * screen.height}}
                                     onPress={() => {
-                                        setCustomExpanded(!customExpanded);
+                                        setCustomExpanded(true);
+                                        setFeelingModal(false)
                                     }}
                                 >  
-                                    <View key="custom_item" style={{flexDirection: "row", backgroundColor: "grey", alignItems: "center", justifyContent: "center"}}>
-                                        <ListItem.Input onChangeText={newText => setCustomText(newText)}
-                                            defaultValue={customText} onPress={Keyboard.dismiss} style={{height: 0.06 * screen.height, marginRight: 0.05 * screen.width}}>
-                                        </ListItem.Input>
-                                        <TouchableOpacity onPress={() => setShow(!show)}>
-                                            <FontAwesome5Icon name="smile" size={0.06 * screen.height} style={{top: 0}}></FontAwesome5Icon>
-                                        </TouchableOpacity>
-                                        <EmojiBoard showBoard={show} emojiSize={16} numRows={7} numCols={5} containerStyle={{width: 0.95 * screen.width}} onClick={(emoji) => {setCustomText(customText + " " + emoji.code); setShow(!show)}} tabBarStyle={{width: 0.95 * screen.width}}/>
-                                        <TouchableOpacity style={{width: 0.1 * screen.width}} onPress={() => {setFeelingModal(false); setBlurIntensity(1); setPostFeeling({
-                                            title: customText,
-                                            slug: "custom",
-                                            url: ""
-                                        })}}>
-                                            <Text> ok </Text>
-                                        </TouchableOpacity>
-                                    </View>   
-                                </ListItem.Accordion>
+                                    <Avatar title="Custom" source={custom} />
+                                    <ListItem.Content>                    
+                                        <ListItem.Title>  Custom</ListItem.Title>
+                                    </ListItem.Content>
+                                </ListItem>
                             </View>
                         </ScrollView>
                     </KeyboardAvoidingView> 
                 </TouchableOpacity>
+            </Modal>
+            <Modal
+                animationType="fade"
+                transparent={true}
+                visible={customExpanded}
+                onRequestClose={() => {
+                    setCustomExpanded(false)
+                    setBlurIntensity(1)
+                }}
+            >
+                <View style={styles.centeredView}>
+                    <View key="custom_item" style={{flexDirection: "column", backgroundColor: "white", alignItems: "center", justifyContent: "center", height: 0.9 * screen.height, width: 0.9 * screen.width}}>
+                        <View style={{flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
+                            <TextInput onChangeText={newText => setCustomText(newText)}
+                                defaultValue={customText} onPress={Keyboard.dismiss} style={{height: 0.06 * screen.height, marginRight: 0.05 * screen.width}} placeholder="The title for your custom tag">
+                            </TextInput>
+                            <TouchableOpacity style={{width: 0.3 * screen.width, borderRadius: 0.02 * screen.width, backgroundColor: "#29b6f6"}} onPress={() => {setCustomExpanded(false); setFeelingModal(false); setBlurIntensity(1); setPostFeeling({
+                                title: customText,
+                                slug: "custom",
+                                url: ""
+                            }); setCustomText("")}}>
+                                <Text style={{color: "white", fontSize: 18, textAlign: "center"}}> CREATE </Text>
+                            </TouchableOpacity>
+                        </View>
+                        <EmojiSelector showSearchBar={false} columns={8} onEmojiSelected={(emoji) => {setCustomText(customText + " " + emoji)}}/>
+                    </View>  
+                </View>
             </Modal>
             <Modal 
                 animationType="fade"
