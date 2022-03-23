@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React from 'react'
 import { StyleSheet, Text, View, TouchableOpacity, Dimensions, ScrollView, Image, Alert } from 'react-native'
+import allentries from "../../static/img/icon-button/270d.png"
 
 const screen = Dimensions.get("screen");
 const window = Dimensions.get("window")
@@ -27,7 +28,7 @@ const ModalPickerFeeling = (props) => {
             }).catch(function(error){
                 Alert.alert("Dream Real Load Error", error)
             })
-            props.setListActivity({label: "All Activities", value: "allActivities"})
+            props.setListActivity({label: "All Entries", value: "allActivities", url: allentries})
         }
         else {
             axios.get(global.back_end_url + "/filter_album_by_feeling", {
@@ -55,7 +56,7 @@ const ModalPickerFeeling = (props) => {
             }).then((response) => {
                 let json = JSON.parse(JSON.stringify(response.data))
                 if (json.success) {
-                    props.setListActivity([{label: "All activities", value: "allActivity"}, ...json.tags.map((tag) => {return {label: tag.title, value: tag.title, url: tag.url}})])
+                    props.setListActivity([{label: "All Entries", value: "allActivity", url: allentries}, ...json.tags.map((tag) => {return {label: tag.title, value: tag.title, url: tag.url}})])
                 }else {
                     Alert.alert("Dream Real Load Failed", json.message)
                 }

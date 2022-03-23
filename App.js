@@ -33,6 +33,7 @@ const App = () => {
 	const [postOffset, setPostOffset] = React.useState(0);
 	const [postLoading, setPostLoading] = React.useState(true);
 	const [selectedDestination, selectDestination] = React.useState("");
+	const [click, toogleClick] = React.useState(0);
 	const userSettings = {
 		id: userId,
 		setUserId,
@@ -60,6 +61,8 @@ const App = () => {
 		setPostLoading,
 		destination: selectedDestination,
 		selectDestination,
+		click: click,
+		toogleClick
 	}
 	return (
 		<userIdProvider.Provider value={userSettings}>

@@ -743,7 +743,7 @@ const Profile = (props) => {
                     onPressOut={() => {setFeelingModal(false); setBlurIntensity(1)}}
                 >
                     <KeyboardAvoidingView
-                        behavior={Platform.OS === "ios" ? "padding" : "height"}
+                        behavior={Platform.OS === "ios" ? "padding" : "height"} 
                     >
                         <ScrollView showsVerticalScrollIndicator={false} 
                                     bounces={true} 
@@ -1084,21 +1084,38 @@ const Profile = (props) => {
                 }}
             >
                 <View style={styles.centeredView}>
+                <ScrollView showsVerticalScrollIndicator={false} 
+                            bounces={true} 
+                            vertical={true}
+                            style={{flexGrow:0,
+                                    width: 0.9 * screen.width, 
+                                    height: 0.9 * screen.height, 
+                                    flexDirection: "column", 
+                                    borderBottomLeftRadius: 0.02 * screen.width, 
+                                    borderBottomRightRadius: 0.02 * screen.width}}
+                            contentContainerStyle={{ flexGrow: 1, height: "auto"}}
+                        >
                     <View key="custom_item" style={{flexDirection: "column", backgroundColor: "white", alignItems: "center", justifyContent: "center", height: 0.9 * screen.height, width: 0.9 * screen.width}}>
                         <View style={{flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
+                            <TouchableOpacity onPress={() => {setCustomExpanded(false); setBlurIntensity(1)}}>
+                                <View style={{...styles.backButton, marginRight: 0.03 * screen.width}} >
+                                    <FontAwesome5Icon name="arrow-alt-circle-left" size={25} solid color='black'></FontAwesome5Icon>
+                                </View>
+                            </TouchableOpacity> 
                             <TextInput onChangeText={newText => setCustomText(newText)}
                                 defaultValue={customText} onPress={Keyboard.dismiss} style={{height: 0.06 * screen.height, marginRight: 0.05 * screen.width}} placeholder="The title for your custom tag">
                             </TextInput>
-                            <TouchableOpacity style={{width: 0.3 * screen.width, borderRadius: 0.02 * screen.width, backgroundColor: "#29b6f6"}} onPress={() => {setCustomExpanded(false); setFeelingModal(false); setBlurIntensity(1); setPostFeeling({
+                            <TouchableOpacity style={{width: 0.2 * screen.width, borderRadius: 0.02 * screen.width, backgroundColor: "#29b6f6"}} onPress={() => {setCustomExpanded(false); setFeelingModal(false); setBlurIntensity(1); setPostFeeling({
                                 title: customText,
                                 slug: "custom",
                                 url: ""
                             }); setCustomText("")}}>
-                                <Text style={{color: "white", fontSize: 18, textAlign: "center"}}> CREATE </Text>
+                                <Text style={{color: "white", fontSize: 18, textAlign: "center"}}> OK </Text>
                             </TouchableOpacity>
                         </View>
                         <EmojiSelector showSearchBar={false} columns={8} onEmojiSelected={(emoji) => {setCustomText(customText + " " + emoji)}}/>
                     </View>  
+                </ScrollView>
                 </View>
             </Modal>
             <Modal 

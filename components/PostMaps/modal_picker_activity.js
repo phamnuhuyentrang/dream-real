@@ -1,12 +1,13 @@
 import axios from 'axios';
 import React from 'react'
 import { StyleSheet, Text, View, TouchableOpacity, Dimensions, ScrollView, Image, Alert } from 'react-native'
+import allentries from "../../static/img/icon-button/270d.png"
+import allfeeling from "../../static/img/icon-button/1f9d0.png"
 
 const screen = Dimensions.get("screen");
 const window = Dimensions.get("window")
 
 const ModalPickerActivity = (props) => {
-    console.log(props.listValue)
     const onPressItem = (option) => {
         if (option.value === "allActivity") {
             if (props.selectedFeeling.value === "allFeeling") {
@@ -28,7 +29,7 @@ const ModalPickerActivity = (props) => {
                 }).catch(function(error){
                     Alert.alert("Dream Real Load Error", error)
                 })
-                props.setListActivity({label: "All Activities", value: "allActivities"})
+                props.setListActivity({label: "All Entries", value: "allActivities", url: allentries})
             }
             else {
                 axios.get(global.back_end_url + "/filter_album_by_feeling", {
