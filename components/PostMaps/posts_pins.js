@@ -185,7 +185,7 @@ const PostMaps = (props) => {
                 }}
                 style = {{position: 'absolute', bottom: 0, right: 0, width: 100 * screen.width / figma_screen_w, height: 100 * screen.width / figma_screen_w, backgroundColor: 'transparent'}}
             />
-            <View style={{position: 'absolute', top: 0.7 * APPBAR_HEIGHT, right: 0, left: 0, backgroundColor: "#3d3d4e", alignItems: "center"}}>
+            <View style={{position: 'absolute', bottom: 0, right: 0, left: 0, backgroundColor: "#3d3d4e", alignItems: "center"}}>
                 <View style={{flexDirection: "row", justifyContent: "space-around"}}> 
                     <SafeAreaView style={{marginRight: 0.09 * screen.width}}>
                         <TouchableOpacity onPress={()=> changeModalVisibility1(true)} style={{flexDirection: "row", alignItems:"center", justifyContent:"center", marginLeft: 0.03 * screen.width}}>
