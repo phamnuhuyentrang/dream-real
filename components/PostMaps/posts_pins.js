@@ -11,7 +11,6 @@ import TrendingItems from '../Trending/trending_items';
 import ModalPickerFeeling from './modal_picker_feeling';
 import follows from "../../static/img/icon-button/follows.png"
 import friends from "../../static/img/icon-button/friends.png"
-import axios from 'axios';
 // import userIdProvider from '../Context/user_id_provider';
 import feeling from "../../static/img/icon-button/1f600.png"
 import traveling from "../../static/img/icon-button/1f4ba.png"
@@ -25,6 +24,8 @@ import celebrating from "../../static/img/icon-button/1f389.png"
 import meeting from "../../static/img/icon-button/1f454.png"
 import drinking from "../../static/img/icon-button/1f943.png"
 import custom from "../../static/img/icon-button/1f485-1f3fc.png"
+import allfeeling from "../../static/img/icon-button/1f9d0.png"
+import allentries from "../../static/img/icon-button/270d.png"
 import ModalPickerActivity from './modal_picker_activity';
 
 const screen = Dimensions.get("screen");
@@ -32,7 +33,7 @@ const window = Dimensions.get("window")
 const figma_screen_w = 428;
 const figma_screen_h = 926;
 const listFeeling = [
-    {label: 'All Feelings', value: 'allFeeling',},
+    {label: 'Feeling/Activity', value: 'allFeeling', url: allfeeling},
     {label: 'Feeling', value: 'feeling', url: feeling},
     {label: 'Eating', value: 'eating', url: eating},
     {label: 'Drinking', value: 'drinking', url: drinking},
@@ -51,8 +52,8 @@ const listFeeling = [
 const APPBAR_HEIGHT = 200 * screen.height / figma_screen_h; 
 const PostMaps = (props) => {
     const d = props.route.params.post;
-    const [selectedFeeling, setSelectedFeeling] = React.useState({label: "All Feelings", value: "allFeeling"})
-    const [selectedActivity, setSelectedActivity] = React.useState({label: "All Activities", value: "allActivity"})
+    const [selectedFeeling, setSelectedFeeling] = React.useState({label: "Feeling/Activity", value: "allFeeling", url: allfeeling})
+    const [selectedActivity, setSelectedActivity] = React.useState({label: "All Entries", value: "allActivity", url: allentries})
     const [listActivity, setListActivity] = React.useState([]);
     const config = {
         velocityThreshold: 0,

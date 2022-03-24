@@ -20,6 +20,7 @@ const DestinationItems = (props) => {
             user.setPostTrending([])
             user.setPostOffset(0)
             user.setPostLoading(true)
+            user.toogleClick(0)
             Alert.alert("Dream Real Destination", "Filter posts by selected destination !")
         }}>
             <View style={styles.content2}>

@@ -10,10 +10,9 @@ const window = Dimensions.get("window");
 
 const MenuBar = () => {
 
-    const [click, toogleClick] = React.useState(0);
     const user_item = React.useContext(userIdProvider);
-    const loadContent = (click) => {
-        switch(click) {
+    const loadContent = () => {
+        switch(user_item.click) {
             case 1:
                 return <Destinations />
             case 0:
@@ -28,25 +27,25 @@ const MenuBar = () => {
     return (
         <View style={styles.container}>
             <View style={styles.content}>
-                <TouchableOpacity onPress={() => toogleClick(0)}>
+                <TouchableOpacity onPress={() => user_item.toogleClick(0)}>
                     <Text style={styles.text}>Trending</Text>
-                    <View style={click === 0 ? {...styles.underline, backgroundColor: "#B456F1"} : {...styles.underline}}></View>
+                    <View style={user_item.click === 0 ? {...styles.underline, backgroundColor: "#B456F1"} : {...styles.underline}}></View>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => toogleClick(1)}>
+                <TouchableOpacity onPress={() => user_item.toogleClick(1)}>
                     <Text style={styles.text}>Destination</Text>
-                    <View style={click === 1 ? {...styles.underline, backgroundColor: "#B456F1"} : {...styles.underline}}></View>
+                    <View style={user_item.click === 1 ? {...styles.underline, backgroundColor: "#B456F1"} : {...styles.underline}}></View>
                 </TouchableOpacity>
-                {user_item.id != 0 && <TouchableOpacity onPress={() => toogleClick(2)}>
+                {user_item.id != 0 && <TouchableOpacity onPress={() => user_item.toogleClick(2)}>
                     <Text style={styles.text}>Messages</Text>
-                    <View style={click === 2 ? {...styles.underline, backgroundColor: "#B456F1"} : {...styles.underline}}></View>
+                    <View style={user_item.click === 2 ? {...styles.underline, backgroundColor: "#B456F1"} : {...styles.underline}}></View>
                 </TouchableOpacity>}
-                {user_item.id != 0 && <TouchableOpacity onPress={() => toogleClick(3)}>
+                {user_item.id != 0 && <TouchableOpacity onPress={() => user_item.toogleClick(3)}>
                     <Text style={styles.text}>Connect</Text>
-                    <View style={click === 3 ? {...styles.underline, backgroundColor: "#B456F1"} : {...styles.underline}}></View>
+                    <View style={user_item.click === 3 ? {...styles.underline, backgroundColor: "#B456F1"} : {...styles.underline}}></View>
                 </TouchableOpacity>}
             </View>
             <ScrollView style={styles.second_content}>
-                {loadContent(click)}
+                {loadContent()}
             </ScrollView>
         </View>
     )
