@@ -20,8 +20,10 @@ const ModalPickerFeeling = (props) => {
                 let json = JSON.parse(JSON.stringify(response.data))
                 if (json.success) {
                     props.changeModalVisibility(false)
-                    props.setSelectedFeeling({label: option.label.toString(), value: option.value.toString()})
+                    props.setSelectedFeeling({label: option.label.toString(), value: option.value.toString(), url: option.url})
                     props.setData(JSON.parse(JSON.stringify(json.albums)))
+                    props.setListActivity([{label: "All Entries", value: "allActivities", url: allentries}])
+                    props.setSelectedActivity({label: "All Entries", value: "allActivities", url: allentries})
                 }else {
                     Alert.alert("Dream Real Load Failed", json.message)
                 }
@@ -40,7 +42,7 @@ const ModalPickerFeeling = (props) => {
                 let json = JSON.parse(JSON.stringify(response.data))
                 if (json.success) {
                     props.changeModalVisibility(false)
-                    props.setSelectedFeeling({label: option.label.toString(), value: option.value.toString()})
+                    props.setSelectedFeeling({label: option.label.toString(), value: option.value.toString(), url: option.url})
                     props.setData(json.album)
                 }else {
                     Alert.alert("Dream Real Load Failed", json.message)

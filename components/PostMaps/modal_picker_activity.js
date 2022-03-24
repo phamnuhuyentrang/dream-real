@@ -8,6 +8,7 @@ const screen = Dimensions.get("screen");
 const window = Dimensions.get("window")
 
 const ModalPickerActivity = (props) => {
+    
     const onPressItem = (option) => {
         if (option.value === "allActivity") {
             if (props.selectedFeeling.value === "allFeeling") {
@@ -21,7 +22,7 @@ const ModalPickerActivity = (props) => {
                     let json = JSON.parse(JSON.stringify(response.data))
                     if (json.success) {
                         props.changeModalVisibility(false)
-                        props.setSelectedActivity({label: option.label.toString(), value: option.value.toString()})
+                        props.setSelectedActivity({label: option.label.toString(), value: option.value.toString(), url: option.url})
                         props.setData(JSON.parse(JSON.stringify(json.albums)))
                     }else {
                         Alert.alert("Dream Real Load Failed", json.message)
@@ -41,7 +42,7 @@ const ModalPickerActivity = (props) => {
                     let json = JSON.parse(JSON.stringify(response.data))
                     if (json.success) {
                         props.changeModalVisibility(false)
-                        props.setSelectedActivity({label: option.label.toString(), value: option.value.toString()})
+                        props.setSelectedActivity({label: option.label.toString(), value: option.value.toString(), url: option.url})
                         props.setData(json.album)
                     }else {
                         Alert.alert("Dream Real Load Failed", json.message)
@@ -62,7 +63,7 @@ const ModalPickerActivity = (props) => {
                 let json = JSON.parse(JSON.stringify(response.data))
                 if (json.success) {
                     props.changeModalVisibility(false)
-                    props.setSelectedActivity({label: option.label.toString(), value: option.value.toString()})
+                    props.setSelectedActivity({label: option.label.toString(), value: option.value.toString(), url: option.url})
                     props.setData(json.album)
                 }else {
                     Alert.alert("Dream Real Load Failed", json.message)
@@ -79,7 +80,8 @@ const ModalPickerActivity = (props) => {
                 onPress={() => onPressItem(item)}
             >
                 <View style={{height: 0.1 * screen.height, flexDirection: 'row', alignItems: "center"}}>
-                    <Image source={{uri: global.image_host_url + item.url}} style={{width: 0.1 * screen.width, height: 0.1 * screen.width, marginRight: 0.05 * screen.width, marginLeft: 0.05 * screen.width}}></Image>
+                    {Number.isInteger(item.url) ? <Image source={item.url} style={{width: 0.1 * screen.width, height: 0.1 * screen.width, marginRight: 0.05 * screen.width, marginLeft: 0.05 * screen.width}}></Image>: 
+                    <Image source={{uri: global.image_host_url + item.url}} style={{width: 0.1 * screen.width, height: 0.1 * screen.width, marginRight: 0.05 * screen.width, marginLeft: 0.05 * screen.width}}></Image>}
                     <Text style={styles.text}>
                         {item.label}
                     </Text>
