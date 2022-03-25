@@ -31,6 +31,9 @@ import custom from "../static/img/icon-button/1f485-1f3fc.png"
 import dream from "../static/img/icon-button/dream.png"
 import real from "../static/img/icon-button/real.png"
 import EmojiSelector from 'react-native-emoji-selector'
+import SearchableDropdown from './searchable-drop-down';
+
+
 
 LogBox.ignoreLogs([
   'ReactNativeFiberHostComponent: Calling getNode() on the ref of an Animated component is no longer necessary. You can now directly use the ref instead. This method will be removed in a future release.',
@@ -52,7 +55,6 @@ const isCloseToRight = ({ layoutMeasurement, contentOffset, contentSize }) => {
     return layoutMeasurement.width + contentOffset.x >= contentSize.width - paddingToRight;
 };
 
-
 const Profile = (props) => {
     const navigation = useNavigation()
 
@@ -66,6 +68,9 @@ const Profile = (props) => {
     const [textColorFriends, setTextColorFriends] = React.useState("#B456F1");
     const [textColorFollowers, setTextColorFollowers] = React.useState("white");
     const [textColorFollowing, setTextColorFollowing] = React.useState("white");
+    const [tagModal, setTagModal] = React.useState(false);
+    const [taggedUser, setTaggedUser] = React.useState([]);
+    const [allUser, setAllUser] = React.useState([]);
 
     const [postPhoto, setPostPhoto] = React.useState(null);
     const [postFeeling, setPostFeeling] = React.useState(null);
@@ -129,9 +134,22 @@ const Profile = (props) => {
     const [score, setScore] = React.useState(null);
     const [show, setShow] = React.useState(false);
     const [customText, setCustomText] = React.useState("")
+
     React.useEffect(() => {
         LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
-        
+        axios.get(global.back_end_url + '/all_user').then((response) => {
+            let json = JSON.parse(JSON.stringify(response.data));
+            if (json.success) {
+                setAllUser(JSON.parse(JSON.stringify(json.users)).map(item => {
+                    return {id: item.id, name: item.first_name + " " + item.last_name, url: item.avatar}
+                }))
+            }
+            else {
+                Alert.alert("Dream Real Loading Favorite Posts Error", json.message)
+            }
+        })
+        .catch((error) => Alert.alert("Dream Real Loading Favorite Posts Error", error.message))
+
         if (loadingPost) {
             // Loading favorite posts at the same time
             axios.get(global.back_end_url + '/album_favorite', {
@@ -709,7 +727,7 @@ const Profile = (props) => {
                                 <Text style={{color: "white", fontSize: 14}}>Feeling/Activity</Text>
                             </TouchableOpacity>
                             <View style={{borderRightColor: "#c4c4c4", borderRightWidth: 1}} />
-                            <TouchableOpacity style={{justifyContent: "center", alignItems: "center"}}>
+                            <TouchableOpacity style={{justifyContent: "center", alignItems: "center"}} onPress={() => {setTagModal(true); setBlurIntensity(0.5)}}>
                                 <FontAwesome5Icon name="tag" size={16} solid color='#ff5c5c' style={{marginBottom: 0.005 * screen.height}}></FontAwesome5Icon> 
                                 <Text style={{color: "white", fontSize: 14}}>Tag</Text>
                             </TouchableOpacity>
@@ -728,6 +746,76 @@ const Profile = (props) => {
                     </View> 
                 </View>
             </ScrollView>
+
+            <Modal
+                animationType="fade"
+                transparent={true}
+                visible={tagModal}
+                onRequestClose={() => {
+                    Alert.alert("Modal has been closed.");
+                    
+                }}
+            >
+                <TouchableOpacity 
+                    style={styles.centeredView} 
+                    activeOpacity={1} 
+                    onPressOut={() => {setTagModal(false); setBlurIntensity(1)}}
+                >
+                    <KeyboardAvoidingView
+                        behavior={Platform.OS === "ios" ? "padding" : "height"} 
+                    >
+                        <SearchableDropdown
+                            multi={true}
+                            selectedItems={taggedUser}
+                            onItemSelect={(item) => {
+                                setTaggedUser([...taggedUser, item]);
+                            }}
+                            containerStyle={{ padding: 0.02 * screen.height }}
+                            onRemoveItem={(item, index) => {
+                                const items = taggedUser.filter((sitem) => sitem.id !== item.id);
+                                setTaggedUser(items);
+                            }}
+                            itemStyle={{
+                                padding: 0.02 * screen.height,
+                                marginTop: 0.005 * screen.height,
+                                backgroundColor: '#ddd',
+                                borderColor: '#bbb',
+                                borderWidth: 1,
+                                borderRadius: 5,
+                            }}
+                            itemTextStyle={{ color: '#222' }}
+                            itemsContainerStyle={{ maxHeight: 140 }}
+                            items={allUser}
+                            defaultIndex={2}
+                            chip={true}
+                            resetValue={false}
+                            textInputProps={
+                                {
+                                    placeholder: "Tag a person",
+                                    underlineColorAndroid: "transparent",
+                                    style: {
+                                        padding: 12,
+                                        borderWidth: 1,
+                                        borderColor: '#ccc',
+                                        borderRadius: 5,
+                                        width: 0.9 * screen.width,
+                                        backgroundColor: "#3D3D4E",
+                                        color: "white"
+                                    },
+                                }
+                            }
+                            listProps={
+                                {
+                                    nestedScrollEnabled: true,
+                                }
+                            }
+                        />
+                    </KeyboardAvoidingView>
+                </TouchableOpacity>
+            </Modal>
+
+
+
             <Modal 
                 animationType="fade"
                 transparent={true}
@@ -1175,6 +1263,7 @@ const Profile = (props) => {
                                                 formData.append("user_id", user.id)
                                                 formData.append("description", postText)
                                                 formData.append("dream_real", dream_or_real == true? 1:0)
+                                                formData.append("tagged_user", taggedUser.map(item => item.id).join(","))
                                             }
                                         }).catch((error) => console.log(error))
                                         
@@ -1213,7 +1302,7 @@ const Profile = (props) => {
                         </View>
                         <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps={"handled"} style={{width: 0.9 * screen.width, flexDirection: "column", backgroundColor: "#3D3D4E", borderBottomLeftRadius: 0.02 * screen.width, borderBottomRightRadius: 0.02 * screen.width}}>
                             <View style={{flexDirection: "row", height: 0.08 * screen.height}}>
-                                <Image source={{uri: global.image_host_url + user.avatar}} style={{margin: 0.02 * screen.height, width: 40 * screen.width / figma_screen_w, height: 40 * screen.width / figma_screen_w, borderRadius: 0.1 * screen.width, margin: 0.015 * screen.width}}/>
+                                <Image source={{uri: global.image_host_url + user.avatar}} style={{width: 40 * screen.width / figma_screen_w, height: 40 * screen.width / figma_screen_w, borderRadius: 0.1 * screen.width, margin: 0.015 * screen.width}}/>
                                 <Text style={{color: "white", fontSize: 12, fontWeight: "bold", alignItems: "center", marginTop: 0.015 * screen.width + 10 * screen.width / figma_screen_w}}>{user.firstname + " " + user.lastname} </Text>
                                 {postFeeling != null && 
                                     <View style={{flexDirection: "row", marginTop: 0.015 * screen.width + 10 * screen.width / figma_screen_w}}>
@@ -1230,7 +1319,10 @@ const Profile = (props) => {
                                     </TouchableOpacity>
                                 } */}
                             </View>
-                        
+                            {taggedUser.length > 0 && <View style={{marginLeft: 0.015 * screen.width, marginBottom: 0.02 * screen.width, flexDirection: "row", overflow: "scroll",  flexWrap: 'wrap',}}>
+                                <Text style={{color: "white", fontSize: 12, fontWeight: "bold", alignItems: "center"}}>is with: </Text>
+                                {taggedUser.map((item, index) => <View style={{marginRight: 0.01, flexDirection: "row"}}><TouchableOpacity><Text style={{color: "white", fontSize: 12, fontWeight: "bold", alignItems: "center"}}>{item.name}</Text></TouchableOpacity>{index != taggedUser.length - 1 && <Text style={{color: "white", fontSize: 12, fontWeight: "bold", alignItems: "center"}}>, </Text> }</View>)} 
+                                </View>}
                             <GooglePlacesAutocomplete
                                 placeholder= "Location"
                                 query={{
@@ -1280,11 +1372,11 @@ const Profile = (props) => {
                                     <Text style={{color: "white", fontSize: 14}}>  Photo</Text>
                                 </TouchableOpacity>}
                                 {postPhoto == null && <View style={{borderRightColor: "#c4c4c4", borderRightWidth: 1}} />}
-                                <TouchableOpacity style={{justifyContent: "center", alignItems: "center", flexDirection: "row"}}>
+                                {/* <TouchableOpacity style={{justifyContent: "center", alignItems: "center", flexDirection: "row"}}>
                                     <FontAwesome5Icon name="tag" size={16} solid color='#ff5c5c' style={{marginBottom: 0.005 * screen.height}}></FontAwesome5Icon> 
                                     <Text style={{color: "white", fontSize: 14}}>  Tag</Text>
                                 </TouchableOpacity>
-                                <View style={{borderRightColor: "#c4c4c4", borderRightWidth: 1}} />
+                                <View style={{borderRightColor: "#c4c4c4", borderRightWidth: 1}} /> */}
                                 <TouchableOpacity style={{justifyContent: "center", alignItems: "center"}} onPress={() => {setDreamReal(!dream_or_real)}}>
                                     {dream_or_real && 
                                     <View style={{flexDirection: "row"}}>

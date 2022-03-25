@@ -84,6 +84,9 @@ const Comment = (props) => {
                                     <Image source={{uri: global.image_host_url + album.url}} style={styles.emotion}></Image>
                                     <Text style={styles.item3}>  {album.title}</Text>
                                 </View>
+                                <View style={styles.content4}>
+                                    <Text style={styles.item3}>{album.description}</Text>
+                                </View>
                             </View>
                             <View style={{maxWidth: 0.4 * screen.width, alignItems: "flex-end"}}>
                                 <View>
@@ -107,6 +110,10 @@ const Comment = (props) => {
                                 </View>
                             </View>
                         </View>
+                        {album.user_tagged != null && <View style={{marginLeft: 0.05 * screen.width,  marginBottom: 0.02 * screen.width, flexDirection: "row", overflow: "scroll",  flexWrap: 'wrap',}}>
+                            <Text style={{color: "white", fontSize: 12, fontWeight: "bold", alignItems: "center"}}>with: </Text>
+                            {album.user_tagged.map((item, index) => <View style={{marginRight: 0.01, flexDirection: "row"}}><TouchableOpacity><Text style={{color: "white", fontSize: 12, fontWeight: "bold", alignItems: "center"}}>{item.first_name + " " + item.last_name}</Text></TouchableOpacity>{index != album.user_tagged.length - 1 && <Text style={{color: "white", fontSize: 12, fontWeight: "bold", alignItems: "center"}}>, </Text> }</View>)} 
+                        </View>}
                         {typeof(album.image) == "number" && <Image source={{uri: global.image_host_url + album.image}} style={styles.place} />}
                         {typeof(album.image) == "string" && <Image source={{uri: global.image_host_url + album.image}} style={styles.place} />}
                         <View style={styles.content5}>

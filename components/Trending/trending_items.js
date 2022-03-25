@@ -30,6 +30,8 @@ const TrendingItems = (props) => {
     const userId = user_item.id;
     const [nbReact, setNbReact] = React.useState(data.react)
     const [reactIndex, setReactIndex] = React.useState(data.user_react === null ? 0 : data.user_react);
+
+    console.log(data.user_tagged)
     const showComments = () => {
         if (userId === 0) {
             user_item.setLogin(!user_item.login)
@@ -47,9 +49,12 @@ const TrendingItems = (props) => {
                         <Text style={styles.item4}>{data.first_name + " " + data.last_name}</Text>
                     </View>
                     <View style={styles.content4}>
-                        <Text style={styles.item3}>{data.slug != "custom"? "is " + data.slug + " " : ""}</Text>
-                        <Image source={{uri: global.image_host_url + data.url}} style={styles.emotion}></Image>
+                        {data.slug != "custom" && <Text style={styles.item3}>{"is " + data.slug + " "}</Text>}
+                        {data.slug != "custom" && <Image source={{uri: global.image_host_url + data.url}} style={styles.emotion}></Image>}
                         <Text style={styles.item3}>{data.slug != "custom" ? " " + data.title : data.title.trim()}</Text>
+                    </View>
+                    <View style={styles.content4}>
+                        <Text style={styles.item3}>{data.description}</Text>
                     </View>
                 </View>
                 <View style={{maxWidth: 0.4 * screen.width, alignItems: "flex-end", height: 0.05 * screen.height}}>
@@ -74,6 +79,10 @@ const TrendingItems = (props) => {
                     </View>
                 </View>
             </View>
+            {data.user_tagged != null && <View style={{marginLeft: 0.03 * screen.width,  marginBottom: 0.02 * screen.width, flexDirection: "row", overflow: "scroll",  flexWrap: 'wrap',}}>
+                <Text style={{color: "white", fontSize: 12, fontWeight: "bold", alignItems: "center"}}>with: </Text>
+                {data.user_tagged.map((item, index) => <View style={{marginRight: 0.01, flexDirection: "row"}}><TouchableOpacity><Text style={{color: "white", fontSize: 12, fontWeight: "bold", alignItems: "center"}}>{item.first_name + " " + item.last_name}</Text></TouchableOpacity>{index != data.user_tagged.length - 1 && <Text style={{color: "white", fontSize: 12, fontWeight: "bold", alignItems: "center"}}>, </Text> }</View>)} 
+            </View>}
             <Image source={{uri: global.image_host_url + data.image}} style={styles.place} />
             <View style={styles.content5}>
                 <TouchableOpacity>
@@ -550,7 +559,7 @@ const TrendingItems = (props) => {
 const styles = StyleSheet.create({
     content: {
         backgroundColor: "#3D3D4E",
-        height: 0.4 * screen.height,
+        // height: 0.5 * screen.height,
         borderRadius: 0.02 * screen.width,
         marginBottom: 0.03 * screen.height
     },
@@ -567,7 +576,7 @@ const styles = StyleSheet.create({
         alignSelf: "flex-start"
     },
     content2: {
-        marginLeft: 0.02 * screen.width,
+        marginLeft: 0.03 * screen.width,
         marginTop: 0.01 * screen.height,
         flexDirection: 'row',
         alignItems: "stretch",
