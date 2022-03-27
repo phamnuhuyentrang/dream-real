@@ -1186,14 +1186,14 @@ const Profile = (props) => {
                     <View key="custom_item" style={{flexDirection: "column", backgroundColor: "white", alignItems: "center", justifyContent: "center", height: 0.9 * screen.height, width: 0.9 * screen.width}}>
                         <View style={{flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
                             <TouchableOpacity onPress={() => {setCustomExpanded(false); setBlurIntensity(1)}}>
-                                <View style={{...styles.backButton, marginRight: 0.03 * screen.width}} >
+                                <View style={{...styles.backButton}} >
                                     <FontAwesome5Icon name="arrow-alt-circle-left" size={25} solid color='black'></FontAwesome5Icon>
                                 </View>
                             </TouchableOpacity> 
                             <TextInput onChangeText={newText => setCustomText(newText)}
-                                defaultValue={customText} onPress={Keyboard.dismiss} style={{height: 0.06 * screen.height, marginRight: 0.05 * screen.width}} placeholder="The title for your custom tag">
+                                defaultValue={customText} onPress={Keyboard.dismiss} style={{height: 0.06 * screen.height, marginRight: 0.05 * screen.width, width: 0.62 * screen.width}} placeholder="The title for your custom tag">
                             </TextInput>
-                            <TouchableOpacity style={{width: 0.2 * screen.width, borderRadius: 0.02 * screen.width, backgroundColor: "#29b6f6"}} onPress={() => {setCustomExpanded(false); setFeelingModal(false); setBlurIntensity(1); setPostFeeling({
+                            <TouchableOpacity style={{width: 0.15 * screen.width, borderRadius: 0.02 * screen.width, backgroundColor: "#29b6f6"}} onPress={() => {setCustomExpanded(false); setFeelingModal(false); setBlurIntensity(1); setPostFeeling({
                                 title: customText,
                                 slug: "custom",
                                 url: ""

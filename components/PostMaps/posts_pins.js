@@ -190,7 +190,7 @@ const PostMaps = (props) => {
                     <SafeAreaView style={{marginRight: 0.09 * screen.width}}>
                         <TouchableOpacity onPress={()=> changeModalVisibility1(true)} style={{flexDirection: "row", alignItems:"center", justifyContent:"center", marginLeft: 0.03 * screen.width}}>
                             <Image source={selectedFeeling.url} style={{height: 0.08*screen.width, width: 0.08*screen.width}}></Image>
-                            <Text style={{color: "white", fontSize: 0.03 * screen.height}}> {selectedFeeling.label}</Text>
+                            <Text style={{color: "white", fontSize: 0.02 * screen.height}}> {selectedFeeling.label}</Text>
                         </TouchableOpacity>
                         <Modal transparent={true} 
                             animationType='fade' 
@@ -204,7 +204,7 @@ const PostMaps = (props) => {
                         <TouchableOpacity onPress={()=> changeModalVisibility2(true)} style={{flexDirection: "row", alignItems:"center", justifyContent:"center", marginRight: 0.03 * screen.width}}>
                             {Number.isInteger(selectedActivity.url) ? <Image source={selectedActivity.url} style={{height: 0.08*screen.width, width: 0.08*screen.width}}></Image>: 
                             <Image source={{uri: global.image_host_url + selectedActivity.url}} style={{height: 0.08*screen.width, width: 0.08*screen.width}}></Image>}
-                            <Text style={{color: "white", fontSize: 0.03 * screen.height}}> {selectedActivity.label}</Text>
+                            <Text style={{color: "white", fontSize: 0.02 * screen.height}}> {selectedActivity.label}</Text>
                         </TouchableOpacity>
                         <Modal transparent={true} 
                             animationType='fade' 

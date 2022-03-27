@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Dimensions, TouchableOpacity, Text, Alert } from 'react-native';
+import { View, StyleSheet, Dimensions, TouchableOpacity, Text, Alert, LogBox } from 'react-native';
 import axios from 'axios';
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 import userIdProvider from "../Context/user_id_provider"
@@ -9,6 +9,10 @@ const screen = Dimensions.get("screen");
 const window = Dimensions.get("window");
 const figma_screen_w = 428;
 const figma_screen_h = 926;
+
+LogBox.ignoreLogs([
+    'Each child in a list should have a unique "key" prop'
+]);
 
 // const isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
 //     const paddingToRight = 0.05 * screen.width;
