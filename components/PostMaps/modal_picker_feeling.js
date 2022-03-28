@@ -14,7 +14,7 @@ const ModalPickerFeeling = (props) => {
                 params: {
                     user_id: props.userId,
                     offset: 0,
-                    limit: 10
+                    limit: 100
                 }
             }).then((response) => {
                 let json = JSON.parse(JSON.stringify(response.data))
@@ -30,7 +30,6 @@ const ModalPickerFeeling = (props) => {
             }).catch(function(error){
                 Alert.alert("Dream Real Load Error", error)
             })
-            props.setListActivity({label: "All Entries", value: "allActivities", url: allentries})
         }
         else {
             axios.get(global.back_end_url + "/filter_album_by_feeling", {
@@ -58,7 +57,7 @@ const ModalPickerFeeling = (props) => {
             }).then((response) => {
                 let json = JSON.parse(JSON.stringify(response.data))
                 if (json.success) {
-                    props.setListActivity([{label: "All Entries", value: "allActivity", url: allentries}, ...json.tags.map((tag) => {return {label: tag.title, value: tag.title, url: tag.url}})])
+                    props.setListActivity([{label: "All Entries", value: "allActivities", url: allentries}, ...json.tags.map((tag) => {return {label: tag.title, value: tag.title, url: tag.url}})])
                 }else {
                     Alert.alert("Dream Real Load Failed", json.message)
                 }

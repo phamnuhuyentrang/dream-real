@@ -10,13 +10,13 @@ const window = Dimensions.get("window")
 const ModalPickerActivity = (props) => {
     
     const onPressItem = (option) => {
-        if (option.value === "allActivity") {
+        if (option.value === "allActivities") {
             if (props.selectedFeeling.value === "allFeeling") {
                 axios.get(global.back_end_url + "/album_trending", {
                     params: {
                         user_id: props.userId,
                         offset: 0,
-                        limit: 10
+                        limit: 100
                     }
                 }).then((response) => {
                     let json = JSON.parse(JSON.stringify(response.data))
@@ -30,7 +30,6 @@ const ModalPickerActivity = (props) => {
                 }).catch(function(error){
                     Alert.alert("Dream Real Load Error", error)
                 })
-                props.setListActivity({label: "All Entries", value: "allActivities", url: allentries})
             }
             else {
                 axios.get(global.back_end_url + "/filter_album_by_feeling", {

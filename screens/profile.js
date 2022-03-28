@@ -1321,7 +1321,14 @@ const Profile = (props) => {
                             </View>
                             {taggedUser.length > 0 && <View style={{marginLeft: 0.015 * screen.width, marginBottom: 0.02 * screen.width, flexDirection: "row", overflow: "scroll",  flexWrap: 'wrap',}}>
                                 <Text style={{color: "white", fontSize: 12, fontWeight: "bold", alignItems: "center"}}>is with: </Text>
-                                {taggedUser.map((item, index) => <View style={{marginRight: 0.01, flexDirection: "row"}}><TouchableOpacity><Text style={{color: "white", fontSize: 12, fontWeight: "bold", alignItems: "center"}}>{item.name}</Text></TouchableOpacity>{index != taggedUser.length - 1 && <Text style={{color: "white", fontSize: 12, fontWeight: "bold", alignItems: "center"}}>, </Text> }</View>)} 
+                                {taggedUser.map((item, index) => <View style={{marginRight: 0.01, flexDirection: "row"}}><TouchableOpacity onPress={() => {
+                                    navigation.push("Profile", {"profile": {
+                                        user_id: item.id,
+                                        avatar: item.avatar,
+                                        cover_image: item.cover_image,
+                                        first_name: item.first_name,
+                                        last_name: item.last_name
+                                    }})}}><Text style={{color: "white", fontSize: 12, fontWeight: "bold", alignItems: "center"}}>{item.name}</Text></TouchableOpacity>{index != taggedUser.length - 1 && <Text style={{color: "white", fontSize: 12, fontWeight: "bold", alignItems: "center"}}>, </Text> }</View>)} 
                                 </View>}
                             <GooglePlacesAutocomplete
                                 placeholder= "Location"

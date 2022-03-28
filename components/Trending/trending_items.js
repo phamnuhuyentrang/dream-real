@@ -57,7 +57,7 @@ const TrendingItems = (props) => {
                         <Text style={styles.item3}>{data.description}</Text>
                     </View>
                 </View>
-                <View style={{maxWidth: 0.4 * screen.width, position: "absolute", right: 0, height: 0.05 * screen.height}}>
+                <View style={{maxWidth: 0.4 * screen.width, position: "absolute", right: 0, height: 0.07 * screen.height}}>
                     <View style={{...styles.item2, overflow: "scroll"}}>
                         <FontAwesome5Icon color='red' name="map-marker-alt" regular size={10}>
                             <Text style={{...styles.item2, color:'#FFF', overflow: "scroll", height: 0.05 * screen.height}}> {data.location_city + ", " + data.location_country}</Text>
@@ -82,7 +82,7 @@ const TrendingItems = (props) => {
             {data.user_tagged != null && <View style={{marginLeft: 0.03 * screen.width,  marginBottom: 0.02 * screen.width, flexDirection: "row", overflow: "scroll",  flexWrap: 'wrap',}}>
                 <Text style={{color: "white", fontSize: 12, fontWeight: "bold", alignItems: "center"}}>with: </Text>
                 {data.user_tagged.map((item, index) => <View style={{marginRight: 0.01, flexDirection: "row"}}><TouchableOpacity onPress={() => {
-                    navigation.navigate("Profile", {"profile": {
+                    navigation.push("Profile", {"profile": {
                         user_id: item.id,
                         avatar: item.avatar,
                         cover_image: item.cover_image,

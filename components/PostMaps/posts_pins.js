@@ -53,7 +53,7 @@ const APPBAR_HEIGHT = 200 * screen.height / figma_screen_h;
 const PostMaps = (props) => {
     const d = props.route.params.post;
     const [selectedFeeling, setSelectedFeeling] = React.useState({label: "Feeling/Activity", value: "allFeeling", url: allfeeling})
-    const [selectedActivity, setSelectedActivity] = React.useState({label: "All Entries", value: "allActivity", url: allentries})
+    const [selectedActivity, setSelectedActivity] = React.useState({label: "All Entries", value: "allActivities", url: allentries})
     const [listActivity, setListActivity] = React.useState([]);
     const config = {
         velocityThreshold: 0,
@@ -99,10 +99,24 @@ const PostMaps = (props) => {
     ];
 
     const onRegionChange = (r) => setRegion(r)
-
     React.useEffect(() => {
-        setData(data)
-    }, [data])
+        axios.get(global.back_end_url + "/album_trending", {
+            params: {
+                user_id: userId,
+                offset: 0,
+                limit: 100
+            }
+        }).then((response) => {
+            let json = JSON.parse(JSON.stringify(response.data))
+            if (json.success) {
+                setData(JSON.parse(JSON.stringify(json.albums)))
+            }else {
+                Alert.alert("Dream Real Load Failed", json.message)
+            }
+        }).catch(function(error){
+            Alert.alert("Dream Real Load Error", error)
+        })
+    })
 
     return (
         <View style={{flex: 1}}>
